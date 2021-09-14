@@ -14,7 +14,7 @@
 </script>
 
 <nav class="nav">
-    <div class="nav-left">
+    <div class="container nav-left">
         <div class="tabs">
         {#each tabs as tab}
             <a class="{tab.component === current_tab ? 'active' : ''}" on:click="{() => current_tab = tab.component}">
@@ -24,7 +24,8 @@
         </div>
     </div>
 </nav>
-<section class="container">
+<br>
+<section class="container card">
     {#key current_tab}
         <svelte:component this={current_tab}/>
     {/key}
