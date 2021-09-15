@@ -27,7 +27,7 @@
     <div class="nav-right">
         <div class="grouped gapless">
             <a class="button icon-only primary">
-                <Icon icon="file" size="20"/>
+                <Icon icon="file-code" size="20"/>
             </a>
             <a class="button icon-only primary outline">
                 <Icon icon="download" size="20" color="#ff5b00"/>

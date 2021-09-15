@@ -30,7 +30,7 @@ function createCashFlows() {
             event: "Sans event",
             nature: "Fonctionnement hors évènement",
             details: "Frais de carte de débit",
-            ref: "BNP0008",
+            ref: "BNP0009",
             note: ""
         },
         {
