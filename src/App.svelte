@@ -1,8 +1,9 @@
 <script lang="ts">
-    import nat_evt from "./tabs/nat_evt.svelte";
-    import infos_comptes from "./tabs/infos_comptes.svelte";
-    import bilan from "./tabs/bilan.svelte";
-    import flux from "./tabs/flux.svelte";
+    import nat_evt from "./components/tabs/nat_evt.svelte";
+    import infos_comptes from "./components/tabs/infos_comptes.svelte";
+    import bilan from "./components/tabs/bilan.svelte";
+    import flux from "./components/tabs/flux.svelte";
+    import Icon from "./components/icon.svelte";
 	let current_tab = infos_comptes
     const tabs = [
         {name: "Natures et évènements", component: nat_evt},
@@ -23,9 +24,19 @@
         {/each}
         </div>
     </div>
+    <div class="nav-right">
+        <div class="grouped gapless">
+            <a class="button icon-only primary">
+                <Icon icon="file" size="20"/>
+            </a>
+            <a class="button icon-only primary outline">
+                <Icon icon="download" size="20" color="#ff5b00"/>
+            </a>
+        </div>
+    </div>
 </nav>
 <br>
-<section class="container card">
+<section class="container">
     {#key current_tab}
         <svelte:component this={current_tab}/>
     {/key}

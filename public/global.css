@@ -18,3 +18,7 @@
 a {
     cursor: pointer;
 }
+
+.grouped.gapless {
+    margin: 4px;
+}

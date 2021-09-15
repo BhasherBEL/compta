@@ -5,7 +5,7 @@ type CashFlow = {
     amount: number,
     account: string,
     event: string,
-    type: string,
+    nature: string,
     details: string,
     ref: string,
     note: string
@@ -18,7 +18,7 @@ function createCashFlows() {
             amount: -5.25,
             account: "Compte courant",
             event: "Sans event",
-            type: "Fonctionnement hors évènement",
+            nature: "Fonctionnement hors évènement",
             details: "Frais de gestion de compte",
             ref: "BNP0008",
             note: ""
@@ -28,7 +28,7 @@ function createCashFlows() {
             amount: -3.89,
             account: "Compte courant",
             event: "Sans event",
-            type: "Fonctionnement hors évènement",
+            nature: "Fonctionnement hors évènement",
             details: "Frais de carte de débit",
             ref: "BNP0008",
             note: ""
@@ -38,7 +38,7 @@ function createCashFlows() {
             amount: -41.58,
             account: "Compte courant",
             event: "Sans event",
-            type: "Fonctionnement hors évènement",
+            nature: "Fonctionnement hors évènement",
             details: "Matériel, technique et autres frais",
             ref: "BNP0021",
             note: "Gel hydroalcoolique"
