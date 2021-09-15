@@ -58,7 +58,13 @@ function toggleEditable(index) {
         <tr>
             {#each cashFlowTitles as item}
                 <th>
-                    <input type="text" placeholder="{item[1]}" bind:value={newCashFlow[item[0]]}>
+                    {#if item[2] === "number"}
+                        <input type="number" bind:value={newCashFlow[item[0]]} placeholder="{item[1]}">
+                    {:else if (item[2] === "date")}
+                        <input type="date" bind:value={newCashFlow[item[0]]} placeholder="{item[1]}">
+                    {:else}
+                        <input bind:value={newCashFlow[item[0]]} placeholder="{item[1]}">
+                    {/if}
                 </th>
             {/each}
             <th>
