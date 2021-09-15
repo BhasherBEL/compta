@@ -9,6 +9,7 @@ export let data = {
         }
     }
 }
+
 function generateRows(data) {
     let rows = []
     let [tot_input, tot_output] = [0,0]
