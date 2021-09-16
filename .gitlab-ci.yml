@@ -50,15 +50,15 @@ sveltte-check:
 
 # Publishes compta to the gitlab container registry
 # https://gitlab.com/groups/louvainlinux/-/container_registries
-# Publishing jobs only run on non-scheduled pipelines on release tags/branches,
-# if the previous pipeline jobs succeeded
+# Publishing jobs only run on non-scheduled nor manually triggered pipelines
+# on release tags/branches, if the previous pipeline jobs succeeded
 .publish:
   stage: publish
   before_script:
     - df -h /
     - free
   rules:
-    - if: $CI_COMMIT_REF_NAME =~ /^r[0-9]+\.[0-9]+/ && $CI_PIPELINE_SOURCE != "schedule"
+    - if: $CI_COMMIT_REF_NAME =~ /^r[0-9]+\.[0-9]+/ && $CI_PIPELINE_SOURCE != "schedule" && $CI_PIPELINE_SOURCE != "web"
       when: on_success
     - when: never
 
@@ -108,5 +108,5 @@ pages:
     paths:
       - public
   rules:
-    - if: $CI_COMMIT_REF_NAME =~ /^r[0-9]+\.[0-9]+/ && $CI_PIPELINE_SOURCE != "schedule"
+    - if: $CI_COMMIT_REF_NAME =~ /^r[0-9]+\.[0-9]+/ && $CI_PIPELINE_SOURCE != "schedule" && $CI_PIPELINE_SOURCE != "web"
       when: on_success
