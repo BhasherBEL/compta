@@ -40,7 +40,7 @@ sveltte-check:
     # Ensure svelte-check is installed
     - npm list | grep svelte-check || npm add svelte-check
   script:
-    - ./node_modules/svelte-check/bin/svelte-check
+    - ./node_modules/.bin/svelte-check
 
 # Publishes compta to the gitlab container registry
 # https://gitlab.com/groups/louvainlinux/-/container_registries

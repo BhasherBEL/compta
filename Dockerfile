@@ -14,12 +14,12 @@ RUN npm ci --only=production
 # advantage of docker layers cache.
 # See https://bitjudo.com/blog/2014/03/13/building-efficient-dockerfiles-node-dot-js/
 COPY . .
-RUN ./node_modules/rollup/dist/bin/rollup --compact --silent -c
+RUN ./node_modules/rollup/.bin/rollup --compact --silent -c
 
 EXPOSE 14910
 
 # TODO: Support --http2
-ENTRYPOINT [ "./node_modules/sirv-cli/bin.js", "public", \
+ENTRYPOINT [ "./node_modules/.bin/sirv", "public", \
     "--no-clear", "--gzip", \
     "--port", "14910", \
     "--host", "compta.louvainlinux.org" \
