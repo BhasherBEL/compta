@@ -1,7 +1,6 @@
 stages:
   - build
-  - lint
-  - unit
+  - test
   - publish
 
 default:
@@ -45,7 +44,7 @@ rollup:
     - node_modules/.bin/rollup --silent --compact -c
 
 sveltte-check:
-  stage: lint
+  stage: test
   before_script:
     # Ensure svelte-check is installed
     - npm list | grep svelte-check || npm add svelte-check
