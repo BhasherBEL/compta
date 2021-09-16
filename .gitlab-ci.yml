@@ -37,7 +37,7 @@ rollup:
   stage: build
   script:
     - df -h /
-    - free -h
+    - free
     - npm --version
     - rm -rf public/build
     - npm ci
