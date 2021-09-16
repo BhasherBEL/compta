@@ -1,7 +1,7 @@
 <script>
     export let library = "octicons"
     export let icon;
-    export let size=42;
+    export let size=16;
     export let color="#000000"
 </script>
 

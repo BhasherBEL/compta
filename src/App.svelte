@@ -1,12 +1,13 @@
 <script lang="ts">
-    import nat_evt from "./components/tabs/nat_evt.svelte";
+    import nat_evt from "./components/tabs/help.svelte";
     import infos_comptes from "./components/tabs/infos_comptes.svelte";
     import bilan from "./components/tabs/bilan.svelte";
     import flux from "./components/tabs/flux.svelte";
+    import help from "./components/tabs/help.svelte"
     import Icon from "./components/icon.svelte";
 	let current_tab = infos_comptes
     const tabs = [
-        {name: "Natures et évènements", component: nat_evt},
+        {name: "Aide", component: help},
         {name: "Infos et comptes", component: infos_comptes},
         {name: "Flux d'argent", component: flux},
         {name: "Bilans détaillés", component: bilan}
