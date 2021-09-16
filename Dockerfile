@@ -14,6 +14,7 @@ RUN npm ci --only=production
 # advantage of docker layers cache.
 # See https://bitjudo.com/blog/2014/03/13/building-efficient-dockerfiles-node-dot-js/
 COPY . .
+RUN ./node_modules/rollup/dist/bin/rollup --compact --silent -c
 
 EXPOSE 14910
 
