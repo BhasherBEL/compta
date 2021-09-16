@@ -12,7 +12,7 @@ type CashFlow = {
 }
 
 function createCashFlows() {
-    const {subscribe, update} = writable([
+    const {subscribe, update, set} = writable([
         {
             date: "2021-06-18",
             amount: -5.25,
@@ -47,8 +47,17 @@ function createCashFlows() {
     return {
         subscribe,
         push: (elem) => update((c) => [...c, elem]),
-        remove: (i) => update(c => c.filter((el, index) => i !== index))
+        remove: (i) => update(c => c.filter((el, index) => i !== index)),
+        set
     }
 }
 
+export const infos = writable({})
+export const accounts = writable([
+    {
+        name: "Compte courant",
+        start: 345.67,
+        real: 456.78
+    }
+])
 export const cashFlows = createCashFlows()
