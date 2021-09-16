@@ -16,11 +16,9 @@ RUN npm ci --only=production
 COPY . .
 RUN ./node_modules/.bin/rollup --compact --silent -c
 
-EXPOSE 14910
-
 # TODO: Support --http2
 ENTRYPOINT [ "./node_modules/.bin/sirv", "public", \
     "--no-clear", "--gzip", \
-    "--port", "14910", \
+    "--port", "80", \
     "--host", "compta.louvainlinux.org" \
 ]
