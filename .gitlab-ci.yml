@@ -1,4 +1,5 @@
 stages:
+  - build
   - lint
   - unit
   - publish
@@ -13,15 +14,13 @@ default:
     when:
       - runner_system_failure
       - stuck_or_timeout_failure
+  # Cache node_modules
+  cache:
+    paths:
+      - node_modules/
+      - public/build/
   tags:
     - linux
-
-before_script:
-  - df -h /
-  - free -h
-  - npm --version
-  - rm -rf public/build
-  - npm ci
 
 # Defines when the CI should automatically run.
 # Set to run on:
@@ -33,6 +32,16 @@ workflow:
     - if: $CI_MERGE_REQUEST_IID
     - if: $CI_COMMIT_TAG
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+rollup:
+  stage: build
+  script:
+    - df -h /
+    - free -h
+    - npm --version
+    - rm -rf public/build
+    - npm ci
+    - node_modules/.bin/rollup --silent --compact -c
 
 sveltte-check:
   stage: lint
@@ -96,6 +105,8 @@ docker-nightly:
 
 pages:
   stage: publish
+  script:
+    - ls -RAl public
   artifacts:
     paths:
       - public
