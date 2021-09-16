@@ -45,9 +45,6 @@ rollup:
 
 sveltte-check:
   stage: test
-  before_script:
-    # Ensure svelte-check is installed
-    - npm list | grep svelte-check || npm add svelte-check
   script:
     - ./node_modules/.bin/svelte-check
 
