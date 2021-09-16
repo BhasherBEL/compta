@@ -14,7 +14,6 @@ default:
       - runner_system_failure
       - stuck_or_timeout_failure
   tags:
-    - louvainlinux/compta
     - linux
 
 before_script:
@@ -69,7 +68,6 @@ docker:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   tags:
-    - louvainlinux/compta
     - linux
     - publish
     - trusted
@@ -88,7 +86,6 @@ docker-nightly:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   tags:
-    - louvainlinux/compta
     - linux
     - publish
     - nightly
