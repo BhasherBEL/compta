@@ -16,8 +16,8 @@ function generateRows(data) {
     for (let item in data){
         if (data[item].constructor === Array) {
             rows.push([item, data[item][0], data[item][1], data[item][1]+data[item][0]])
-            tot_input += data[item][0]
-            tot_output += data[item][1]
+            tot_input += data[item][1]
+            tot_output += data[item][0]
         } else {
             let [newRows, output, input] = generateRows(data[item])
             console.log(newRows)
@@ -49,4 +49,12 @@ let [rows, input, output] = generateRows(data)
             {/each}
         </tr>
     {/each}
+    <tr>
+        <th>
+            Grand total
+        </th>
+        <th>{output}</th>
+        <th>{input}</th>
+        <th>{output+input}</th>
+    </tr>
 </table>

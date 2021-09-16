@@ -13,8 +13,9 @@
             if (!dict[item.details]){
                 dict[item.details] = [0,0]
             }
+            console.log(item.amount)
             if (item.amount > 0){
-                dict[item.details][1] -= item.amount
+                dict[item.details][1] += item.amount
             } else {
                 dict[item.details][0] += item.amount
             }
