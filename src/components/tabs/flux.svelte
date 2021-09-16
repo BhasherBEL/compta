@@ -4,15 +4,15 @@ import Icon from "../icon.svelte";
 import EditableValue from "../editableValue.svelte"
 import {unique} from "../../utils";
 
-const cashFlowTitles = [ // identifier, fancy name, input type, <{}: free, suggestions[]>
-    ["date", "Date", "date", null],
-    ["amount", "Montant", "number", null],
-    ["account", "Compte", "select", $accounts.map(a => a.name)],
-    ["event", "Évenement", "text", []],
-    ["nature", "Nature", "text", []],
-    ["details", "Détails", "text", null],
-    ["ref", "Réference", "text", null],
-    ["note", "Remarque", "text", null]
+const cashFlowTitles = [ // identifier, fancy name, input type, <{}: free, suggestions[]>, mandatory
+    ["date", "Date", "date", null, true],
+    ["amount", "Montant", "number", null, true],
+    ["account", "Compte", "select", $accounts.map(a => a.name), true],
+    ["event", "Évenement", "text", [], true],
+    ["nature", "Nature", "text", [], true],
+    ["details", "Détails", "text", null, true],
+    ["ref", "Réference", "text", null, true],
+    ["note", "Remarque", "text", null, false]
 ]
 console.log(cashFlowTitles[2][3])
 let newCashFlow = {}
@@ -28,6 +28,15 @@ cashFlows.subscribe((cf) => {
     cashFlowTitles[3][3] = cf.map(i => i.event).filter((k, i) => !cashFlowsBeingEdited.includes(i)).filter(unique)
     cashFlowTitles[4][3] = cf.map(i => i.nature).filter((k, i) => !cashFlowsBeingEdited.includes(i)).filter(unique)
 })
+
+function validateCashFlow(data: Object) {
+    for (let k of cashFlowTitles.filter(k => k[4]).map(k => k[0])){
+        if (!data[k]) {
+            return false
+        }
+    }
+    return true
+}
 
 function addCashFlow() {
     cashFlows.push(Object.assign({}, newCashFlow))
@@ -61,9 +70,9 @@ function resetNewCashFlow(){
                 </td>
                 {/each}
                 <th class="grouped gapless">
-                    <a class="button outline icon-only" on:click={() => toggleEditable(index)}>
+                    <button class="button outline icon-only" on:click={() => toggleEditable(index)} disabled="{!validateCashFlow(flow)}">
                         <Icon icon="pencil"/>
-                    </a>
+                    </button>
                     <a class="button outline icon-only" on:click={() => cashFlows.remove(index)}>
                         <Icon icon="x"/>
                     </a>
@@ -77,9 +86,9 @@ function resetNewCashFlow(){
                 </th>
             {/each}
             <th>
-                <a class="button icon-only" on:click="{addCashFlow}">
+                <button class="button icon-only" on:click="{addCashFlow}" disabled="{!validateCashFlow(newCashFlow)}">
                     <Icon icon="plus"/>
-                </a>
+                </button>
             </th>
         </tr>
     </table>
