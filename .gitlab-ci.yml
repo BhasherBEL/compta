@@ -62,9 +62,9 @@ sveltte-check:
       when: on_success
     - when: never
 
-# Nightly publishing jobs only run on non-scheduled pipelines on release
-# tags/branches, if the previous pipeline jobs succeeded
-.publish-nightly:
+# Weekly publishing jobs only run on scheduled pipelines on default branch
+# (main), if the previous pipeline jobs succeeded
+.publish-weekly:
   stage: publish
   before_script:
     - df -h /
@@ -88,8 +88,8 @@ docker:
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination "${CI_REGISTRY_IMAGE}/compta:${CI_COMMIT_REF_NAME}"
 
-docker-nightly:
-  extends: .publish-nightly
+docker-weekly:
+  extends: .publish-weekly
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
@@ -98,7 +98,7 @@ docker-nightly:
     # avoids this issue: https://github.com/GoogleContainerTools/kaniko/issues/1542
     - export container=docker
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination "${CI_REGISTRY_IMAGE}/compta:nightly"
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination "${CI_REGISTRY_IMAGE}/compta:latest"
 
 pages:
   stage: publish
