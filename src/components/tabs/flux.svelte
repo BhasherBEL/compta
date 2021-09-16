@@ -1,16 +1,18 @@
 <script lang="ts">
 import {cashFlows} from "../../store"
 import Icon from "../icon.svelte";
+import EditableValue from "../editableValue.svelte"
+import {unique} from "../../utils";
 
-const cashFlowTitles = [
-    ["date", "Date", "date"],
-    ["amount", "Montant", "number"],
-    ["account", "Compte", "text"],
-    ["event", "Évenement", "text"],
-    ["nature", "Nature", "text"],
-    ["details", "Détails", "text"],
-    ["ref", "Réference", "text"],
-    ["note", "Remarque", "text"]
+const cashFlowTitles = [ // identifier, fancy name, input type, <{}: free, [<false: suggestions not restrained, true: suggestions restrained>, <suggestions>]>
+    ["date", "Date", "date", null],
+    ["amount", "Montant", "number", null],
+    ["account", "Compte", "text", null],
+    ["event", "Évenement", "text", [false, $cashFlows.map(i => i.events).filter(unique)]],
+    ["nature", "Nature", "text", [false, $cashFlows.map(i => i.nature).filter(unique)]],
+    ["details", "Détails", "text", null],
+    ["ref", "Réference", "text", null],
+    ["note", "Remarque", "text", null]
 ]
 
 let newCashFlow = {}
@@ -33,15 +35,9 @@ function toggleEditable(index) {
                 {#each cashFlowTitles as item}
                 <td>
                     {#if (cashFlowsBeingEdited.includes(index))}
-                        {#if item[2] === "number"}
-                            <input type="number" bind:value={$cashFlows[index][item[0]]}>
-                        {:else if (item[2] === "date")}
-                            <input type="date" bind:value={$cashFlows[index][item[0]]}>
-                        {:else}
-                            <input bind:value={$cashFlows[index][item[0]]}>
-                        {/if}
+                        <EditableValue bind:value={$cashFlows[index][item[0]]} type={item[2]} suggestions={}/>
                     {:else}
-                    {flow[item[0]]}
+                        {flow[item[0]]}
                     {/if}
                 </td>
                 {/each}

@@ -22,3 +22,7 @@ a {
 .grouped.gapless {
     margin: 4px;
 }
+
+td {
+    padding: 0rem .4rem;
+}
