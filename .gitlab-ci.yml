@@ -67,10 +67,6 @@ docker:
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
-  tags:
-    - linux
-    - publish
-    - trusted
   before_script:
     - ls "$CI_PROJECT_DIR/server-cli/"
   script:
@@ -85,11 +81,6 @@ docker-nightly:
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
-  tags:
-    - linux
-    - publish
-    - nightly
-    - trusted
   script:
     # Help kaniko identify that it is running in a container.
     # avoids this issue: https://github.com/GoogleContainerTools/kaniko/issues/1542
