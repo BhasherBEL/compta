@@ -1,5 +1,4 @@
 <script lang="ts">
-    import nat_evt from "./components/tabs/help.svelte";
     import infos_comptes from "./components/tabs/infos_comptes.svelte";
     import bilan from "./components/tabs/bilan.svelte";
     import flux from "./components/tabs/flux.svelte";
