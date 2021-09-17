@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="lint" type="js.build_tools.npm" singleton="false">
+  <configuration default="false" name="svelte-check" type="js.build_tools.npm" singleton="false">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="check" />
+      <script value="svelte-check" />
     </scripts>
     <node-interpreter value="project" />
     <envs />
