@@ -1,5 +1,6 @@
 <!--suppress JSUnfilteredForInLoop -->
 <script>
+    import { formatMoney } from "../utils"
     export let data = {
         "Sans event": {
             "fonctionnement general": {
@@ -23,7 +24,7 @@ function generateRows(data) {
             let [newRows, output, input] = generateRows(data[item])
             console.log(newRows)
             for (let row in newRows) {
-                newRows[row][0] = ' '+newRows[row][0]
+                newRows[row][0] = '  '+newRows[row][0]
             }
             rows.push([item, output, input, input + output])
             rows = rows.concat(newRows)
@@ -45,8 +46,8 @@ function generateRows(data) {
     </tr>
     {#each rows as item}
         <tr>
-            {#each item as value}
-                <td>{value}</td>
+            {#each item as value, i}
+                <td>{i>0 ? formatMoney(value) : value}</td>
             {/each}
         </tr>
     {/each}
@@ -54,8 +55,8 @@ function generateRows(data) {
         <th>
             Grand total
         </th>
-        <th>{output}</th>
-        <th>{input}</th>
-        <th>{output+input}</th>
+        <th>{formatMoney(output)}</th>
+        <th>{formatMoney(input)}</th>
+        <th>{formatMoney(output+input)}</th>
     </tr>
 </table>
