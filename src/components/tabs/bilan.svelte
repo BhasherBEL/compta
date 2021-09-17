@@ -1,37 +1,36 @@
-<script>
+<script lang="ts">
     import BilanTable from "../BilanTable.svelte";
-    import { cashFlows } from "../../store";
+    import { cashFlows, CashFlow } from "../../store";
     import { unique } from "../../utils";
 
-    function convertCashFlows(data) {
+    function convertCashFlows(data: CashFlow[]) {
         let dict = {}
-        console.log(data)
         for (let item of data) {
             if (!dict[item.details]) {
-                dict[item.details] = [ 0, 0 ]
+                dict[item.details] = {expense: 0, income: 0 }
             }
-            console.log(item.amount)
             if (item.amount > 0){
-                dict[item.details][1] += item.amount
+                dict[item.details].income += item.amount
             } else {
-                dict[item.details][0] += item.amount
+                dict[item.details].expense += item.amount
             }
         }
         return dict
     }
 
     function generateByEvent(data) {
-        let events = data.map(n => n.event).filter(unique)
-        let natures = data.map(n => n.nature).filter(unique)
+        const events = data.map(n => n.event).filter(unique)
         let dict = {}
         for (let event of events) {
+            const natures = data.filter(n => n.event === event).map(n => n.nature).filter(unique)
+            dict[event] = {}
             for (let nature of natures) {
-                dict[event] = {}
                 dict[event][nature] = convertCashFlows(data.filter(n => (
                     n.event === event && n.nature === nature
                 )))
             }
         }
+        console.log(dict)
         return dict
     }
 

@@ -10,6 +10,6 @@ export type GenericColumn = {
     format: string
 }
 
-export const formatMoney = (k: number): string => `${k.toFixed(2)} €`
+export const formatMoney = (k: number): string => k === 0 ? '' : k?.toFixed(2)+" " || `${k}`
 
 export const sum = (a) => a.reduce((b, c) => b+c)
