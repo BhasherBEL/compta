@@ -1,3 +1,4 @@
+<!--suppress JSUnfilteredForInLoop -->
 <script>
     export let data = {
         "Sans event": {

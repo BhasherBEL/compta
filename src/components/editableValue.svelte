@@ -16,6 +16,7 @@
 {:else if (
     type === "select"
 )}
+    <!--suppress XmlDuplicatedId -->
     <select id="{id}">
         {#each suggestions as suggestion}
             <option>{suggestion}</option>
@@ -27,6 +28,7 @@
 {#if suggestions?.length && (
     type !== "select"
 )}
+    <!--suppress XmlDuplicatedId -->
     <datalist id="{id}">
         {#each suggestions as suggestion}
             <option value={suggestion}>
