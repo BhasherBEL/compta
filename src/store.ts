@@ -47,6 +47,15 @@ function createCashFlows() {
             ref: "BNP0021",
             note: "Gel hydroalcoolique",
         },
+        {
+            date: "2021-09-17",
+            account: "Compte courant",
+            amount: 100, event: "Sans event",
+            nature: "Fonctionnement hors évènement",
+            details: "Subsides et financements",
+            ref: "BNP0023",
+            note: "Subsides Q1"
+        }
     ])
     return {
         subscribe,
