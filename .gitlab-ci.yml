@@ -46,7 +46,17 @@ rollup:
 sveltte-check:
   stage: test
   script:
-    - ./node_modules/.bin/svelte-check
+    - npm run svelte-check
+
+stylelint:
+  stage: test
+  script:
+    - npm run stylelint
+
+tslint:
+  stage: test
+  script:
+    - npm run tslint
 
 # Publishes compta to the gitlab container registry
 # https://gitlab.com/groups/louvainlinux/-/container_registries
