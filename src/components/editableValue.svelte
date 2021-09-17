@@ -13,9 +13,9 @@
     <input type="date" bind:value={value} {placeholder} list="{id}">
 {:else if type === "select"}
     <!--suppress XmlDuplicatedId -->
-    <select id="{id}">
+    <select id="{id}" bind:value={value}>
         {#each suggestions as suggestion}
-            <option>{suggestion}</option>
+            <option value="{suggestion}">{suggestion}</option>
         {/each}
     </select>
 {:else}
