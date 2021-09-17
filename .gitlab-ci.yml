@@ -69,7 +69,7 @@ tslint:
     - df -h /
     - free
   rules:
-    - if: $CI_COMMIT_REF_NAME =~ /^r[0-9]+\.[0-9]+/ && $CI_PIPELINE_SOURCE != "schedule" && $CI_PIPELINE_SOURCE != "web"
+    - if: $CI_COMMIT_REF_NAME =~ /^v[0-9]+\.[0-9]+/ && $CI_PIPELINE_SOURCE != "schedule" && $CI_PIPELINE_SOURCE != "web"
       when: on_success
     - when: never
 
@@ -118,5 +118,5 @@ pages:
     paths:
       - public
   rules:
-    - if: $CI_COMMIT_REF_NAME =~ /^r[0-9]+\.[0-9]+/ && $CI_PIPELINE_SOURCE != "schedule" && $CI_PIPELINE_SOURCE != "web"
+    - if: $CI_COMMIT_REF_NAME =~ /^v[0-9]+\.[0-9]+/ && $CI_PIPELINE_SOURCE != "schedule" && $CI_PIPELINE_SOURCE != "web"
       when: on_success
