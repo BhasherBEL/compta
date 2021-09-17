@@ -48,7 +48,7 @@
 </section>
 
 <style>
-    nav {
-        box-shadow: 0 0 4px 0 #333333;
-    }
+  nav {
+    box-shadow: 0 0 4px 0 #333;
+  }
 </style>

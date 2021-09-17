@@ -1,40 +1,41 @@
 :root {
-    --bg-color: #fff;
-    --bg-secondary-color: #f3f3f6;
-    --color-primary: #ff5000;
-    --color-lightGrey: #d2d6dd;
-    --color-grey: #747681;
-    --color-darkGrey: #3f4144;
-    --color-error: #d43939;
-    --color-success: #28bd14;
-    --grid-maxWidth: 160rem;
-    --grid-gutter: 2rem;
-    --font-size: 1.4rem;
-    --font-color: #333;
-    --font-family-sans: -apple-system, BlinkMacSystemFont, Avenir, "Avenir Next", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-    --font-family-mono: monaco, "Consolas", "Lucida Console", monospace
+  --bg-color: #fff;
+  --bg-secondary-color: #f3f3f6;
+  --color-primary: #ff5000;
+  --color-lightGrey: #d2d6dd;
+  --color-grey: #747681;
+  --color-darkGrey: #3f4144;
+  --color-error: #d43939;
+  --color-success: #28bd14;
+  --grid-maxWidth: 160rem;
+  --grid-gutter: 2rem;
+  --font-size: 1.4rem;
+  --font-color: #333;
+  --font-family-sans: -apple-system, blinkmacsystemfont, avenir, "Avenir Next", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --font-family-mono: monaco, "Consolas", "Lucida Console", monospace;
 }
 
 a {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .grouped.gapless {
-    margin: 4px;
+  margin: 4px;
 }
 
-td, th {
-    padding: 0rem .6rem;
+td,
+th {
+  padding: 0 0.6rem;
 }
 
 .card {
-    padding: 0.5rem 1rem;
+  padding: 0.5rem 1rem;
 }
 
 .button {
-    margin: 4px;
+  margin: 4px;
 }
 
 .button.icon-only {
-    padding: 0.8rem;
+  padding: 0.8rem;
 }

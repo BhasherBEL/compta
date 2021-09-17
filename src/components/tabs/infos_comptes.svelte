@@ -101,14 +101,14 @@
 </div>
 
 <style>
-    .myform > div {
-        display: flex;
-        align-items: center;
-    }
+  .myform > div {
+    display: flex;
+    align-items: center;
+  }
 
-    label {
-        text-align: end;
-        min-width: 150px;
-        margin: 8px 8px 8px 0
-    }
+  label {
+    text-align: end;
+    min-width: 150px;
+    margin: 8px 8px 8px 0;
+  }
 </style>
