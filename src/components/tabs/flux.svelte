@@ -1,19 +1,14 @@
 <script lang="ts">
     import { accounts, CashFlow, cashFlows } from "../../store"
-    import { unique } from "../../utils";
+    import { unique, GenericColumn, formatMoney } from "../../utils";
     import EditableValue from "../editableValue.svelte"
     import Icon from "../icon.svelte";
 
-    type CashFlowColumn = {
-        name: string,
-        type: "date" | "number" | "select" | "text",
-        suggestions?: (string | number)[],
-        mandatory: boolean
-    }
 
-    const columns: {[key: keyof CashFlow]: CashFlowColumn} = {
+    const columns: {[key: keyof CashFlow]: GenericColumn} = {
         date: { name: "Date", type: "date", mandatory: true },
-        amount: { name: "Montant",
+        amount: {
+            name: "Montant",
             type: "number",
             mandatory: true,
             postfix: " €"

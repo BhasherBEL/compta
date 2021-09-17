@@ -1,6 +1,41 @@
-<script>
-    import { accounts, infos, cashFlows } from "../../store";
+<script lang="ts">
+    import { Account, accounts, infos,cashFlows } from "../../store";
     import Icon from "../icon.svelte"
+    import { GenericColumn, formatMoney } from "../../utils"
+
+    const columns: {[key: keyof Account]: GenericColumn} = {
+        name: {
+            name: "Nom du compte",
+            type: "string",
+            mandatory: true,
+        },
+        initial_money: {
+            name: "Montant de départ",
+            type: "number",
+            mandatory: true,
+            format: formatMoney
+        },
+        income: {
+            name: "Revenus",
+            type: "number",
+            format: formatMoney
+        },
+        outcome: {
+            name: "Dépenses",
+            type: "number",
+            format: formatMoney
+        },
+        profit: {
+            name: "Profit",
+            type: "number",
+            format: formatMoney
+        },
+        current_money: {
+            name: "Réel sur le compte",
+            type: "number",
+            format: formatMoney
+        },
+    }
 </script>
 
 <div class="card">
@@ -51,7 +86,7 @@
     <h2>Comptes</h2>
     <table class="striped">
         <colgroup>
-            <col style="width: 16%" span="6">
+            <col style="width: 16%;" span="6">
         </colgroup>
         <tr>
             <th>Nom du compte</th>
@@ -63,22 +98,6 @@
         </tr>
         {#each $accounts as account, i}
             <tr>
-                <td>{account.name}</td>
-                <td>{account.start} €</td>
-                <td>{$cashFlows.filter(c => c.account === account.name && c.amount > 0).map(c => c.amount).reduce((a, b) => a+b)} €</td>
-                <td>{$cashFlows.filter(c => c.account === account.name && c.amount < 0).map(c => c.amount).reduce((a, b) => a+b)} €</td>
-                <td>{$cashFlows.filter(c => c.account === account.name).map(c => c.amount).reduce((a, b) => a+b)} €</td>
-                <td>{account.real} €</td>
-                <td class="grouped gapless">
-                    <a id="edit-{i}" href="#edit-{i}"
-                       class="button icon-only outline">
-                        <Icon icon="pencil"/>
-                    </a>
-                    <a id="delete-{i}" href="#delete-{i}"
-                       class="button icon-only outline">
-                        <Icon icon="x"/>
-                    </a>
-                </td>
             </tr>
         {/each}
         <tr>
