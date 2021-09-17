@@ -23,7 +23,7 @@ function generateRows(data) {
             let [newRows, output, input] = generateRows(data[item])
             console.log(newRows)
             for (let row in newRows) {
-                newRows[row][0] = '..'+newRows[row][0]
+                newRows[row][0] = ' '+newRows[row][0]
             }
             rows.push([item, output, input, input + output])
             rows = rows.concat(newRows)

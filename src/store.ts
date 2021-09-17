@@ -14,10 +14,7 @@ export type CashFlow = {
 export type Account = {
     name: string,
     initial_money: number,
-    current_money: number,
-    income?: number,
-    outcome?: number,
-    profit?: number
+    current_money: number
 }
 
 function createCashFlows() {
@@ -79,7 +76,7 @@ export const accounts = writable<Account[]>([
     {
         name: "Compte courant",
         initial_money: 345.67,
-        current_money: 456.78,
+        current_money: 456.78
     },
 ])
 export const cashFlows = createCashFlows()

@@ -29,7 +29,7 @@ th {
 }
 
 .card {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2rem 2rem 2rem;
 }
 
 .button {
@@ -39,3 +39,4 @@ th {
 .button.icon-only {
   padding: 0.8rem;
 }
+

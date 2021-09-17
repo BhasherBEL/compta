@@ -11,7 +11,7 @@
             name: "Montant",
             type: "number",
             mandatory: true,
-            postfix: " €"
+            format: formatMoney
         },
         account: {
             name: "Compte",
@@ -50,7 +50,6 @@
 
     function validateCashFlow(data: Object): boolean {
         for (let k in columns){
-            console.log(k, columns[k].mandatory, data[k] )
             if (columns[k].mandatory && (data[k] === undefined || data[k] === "")){
                 return false
             }
@@ -89,7 +88,7 @@
     <h2>Flux d'argent</h2>
     <table class="striped">
         <colgroup>
-            <col style="width: 12%" span="8">
+            <col style="width: 12%;" span="8">
         </colgroup>
         <tr>
             {#each Object.entries(columns) as [_, item]}
@@ -109,7 +108,7 @@
                                     type={item.type}
                                     suggestions={item.suggestions || []}/>
                         {:else}
-                            {flow[key]} {item.postfix || ""}
+                            {item.format ? item.format(flow[key], flow) : flow[key]}
                         {/if}
                     </td>
                 {/each}

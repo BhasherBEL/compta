@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { Account, accounts, infos,cashFlows } from "../../store";
+    import { Account, accounts, infos, cashFlows } from "../../store";
     import Icon from "../icon.svelte"
-    import { GenericColumn, formatMoney } from "../../utils"
+    import { GenericColumn, formatMoney, sum } from "../../utils"
 
     const columns: {[key: keyof Account]: GenericColumn} = {
         name: {
@@ -16,19 +16,31 @@
             format: formatMoney
         },
         income: {
-            name: "Revenus",
+            name: "Entrée",
             type: "number",
-            format: formatMoney
+            format: (_, account) => formatMoney(sum(
+                $cashFlows
+                    .filter(k => k.account === account.name && k.amount > 0)
+                    .map(k => k.amount)
+            ))
         },
         outcome: {
-            name: "Dépenses",
+            name: "Sortie",
             type: "number",
-            format: formatMoney
+            format: (_, account) => formatMoney(sum(
+                $cashFlows
+                    .filter(k => k.account === account.name && k.amount < 0)
+                    .map(k => k.amount)
+            ))
         },
         profit: {
             name: "Profit",
             type: "number",
-            format: formatMoney
+            format: (_, account) => formatMoney(sum(
+                $cashFlows
+                    .filter(k => k.account === account.name)
+                    .map(k => k.amount)
+            ))
         },
         current_money: {
             name: "Réel sur le compte",
@@ -89,15 +101,27 @@
             <col style="width: 16%;" span="6">
         </colgroup>
         <tr>
-            <th>Nom du compte</th>
-            <th>Montant de départ</th>
-            <th>Entrée</th>
-            <th>Sortie</th>
-            <th>Profit</th>
-            <th>Réel sur le compte</th>
+            {#each Object.entries(columns) as [key, item]}
+                <th>{item.name}</th>
+            {/each}
         </tr>
-        {#each $accounts as account, i}
+        {#each $accounts as account, index}
             <tr>
+                {#each Object.entries(columns) as [key, item]}
+                    <td>
+                        {item.format ? item.format(account[key], account) : account[key]}
+                    </td>
+                {/each}
+                <th class="grouped gapless">
+                    <button class="button outline icon-only">
+                        <Icon icon="pencil"/>
+                    </button>
+                    <a id="delete-{index}" href="#delete-{index}"
+                       class="button outline icon-only"
+                       on:click={() => cashFlows.remove(index)}>
+                        <Icon icon="x"/>
+                    </a>
+                </th>
             </tr>
         {/each}
         <tr>
