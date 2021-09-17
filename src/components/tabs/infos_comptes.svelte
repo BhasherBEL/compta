@@ -58,7 +58,7 @@
             <th>Profit</th>
             <th>Réel sur le compte</th>
         </tr>
-        {#each $accounts as account}
+        {#each $accounts as account, i}
         <tr>
             <td>{account.name}</td>
             <td>{account.start}</td>
@@ -67,10 +67,10 @@
             <td>{account.net}</td>
             <td>{account.real}</td>
             <td class="grouped gapless">
-                <a class="button icon-only outline">
+                <a id="edit-{i}" href="#edit-{i}" class="button icon-only outline">
                     <Icon icon="pencil" size="16"/>
                 </a>
-                <a class="button icon-only outline">
+                <a id="delete-{i}" href="#delete-{i}" class="button icon-only outline">
                     <Icon icon="x"/>
                 </a>
             </td>
@@ -90,7 +90,7 @@
                 <input type="number" placeholder="913.32">
             </td>
             <td>
-                <a class="button icon-only">
+                <a id="add" href="#add" class="button icon-only">
                     <Icon icon="plus" size="16"/>
                 </a>
             </td>

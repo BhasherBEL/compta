@@ -18,7 +18,10 @@
     <div class="container nav-left">
         <div class="tabs">
         {#each tabs as tab}
-            <a class="{tab.component === current_tab ? 'active' : ''}" on:click="{() => current_tab = tab.component}">
+            <a id="tab-{tab.name}"
+               href="#tab-{tab.name}"
+               class="{tab.component === current_tab ? 'active' : ''}"
+               on:click="{() => current_tab = tab.component}">
                 {tab.name}
             </a>
         {/each}
@@ -26,10 +29,10 @@
     </div>
     <div class="nav-right">
         <div class="grouped gapless">
-            <a class="button icon-only primary">
+            <a id="generate" href="#generate" class="button icon-only primary">
                 <Icon icon="file-code" size="20"/>
             </a>
-            <a class="button icon-only primary outline">
+            <a id="export" href="#export" class="button icon-only primary outline">
                 <Icon icon="download" size="20" color="#ff5b00"/>
             </a>
         </div>

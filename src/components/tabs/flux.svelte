@@ -61,10 +61,14 @@ function resetNewCashFlow(){
                 </td>
                 {/each}
                 <th class="grouped gapless">
-                    <a class="button outline icon-only" on:click={() => toggleEditable(index)}>
+                    <a id="edit-{index}" href="#edit-{index}"
+                       class="button outline icon-only"
+                       on:click={() => toggleEditable(index)}>
                         <Icon icon="pencil"/>
                     </a>
-                    <a class="button outline icon-only" on:click={() => cashFlows.remove(index)}>
+                    <a id="delete-{index}" href="#delete-{index}"
+                       class="button outline icon-only"
+                       on:click={() => cashFlows.remove(index)}>
                         <Icon icon="x"/>
                     </a>
                 </th>
@@ -77,7 +81,7 @@ function resetNewCashFlow(){
                 </th>
             {/each}
             <th>
-                <a class="button icon-only" on:click="{addCashFlow}">
+                <a class="button icon-only" href="#add-flow" id="add-flow" on:click="{addCashFlow}">
                     <Icon icon="plus"/>
                 </a>
             </th>
