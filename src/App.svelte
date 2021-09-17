@@ -46,9 +46,6 @@
 </section>
 
 <style>
-    label > input {
-        display: none;
-    }
     nav {
         box-shadow: 0 0 4px 0 #333333;
     }
