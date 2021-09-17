@@ -1,8 +1,8 @@
 <script lang="ts">
     import { accounts, CashFlow, cashFlows } from "../../store"
-    import Icon from "../icon.svelte";
-    import EditableValue from "../editableValue.svelte"
     import { unique } from "../../utils";
+    import EditableValue from "../editableValue.svelte"
+    import Icon from "../icon.svelte";
 
     type CashFlowColumn = {
         id: keyof CashFlow,
@@ -14,7 +14,12 @@
     const columns: CashFlowColumn[] = [
         { id: "date", name: "Date", type: "date" },
         { id: "amount", name: "Montant", type: "number" },
-        { id: "account", name: "Compte", type: "select", suggestions: $accounts.map(a => a.name) },
+        {
+            id: "account",
+            name: "Compte",
+            type: "select",
+            suggestions: $accounts.map(a => a.name),
+        },
         { id: "event", name: "Évènement", type: "text", suggestions: [] },
         { id: "nature", name: "Nature", type: "text", suggestions: [] },
         { id: "details", name: "Détails", type: "text" },
@@ -27,7 +32,8 @@
 
     function toggleEditable(index) {
         if (cashFlowsBeingEdited.includes(index)) {
-            cashFlowsBeingEdited = cashFlowsBeingEdited.filter((v, _) => v !== index)
+            cashFlowsBeingEdited = cashFlowsBeingEdited.filter((v, _) => v
+                !== index)
         } else {
             cashFlowsBeingEdited = [ ...cashFlowsBeingEdited, index ]
         }
@@ -40,11 +46,12 @@
 
     function resetNewCashFlow() {
         newCashFlow = {
-            date: new Date().toISOString().substring(0, 10)
+            date: new Date().toISOString().substring(0, 10),
         }
     }
 
-    console.log(columns[columns.findIndex(flow => flow.id === "account")]['suggestions'])
+    console.log(columns[columns.findIndex(flow => flow.id
+        === "account")]["suggestions"])
 
     resetNewCashFlow()
     cashFlows.subscribe((flows: CashFlow[]) => {
@@ -73,11 +80,14 @@
             <tr>
                 {#each columns as item}
                     <td>
-                        {#if (cashFlowsBeingEdited.includes(index))}
-                            <EditableValue bind:value={$cashFlows[index][item.id]}
-                                           placeholder={item.name}
-                                           type={item.type}
-                                           suggestions={item.suggestions || []}/>
+                        {#if (
+                            cashFlowsBeingEdited.includes(index)
+                        )}
+                            <EditableValue
+                                    bind:value={$cashFlows[index][item.id]}
+                                    placeholder={item.name}
+                                    type={item.type}
+                                    suggestions={item.suggestions || []}/>
                         {:else}
                             {flow[item.id]}
                         {/if}
@@ -107,7 +117,8 @@
                 </th>
             {/each}
             <th>
-                <a class="button icon-only" href="#add-flow" id="add-flow" on:click="{addCashFlow}">
+                <a class="button icon-only" href="#add-flow" id="add-flow"
+                   on:click="{addCashFlow}">
                     <Icon icon="plus"/>
                 </a>
             </th>
