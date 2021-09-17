@@ -89,8 +89,6 @@ docker:
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [ "" ]
-  before_script:
-    - ls "$CI_PROJECT_DIR/server-cli/"
   script:
     # Help kaniko identify that it is running in a container.
     # avoids this issue: https://github.com/GoogleContainerTools/kaniko/issues/1542
