@@ -30,10 +30,10 @@
     <div class="nav-right">
         <div class="grouped gapless">
             <a id="generate" href="#generate" class="button icon-only primary">
-                <Icon icon="file-code" size="20"/>
+                <Icon icon="file-code" size={20}/>
             </a>
             <a id="export" href="#export" class="button icon-only primary outline">
-                <Icon icon="download" size="20" color="#ff5b00"/>
+                <Icon icon="download" size={20} color="#ff5b00"/>
             </a>
         </div>
     </div>
