@@ -18,7 +18,9 @@
     function importFile(f){
         f.target.files[0].text().then((text) => {
             const data = JSON.parse(text)
-            console.log(data)
+            infos.set(data.infos)
+            cashFlows.set(data.cashFlows)
+            accounts.set(data.accounts)
         })
     }
 
