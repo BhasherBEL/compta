@@ -5,28 +5,41 @@
     import Icon from "../icon.svelte";
 
     type CashFlowColumn = {
-        id: keyof CashFlow,
         name: string,
         type: "date" | "number" | "select" | "text",
-        suggestions?: string[],
-        mandatory?: boolean
+        suggestions?: (string | number)[],
+        mandatory: boolean
     }
 
-    const columns: CashFlowColumn[] = [
-        { id: "date", name: "Date", type: "date" },
-        { id: "amount", name: "Montant", type: "number" },
-        {
-            id: "account",
+    const columns: {[key: keyof CashFlow]: CashFlowColumn} = {
+        date: { name: "Date", type: "date", mandatory: true },
+        amount: { name: "Montant",
+            type: "number",
+            mandatory: true,
+            postfix: " €"
+        },
+        account: {
             name: "Compte",
             type: "select",
             suggestions: $accounts.map(a => a.name),
+            mandatory: true,
         },
-        { id: "event", name: "Évènement", type: "text", suggestions: [] },
-        { id: "nature", name: "Nature", type: "text", suggestions: [] },
-        { id: "details", name: "Détails", type: "text" },
-        { id: "ref", name: "Référence", type: "text" },
-        { id: "note", name: "Remarque", type: "text", mandatory: false },
-    ]
+        event: {
+            name: "Évènement",
+            type: "text",
+            suggestions: [],
+            mandatory: true,
+        },
+        nature: {
+            name: "Nature",
+            type: "text",
+            suggestions: [],
+            mandatory: true
+        },
+        details: { name: "Détails", type: "text", mandatory: true },
+        ref: { name: "Référence", type: "text", mandatory: true },
+        note: { name: "Remarque", type: "text", mandatory: false },
+    }
 
     let newCashFlow = {}
     let cashFlowsBeingEdited: number[] = []
@@ -40,19 +53,25 @@
         }
     }
 
-function validateCashFlow(data: Object) {
-    for (let k of columns.filter(k => k[4]).map(k => k[0])){
-        if (!data[k]) {
-            return false
+    function validateCashFlow(data: Object): boolean {
+        for (let k in columns){
+            console.log(k, columns[k].mandatory, data[k] )
+            if (columns[k].mandatory && (data[k] === undefined || data[k] === "")){
+                return false
+            }
         }
+        return true
     }
-    return true
-}
 
-function addCashFlow() {
-    cashFlows.push(Object.assign({}, newCashFlow) as CashFlow)
-    newCashFlow = {}
-}
+    function addCashFlow() {
+        for (const key of Object.keys(newCashFlow).filter(a => !columns[a].mandatory)){
+            if (newCashFlow[key] === undefined){
+                newCashFlow[key] = ""
+            }
+        }
+        cashFlows.push(Object.assign({}, newCashFlow) as CashFlow)
+        newCashFlow = {}
+    }
 
     function resetNewCashFlow() {
         newCashFlow = {
@@ -60,46 +79,42 @@ function addCashFlow() {
         }
     }
 
-    console.log(columns[columns.findIndex(flow => flow.id
-        === "account")]["suggestions"])
-
     resetNewCashFlow()
+
     cashFlows.subscribe((flows: CashFlow[]) => {
         let trackedKeys: (keyof CashFlow)[] = [ "event", "nature" ]
-        for (const key in trackedKeys) {
-            const i = columns.findIndex(c => c.id === key)
-            if (i < 0) {
-                continue
-            }
-            columns[i].suggestions = flows.map(flow => flow[key])
+        for (const key of trackedKeys) {
+            columns[key].suggestions = flows.map(flow => flow[key])
                 .filter((_, i) => !cashFlowsBeingEdited.includes(i))
                 .filter(unique)
         }
     })
-
 </script>
 <div class="card">
     <h2>Flux d'argent</h2>
     <table class="striped">
+        <colgroup>
+            <col style="width: 12%" span="8">
+        </colgroup>
         <tr>
-            {#each columns as item}
+            {#each Object.entries(columns) as [_, item]}
                 <th>{item.name}</th>
             {/each}
         </tr>
         {#each $cashFlows as flow, index}
             <tr>
-                {#each columns as item}
+                {#each Object.entries(columns) as [key, item]}
                     <td>
                         {#if (
                             cashFlowsBeingEdited.includes(index)
                         )}
                             <EditableValue
-                                    bind:value={$cashFlows[index][item.id]}
+                                    bind:value={$cashFlows[index][key]}
                                     placeholder={item.name}
                                     type={item.type}
                                     suggestions={item.suggestions || []}/>
                         {:else}
-                            {flow[item.id]}
+                            {flow[key]} {item.postfix || ""}
                         {/if}
                     </td>
                 {/each}
@@ -116,16 +131,16 @@ function addCashFlow() {
             </tr>
         {/each}
         <tr>
-            {#each columns as item}
+            {#each Object.entries(columns) as [key, item]}
                 <th>
-                    <EditableValue bind:value={newCashFlow[item.id]}
+                    <EditableValue bind:value={newCashFlow[key]}
                                    type={item.type}
                                    suggestions={item.suggestions || []}
                                    placeholder="{item.name}"/>
                 </th>
             {/each}
             <th>
-                <button class="button icon-only" on:click="{addCashFlow}" disabled="{!validateCashFlow(newCashFlow)}">
+                <button class="button icon-only" on:click="{addCashFlow}" disabled={!validateCashFlow(newCashFlow)}>
                     <Icon icon="plus"/>
                 </button>
             </th>
