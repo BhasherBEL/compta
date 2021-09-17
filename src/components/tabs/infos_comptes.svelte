@@ -12,36 +12,36 @@
                 <input id="orga" bind:value={$infos.orga}>
             </div>
             <div>
-                <label>Adresse</label>
-                <input bind:value={$infos.address}>
+                <label for="address">Adresse</label>
+                <input id="address" bind:value={$infos.address}>
             </div>
             <div>
-                <label>Numéro d'entreprise</label>
-                <input bind:value={$infos.company}>
+                <label for="company">Numéro d'entreprise</label>
+                <input id="company" bind:value={$infos.company}>
             </div>
             <div>
-                <label>Responsable</label>
-                <input bind:value={$infos.manager}>
+                <label for="manager">Responsable</label>
+                <input id="manager" bind:value={$infos.manager}>
             </div>
             <div>
-                <label>Adresse mail</label>
-                <input type="email" bind:value={$infos.email}>
+                <label for="email">Adresse mail</label>
+                <input id="email" type="email" bind:value={$infos.email}>
             </div>
         </div>
         <div class="col myform">
             <div>
-                <label>Année académique</label>
-                <input bind:value={$infos.year}>
+                <label for="year">Année académique</label>
+                <input id="year" bind:value={$infos.year}>
             </div>
             <div>
-                <label>Quadrimestre</label>
-                <input bind:value={$infos.quarter}>
+                <label for="quarter">Quadrimestre</label>
+                <input id="quarter" bind:value={$infos.quarter}>
             </div>
             <div>
-                <label>Date début</label>
-                <input type="date" bind:value={$infos.dates}>
-                <label>Date fin</label>
-                <input type="date" bind:value={$infos.dates}>
+                <label for="date-start">Date début</label>
+                <input id="date-start" type="date" bind:value={$infos.dates}>
+                <label for="date-end">Date fin</label>
+                <input id="date-end" type="date" bind:value={$infos.dates}>
             </div>
         </div>
     </div>
