@@ -1,6 +1,6 @@
-import {writable} from 'svelte/store'
+import {Writable, writable} from 'svelte/store'
 
-type CashFlow = {
+export type CashFlow = {
     date: string, // YYYY-MM-DD
     amount: number,
     account: string,
@@ -12,7 +12,7 @@ type CashFlow = {
 }
 
 function createCashFlows() {
-    const {subscribe, update, set} = writable([
+    const {subscribe, update, set}: Writable<CashFlow[]> = writable<CashFlow[]>([
         {
             date: "2021-06-18",
             amount: -5.25,

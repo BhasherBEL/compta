@@ -1,64 +1,87 @@
 <script lang="ts">
-import {cashFlows, accounts} from "../../store"
-import Icon from "../icon.svelte";
-import EditableValue from "../editableValue.svelte"
-import {unique} from "../../utils";
+    import { accounts, CashFlow, cashFlows } from "../../store"
+    import Icon from "../icon.svelte";
+    import EditableValue from "../editableValue.svelte"
+    import { unique } from "../../utils";
 
-const cashFlowTitles = [ // identifier, fancy name, input type, <{}: free, suggestions[]>
-    ["date", "Date", "date", null],
-    ["amount", "Montant", "number", null],
-    ["account", "Compte", "select", $accounts.map(a => a.name)],
-    ["event", "Évenement", "text", []],
-    ["nature", "Nature", "text", []],
-    ["details", "Détails", "text", null],
-    ["ref", "Réference", "text", null],
-    ["note", "Remarque", "text", null]
-]
-console.log(cashFlowTitles[2][3])
-let newCashFlow = {}
-resetNewCashFlow()
-let cashFlowsBeingEdited = []
-function toggleEditable(index) {
-    if (cashFlowsBeingEdited.includes(index)){
-        cashFlowsBeingEdited = cashFlowsBeingEdited.filter((v, i) => v !== index)
-    } else cashFlowsBeingEdited = [...cashFlowsBeingEdited, index]
-}
-
-cashFlows.subscribe((cf) => {
-    cashFlowTitles[3][3] = cf.map(i => i.event).filter((k, i) => !cashFlowsBeingEdited.includes(i)).filter(unique)
-    cashFlowTitles[4][3] = cf.map(i => i.nature).filter((k, i) => !cashFlowsBeingEdited.includes(i)).filter(unique)
-})
-
-function addCashFlow() {
-    cashFlows.push(Object.assign({}, newCashFlow))
-    newCashFlow = {}
-}
-
-function resetNewCashFlow(){
-    newCashFlow = {
-        date: new Date().toISOString().substring(0, 10)
+    type CashFlowColumn = {
+        id: keyof CashFlow,
+        name: string,
+        type: "date" | "number" | "select" | "text",
+        suggestions?: string[],
     }
-}
+
+    const columns: CashFlowColumn[] = [
+        { id: "date", name: "Date", type: "date" },
+        { id: "amount", name: "Montant", type: "number" },
+        { id: "account", name: "Compte", type: "select", suggestions: $accounts.map(a => a.name) },
+        { id: "event", name: "Évènement", type: "text", suggestions: [] },
+        { id: "nature", name: "Nature", type: "text", suggestions: [] },
+        { id: "details", name: "Détails", type: "text" },
+        { id: "ref", name: "Référence", type: "text" },
+        { id: "note", name: "Remarque", type: "text" },
+    ]
+
+    let newCashFlow = {}
+    let cashFlowsBeingEdited: number[] = []
+
+    function toggleEditable(index) {
+        if (cashFlowsBeingEdited.includes(index)) {
+            cashFlowsBeingEdited = cashFlowsBeingEdited.filter((v, _) => v !== index)
+        } else {
+            cashFlowsBeingEdited = [ ...cashFlowsBeingEdited, index ]
+        }
+    }
+
+    function addCashFlow() {
+        cashFlows.push(Object.assign({}, newCashFlow) as CashFlow)
+        newCashFlow = {}
+    }
+
+    function resetNewCashFlow() {
+        newCashFlow = {
+            date: new Date().toISOString().substring(0, 10)
+        }
+    }
+
+    console.log(columns[columns.findIndex(flow => flow.id === "account")]['suggestions'])
+
+    resetNewCashFlow()
+    cashFlows.subscribe((flows: CashFlow[]) => {
+        let trackedKeys: (keyof CashFlow)[] = [ "event", "nature" ]
+        for (const key in trackedKeys) {
+            const i = columns.findIndex(c => c.id === key)
+            if (i < 0) {
+                continue
+            }
+            columns[i].suggestions = flows.map(flow => flow[key])
+                .filter((_, i) => !cashFlowsBeingEdited.includes(i))
+                .filter(unique)
+        }
+    })
 
 </script>
 <div class="card">
     <h2>Flux d'argent</h2>
     <table class="striped">
         <tr>
-            {#each cashFlowTitles as item}
-                <th>{item[1]}</th>
+            {#each columns as item}
+                <th>{item.name}</th>
             {/each}
         </tr>
         {#each $cashFlows as flow, index}
             <tr>
-                {#each cashFlowTitles as item}
-                <td>
-                    {#if (cashFlowsBeingEdited.includes(index))}
-                        <EditableValue bind:value={$cashFlows[index][item[0]]} type={item[2]} suggestions={item[3] ? item[3] : []}/>
-                    {:else}
-                        {flow[item[0]]}
-                    {/if}
-                </td>
+                {#each columns as item}
+                    <td>
+                        {#if (cashFlowsBeingEdited.includes(index))}
+                            <EditableValue bind:value={$cashFlows[index][item.id]}
+                                           placeholder={item.name}
+                                           type={item.type}
+                                           suggestions={item.suggestions || []}/>
+                        {:else}
+                            {flow[item.id]}
+                        {/if}
+                    </td>
                 {/each}
                 <th class="grouped gapless">
                     <a id="edit-{index}" href="#edit-{index}"
@@ -75,9 +98,12 @@ function resetNewCashFlow(){
             </tr>
         {/each}
         <tr>
-            {#each cashFlowTitles as item}
+            {#each columns as item}
                 <th>
-                    <EditableValue bind:value={newCashFlow[item[0]]} type={item[2]} suggestions={item[3] ? item[3] : []} placeholder="{item[1]}"/>
+                    <EditableValue bind:value={newCashFlow[item.id]}
+                                   type={item.type}
+                                   suggestions={item.suggestions || []}
+                                   placeholder="{item.name}"/>
                 </th>
             {/each}
             <th>
