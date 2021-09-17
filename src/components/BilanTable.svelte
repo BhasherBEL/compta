@@ -34,7 +34,7 @@ function generateRows(data) {
     return [rows, tot_output, tot_input]
 }
 
-    let [ rows ] = generateRows(data)
+    let [ rows, output, input ] = generateRows(data)
 </script>
 <table class="striped">
     <tr>
