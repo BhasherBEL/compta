@@ -1,5 +1,5 @@
 <script>
-    import { accounts, infos } from "../../store";
+    import { accounts, infos, cashFlows } from "../../store";
     import Icon from "../icon.svelte"
 </script>
 
@@ -50,6 +50,9 @@
 <div class="card">
     <h2>Comptes</h2>
     <table class="striped">
+        <colgroup>
+            <col style="width: 16%" span="6">
+        </colgroup>
         <tr>
             <th>Nom du compte</th>
             <th>Montant de départ</th>
@@ -61,15 +64,15 @@
         {#each $accounts as account, i}
             <tr>
                 <td>{account.name}</td>
-                <td>{account.start}</td>
-                <td>{account.profit}</td>
-                <td>{account.loss}</td>
-                <td>{account.net}</td>
-                <td>{account.real}</td>
+                <td>{account.start} €</td>
+                <td>{$cashFlows.filter(c => c.account === account.name && c.amount > 0).map(c => c.amount).reduce((a, b) => a+b)} €</td>
+                <td>{$cashFlows.filter(c => c.account === account.name && c.amount < 0).map(c => c.amount).reduce((a, b) => a+b)} €</td>
+                <td>{$cashFlows.filter(c => c.account === account.name).map(c => c.amount).reduce((a, b) => a+b)} €</td>
+                <td>{account.real} €</td>
                 <td class="grouped gapless">
                     <a id="edit-{i}" href="#edit-{i}"
                        class="button icon-only outline">
-                        <Icon icon="pencil" size="16"/>
+                        <Icon icon="pencil"/>
                     </a>
                     <a id="delete-{i}" href="#delete-{i}"
                        class="button icon-only outline">
@@ -93,7 +96,7 @@
             </td>
             <td>
                 <a class="button icon-only" href="#add" id="add">
-                    <Icon icon="plus" size="16"/>
+                    <Icon icon="plus"/>
                 </a>
             </td>
         </tr>
