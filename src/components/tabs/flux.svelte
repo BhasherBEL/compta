@@ -9,6 +9,7 @@
         name: string,
         type: "date" | "number" | "select" | "text",
         suggestions?: string[],
+        mandatory?: boolean
     }
 
     const columns: CashFlowColumn[] = [
@@ -24,7 +25,7 @@
         { id: "nature", name: "Nature", type: "text", suggestions: [] },
         { id: "details", name: "Détails", type: "text" },
         { id: "ref", name: "Référence", type: "text" },
-        { id: "note", name: "Remarque", type: "text" },
+        { id: "note", name: "Remarque", type: "text", mandatory: false },
     ]
 
     let newCashFlow = {}
@@ -39,10 +40,19 @@
         }
     }
 
-    function addCashFlow() {
-        cashFlows.push(Object.assign({}, newCashFlow) as CashFlow)
-        newCashFlow = {}
+function validateCashFlow(data: Object) {
+    for (let k of columns.filter(k => k[4]).map(k => k[0])){
+        if (!data[k]) {
+            return false
+        }
     }
+    return true
+}
+
+function addCashFlow() {
+    cashFlows.push(Object.assign({}, newCashFlow) as CashFlow)
+    newCashFlow = {}
+}
 
     function resetNewCashFlow() {
         newCashFlow = {
@@ -94,11 +104,9 @@
                     </td>
                 {/each}
                 <th class="grouped gapless">
-                    <a id="edit-{index}" href="#edit-{index}"
-                       class="button outline icon-only"
-                       on:click={() => toggleEditable(index)}>
+                    <button class="button outline icon-only" on:click={() => toggleEditable(index)} disabled="{!validateCashFlow(flow)}">
                         <Icon icon="pencil"/>
-                    </a>
+                    </button>
                     <a id="delete-{index}" href="#delete-{index}"
                        class="button outline icon-only"
                        on:click={() => cashFlows.remove(index)}>
@@ -117,10 +125,9 @@
                 </th>
             {/each}
             <th>
-                <a class="button icon-only" href="#add-flow" id="add-flow"
-                   on:click="{addCashFlow}">
+                <button class="button icon-only" on:click="{addCashFlow}" disabled="{!validateCashFlow(newCashFlow)}">
                     <Icon icon="plus"/>
-                </a>
+                </button>
             </th>
         </tr>
     </table>

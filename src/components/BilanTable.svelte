@@ -11,33 +11,28 @@
         },
     }
 
-    function generateRows(data) {
-        let rows = []
-        let [ tot_input, tot_output ] = [ 0, 0 ]
-        for (let item in data) {
-            if (data[item].constructor === Array) {
-                rows.push([
-                    item,
-                    data[item][0],
-                    data[item][1],
-                    data[item][1] + data[item][0],
-                ])
-                tot_input += data[item][0]
-                tot_output += data[item][1]
-            } else {
-                let [ newRows, output, input ] = generateRows(data[item])
-                console.log(newRows)
-                for (let row in newRows) {
-                    newRows[row][0] = ".." + newRows[row][0]
-                }
-                rows.push([ item, output, input, input + output ])
-                rows = rows.concat(newRows)
-                tot_output += output
-                tot_input += input
+function generateRows(data) {
+    let rows = []
+    let [tot_input, tot_output] = [0,0]
+    for (let item in data){
+        if (data[item].constructor === Array) {
+            rows.push([item, data[item][0], data[item][1], data[item][1]+data[item][0]])
+            tot_input += data[item][1]
+            tot_output += data[item][0]
+        } else {
+            let [newRows, output, input] = generateRows(data[item])
+            console.log(newRows)
+            for (let row in newRows) {
+                newRows[row][0] = '..'+newRows[row][0]
             }
+            rows.push([item, output, input, input + output])
+            rows = rows.concat(newRows)
+            tot_output += output
+            tot_input += input
         }
-        return [ rows, tot_output, tot_input ]
     }
+    return [rows, tot_output, tot_input]
+}
 
     let [ rows ] = generateRows(data)
 </script>
@@ -55,4 +50,12 @@
             {/each}
         </tr>
     {/each}
+    <tr>
+        <th>
+            Grand total
+        </th>
+        <th>{output}</th>
+        <th>{input}</th>
+        <th>{output+input}</th>
+    </tr>
 </table>
