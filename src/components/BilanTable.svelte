@@ -11,6 +11,8 @@
         expense: number
     }
 
+    let copied: boolean = false
+
     function generateRows(data): {rows: Row[], income:number, expense: number} {
         let rows: Row[] = []
         let [income, expense] = [0,0]
@@ -35,9 +37,14 @@
 
     let { rows: rows, expense: output, income: input } = generateRows(data)
 
-    function copyTable() {
+    function copyTable(e) {
         const table = document.getElementById(id)
-        navigator.clipboard.writeText(table.toString())
+        navigator.clipboard.writeText(table.innerText).then(() => {
+            copied = true
+            setTimeout(() => {copied = false}, 500)
+        }, () => {
+            console.log("An error appended")
+        })
     }
 </script>
 
@@ -65,6 +72,14 @@
         <th>{@html formatMoneyForExport(output+input)}</th>
     </tr>
 </table>
-<button class="button outline icon-only pull-right">
-    <Icon icon="copy"/>
+<button class="button icon-only pull-right" on:click={copyTable}>
+    <Icon icon="clippy"/>
 </button>
+
+
+<style>
+  button:active {
+    background-color: unset;
+    border-color: var(--color-lightGrey)
+  }
+</style>
