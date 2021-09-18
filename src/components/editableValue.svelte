@@ -6,22 +6,23 @@
     export let suggestions = [];
     export let value
     export let required = false;
+    export let form = null
 
     let id = v4uuid()
 </script>
 {#if type === "number"}
-    <input type="number" bind:value={value} {placeholder} list="{id}" step="0.01" {required}>
+    <input type="number" bind:value={value} {placeholder} list="{id}" step="0.01" {required} {form}>
 {:else if type === "date"}
-    <input type="date" bind:value={value} {placeholder} list="{id}" {required}>
+    <input type="date" bind:value={value} {placeholder} list="{id}" {required} {form}>
 {:else if type === "select"}
     <!--suppress XmlDuplicatedId -->
-    <select id="{id}" bind:value={value} {required}>
+    <select id="{id}" bind:value={value} {required} {form}>
         {#each suggestions as suggestion}
             <option value="{suggestion}">{suggestion}</option>
         {/each}
     </select>
 {:else}
-    <input bind:value={value} {placeholder} list="{id}" {required}>
+    <input bind:value={value} {placeholder} list="{id}" {required} {form}>
 {/if}
 {#if suggestions?.length > 0 && type !== "select"}
     <!--suppress XmlDuplicatedId -->
