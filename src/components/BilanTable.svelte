@@ -1,8 +1,10 @@
 <!--suppress JSUnfilteredForInLoop -->
 <script lang="ts">
-    import { formatMoney } from "../utils"
+    import {v4 as uuidv4} from 'uuid'
+    import { formatMoneyForExport } from "../utils"
+    import Icon from "./icon.svelte"
     export let data = {}
-
+    const id = uuidv4()
     type Row = {
         category: string
         income: number
@@ -32,9 +34,14 @@
     }
 
     let { rows: rows, expense: output, income: input } = generateRows(data)
+
+    function copyTable() {
+        const table = document.getElementById(id)
+        navigator.clipboard.writeText(table.toString())
+    }
 </script>
 
-<table class="striped">
+<table class="striped" {id}>
     <tr>
         <th>Catégorie</th>
         <th>Sortie</th>
@@ -44,17 +51,20 @@
     {#each rows as item}
         <tr>
             <td>{item.category}</td>
-            <td>{formatMoney(item.expense)}</td>
-            <td>{formatMoney(item.income)}</td>
-            <td>{formatMoney(item.income+item.expense)}</td>
+            <td>{@html formatMoneyForExport(item.expense)}</td>
+            <td>{@html formatMoneyForExport(item.income)}</td>
+            <td>{@html formatMoneyForExport(item.income+item.expense)}</td>
         </tr>
     {/each}
     <tr>
         <th>
             Grand total
         </th>
-        <th>{formatMoney(output)}</th>
-        <th>{formatMoney(input)}</th>
-        <th>{formatMoney(output+input)}</th>
+        <th>{@html formatMoneyForExport(output)}</th>
+        <th>{@html formatMoneyForExport(input)}</th>
+        <th>{@html formatMoneyForExport(output+input)}</th>
     </tr>
 </table>
+<button class="button outline icon-only pull-right">
+    <Icon icon="copy"/>
+</button>
