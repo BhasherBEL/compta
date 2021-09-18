@@ -78,9 +78,24 @@
 
     cashFlows.subscribe((flows: CashFlow[]) => {
         let trackedKeys: (keyof CashFlow)[] = [ "event", "nature" ]
+        columns.event.suggestions = ["Sans event"]
+        columns.nature.suggestions = [
+            "Recettes hors événement",
+            "Fonctionnement hors événement",
+            "Produits destinés à la vente",
+            "Produits offerts",
+            "Promotion",
+            "Matériel, technique et autres frais",
+            "Coût des intervenants",
+            "Ventes",
+            "Entrées/PAF",
+            "Sponsors",
+            "Subsides",
+            "Transfert d'argent"
+        ]
         for (const key of trackedKeys) {
-            columns[key].suggestions = flows.map(flow => flow[key])
-                .filter((_, i) => !cashFlowsBeingEdited.includes(i))
+            columns[key].suggestions.concat(flows.map(flow => flow[key])
+                .filter((_, i) => !cashFlowsBeingEdited.includes(i)))
                 .filter(unique)
         }
     })
