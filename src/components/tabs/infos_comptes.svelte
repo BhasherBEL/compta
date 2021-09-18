@@ -7,12 +7,12 @@
         name: {
             name: "Nom du compte",
             type: "string",
-            mandatory: true,
+            required: true,
         },
         initial_money: {
             name: "Montant de départ",
             type: "number",
-            mandatory: true,
+            required: true,
             format: formatMoney
         },
         income: {
@@ -24,7 +24,7 @@
                     .map(k => k.amount)
             ))
         },
-        outcome: {
+        expense: {
             name: "Sortie",
             type: "number",
             format: (_, account) => formatMoney(sum(
@@ -126,16 +126,22 @@
         {/each}
         <tr>
             <td>
-                <input placeholder="Compte courant">
+                <label>
+                    <input placeholder="Compte courant">
+                </label>
             </td>
             <td>
-                <input placeholder="836.49" type="number">
+                <label>
+                    <input placeholder="836.49" type="number">
+                </label>
             </td>
             <td></td>
             <td></td>
             <td></td>
             <td>
-                <input placeholder="913.32" type="number">
+                <label>
+                    <input placeholder="913.32" type="number">
+                </label>
             </td>
             <td>
                 <a class="button icon-only" href="#add" id="add">

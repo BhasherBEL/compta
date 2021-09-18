@@ -6,34 +6,39 @@
 
 
     const columns: {[key: keyof CashFlow]: GenericColumn} = {
-        date: { name: "Date", type: "date", mandatory: true },
+        date: { name: "Date", type: "date", required: true },
         amount: {
             name: "Montant",
             type: "number",
-            mandatory: true,
+            required: true,
             format: formatMoney
         },
         account: {
             name: "Compte",
             type: "select",
             suggestions: $accounts.map(a => a.name),
-            mandatory: true,
+            required: true,
         },
         event: {
             name: "Évènement",
             type: "text",
             suggestions: [],
-            mandatory: true,
+            required: true,
         },
         nature: {
             name: "Nature",
             type: "text",
             suggestions: [],
-            mandatory: true
+            required: true
         },
-        details: { name: "Détails", type: "text", mandatory: true },
-        ref: { name: "Référence", type: "text", mandatory: true },
-        note: { name: "Remarque", type: "text", mandatory: false },
+        details: { name: "Détails", type: "text", required: true },
+        ref: { name: "Référence", type: "text", required: true },
+        note: {
+            name: "Remarque",
+            type: "text",
+            required: false,
+            format: a => a || ""
+        },
     }
 
     let newCashFlow = {}
@@ -50,7 +55,7 @@
 
     function validateCashFlow(data: Object): boolean {
         for (let k in columns){
-            if (columns[k].mandatory && (data[k] === undefined || data[k] === "")){
+            if (columns[k].required && (data[k] === undefined || data[k] === "")){
                 return false
             }
         }
@@ -58,18 +63,14 @@
     }
 
     function addCashFlow() {
-        for (const key of Object.keys(newCashFlow).filter(a => !columns[a].mandatory)){
-            if (newCashFlow[key] === undefined){
-                newCashFlow[key] = ""
-            }
-        }
         cashFlows.push(Object.assign({}, newCashFlow) as CashFlow)
-        newCashFlow = {}
+        resetNewCashFlow()
     }
 
     function resetNewCashFlow() {
         newCashFlow = {
             date: new Date().toISOString().substring(0, 10),
+            account: $accounts[0].name || undefined
         }
     }
 
@@ -103,10 +104,12 @@
                             cashFlowsBeingEdited.includes(index)
                         )}
                             <EditableValue
-                                    bind:value={$cashFlows[index][key]}
-                                    placeholder={item.name}
-                                    type={item.type}
-                                    suggestions={item.suggestions || []}/>
+                                bind:value={$cashFlows[index][key]}
+                                placeholder={item.name}
+                                type={item.type}
+                                suggestions={item.suggestions || []}
+                                required={item.required}
+                            />
                         {:else}
                             {item.format ? item.format(flow[key], flow) : flow[key]}
                         {/if}
@@ -127,10 +130,13 @@
         <tr>
             {#each Object.entries(columns) as [key, item]}
                 <th>
-                    <EditableValue bind:value={newCashFlow[key]}
-                                   type={item.type}
-                                   suggestions={item.suggestions || []}
-                                   placeholder="{item.name}"/>
+                    <EditableValue
+                        bind:value={newCashFlow[key]}
+                        type={item.type}
+                        suggestions={item.suggestions || []}
+                        placeholder="{item.name}"
+                        required={item.required}
+                    />
                 </th>
             {/each}
             <th>

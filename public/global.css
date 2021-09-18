@@ -40,3 +40,10 @@ th {
   padding: 0.8rem;
 }
 
+input:invalid {
+  border-color: var(--color-error) !important;
+}
+
+.money-export::after {
+  content: " €";
+}
