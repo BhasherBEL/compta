@@ -58,12 +58,21 @@
     </div>
     <span class="spacer"></span>
 </nav>
-<br>
 <section class="container">
     {#key current_tab}
         <svelte:component this={current_tab}/>
     {/key}
 </section>
+<span class="separator"></span>
+<footer>
+    <span>Créé par le Louvain-li-Nux</span>
+    <span>Outil de gestion de trésorerie destiné aux KAP's</span>
+    <span>
+        <a href="https://gitlab.com/louvainlinux/compta/">
+            Voir le code source
+        </a>
+    </span>
+</footer>
 
 <style>
   nav {
@@ -87,4 +96,5 @@
   .button-end {
     border-radius: 0 4px 4px 0 !important;
   }
+
 </style>

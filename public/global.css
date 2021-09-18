@@ -48,3 +48,27 @@ input:invalid {
   content: " €";
 }
 
+html, body {
+  height:100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.separator {
+  flex-basis: 100%;
+}
+
+.nav {
+  margin-bottom: 2rem;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 0 4px 0 var(--color-darkGrey);
+  padding: 3rem;
+}
+
