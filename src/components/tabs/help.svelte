@@ -1,3 +1,7 @@
+<script>
+    import Icon from "../icon.svelte"
+</script>
+
 <div class="card">
     <h2>
         Les différentes vues disponibles
@@ -35,7 +39,9 @@
     </h3>
     <p>
         Vous pouvez consulter les bilans de vos comptes par évènements et par
-        nature, présenté de la même façon que dans
-        l'Excel de trésorerie.
+        nature, présenté de la même façon que dans l'Excel de trésorerie. <br>
+        Vous pouvez également utiliser le bouton
+        <Icon icon="clipboard"/> afin de pouvoir facilement copier les tableaux
+        dans l'Excel de Bilan.
     </p>
 </div>

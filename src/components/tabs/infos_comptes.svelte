@@ -119,7 +119,7 @@
                     <a id="delete-{index}" href="#delete-{index}"
                        class="button outline icon-only"
                        on:click={() => cashFlows.remove(index)}>
-                        <Icon icon="x"/>
+                        <Icon icon="close"/>
                     </a>
                 </th>
             </tr>

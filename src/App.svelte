@@ -48,7 +48,7 @@
     <div class="nav-right">
         <div class="myGrouped is-vertical-align">
             <label class="button icon-only primary button-start">
-                <Icon class="button-start" icon="file-code" size={20}/>
+                <Icon class="button-start" icon="folder-open" size={20}/>
                 <input type="file" accept="application/json" class="button icon-only primary" style="display: none;" on:change={importFile}>
             </label>
             <button class="button icon-only primary outline button-end" on:click={saveFile}>

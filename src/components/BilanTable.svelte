@@ -73,7 +73,7 @@
     </tr>
 </table>
 <button class="button icon-only pull-right" on:click={copyTable}>
-    <Icon icon="clippy"/>
+    <Icon icon="clipboard"/>
 </button>
 
 
