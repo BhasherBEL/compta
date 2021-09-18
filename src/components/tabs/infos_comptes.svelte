@@ -130,11 +130,10 @@
                     <button class="button outline icon-only">
                         <Icon icon="pencil"/>
                     </button>
-                    <a id="delete-{index}" href="#delete-{index}"
-                       class="button outline icon-only"
-                       on:click={() => cashFlows.remove(index)}>
+                    <button class="button outline icon-only"
+                       on:click={() => {}}>
                         <Icon icon="close"/>
-                    </a>
+                    </button>
                 </th>
             </tr>
         {/each}

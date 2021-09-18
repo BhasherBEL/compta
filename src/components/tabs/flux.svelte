@@ -119,11 +119,10 @@
                     <button class="button outline icon-only" on:click={() => toggleEditable(index)} disabled="{!validateCashFlow(flow)}">
                         <Icon icon="pencil"/>
                     </button>
-                    <a id="delete-{index}" href="#delete-{index}"
-                       class="button outline icon-only"
+                    <button class="button outline icon-only"
                        on:click={() => cashFlows.remove(index)}>
                         <Icon icon="close"/>
-                    </a>
+                    </button>
                 </th>
             </tr>
         {/each}
