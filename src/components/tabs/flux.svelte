@@ -5,7 +5,7 @@
     import Icon from "../icon.svelte";
 
 
-    const columns: {[key: keyof CashFlow]: GenericColumn} = {
+    const columns: {[key in keyof CashFlow]: GenericColumn} = {
         date: { name: "Date", type: "date", required: true },
         amount: {
             name: "Montant",
@@ -21,30 +21,30 @@
         },
         event: {
             name: "Évènement",
-            type: "text",
+            type: "string",
             suggestions: [],
             required: true,
         },
         nature: {
             name: "Nature",
-            type: "text",
+            type: "string",
             suggestions: [],
             required: true
         },
-        details: { name: "Détails", type: "text", required: true },
-        ref: { name: "Référence", type: "text", required: true },
+        details: { name: "Détails", type: "string", required: true },
+        ref: { name: "Référence", type: "string", required: true },
         note: {
             name: "Remarque",
-            type: "text",
+            type: "string",
             required: false,
             format: a => a || ""
-        },
+        }
     }
 
     let newCashFlow = {}
     let cashFlowsBeingEdited: number[] = []
 
-    function toggleEditable(index) {
+    function toggleEditable(index: number) {
         if (cashFlowsBeingEdited.includes(index)) {
             cashFlowsBeingEdited = cashFlowsBeingEdited.filter((v, _) => v
                 !== index)

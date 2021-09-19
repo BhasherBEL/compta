@@ -14,6 +14,9 @@ export type CashFlow = {
 export type Account = {
     name: string,
     initial_money: number,
+    income?: undefined,
+    expense?: undefined,
+    profit?: undefined
     current_money: number
 }
 
@@ -65,13 +68,23 @@ function createCashFlows() {
     ])
     return {
         subscribe,
-        push: (elem) => update((c) => [ ...c, elem ]),
-        remove: (i) => update(c => c.filter((el, index) => i !== index)),
+        push: (elem: CashFlow) => update((c) => [ ...c, elem ]),
+        remove: (i: number) => update(c => c.filter((_, index) => i !== index)),
         set,
     }
 }
 
-export const infos = writable({})
+export const infos = writable({
+    orga: undefined,
+    quarter: undefined,
+    year: undefined,
+    company: undefined,
+    manager: undefined,
+    email: undefined,
+    date_start: undefined,
+    date_end: undefined,
+    address: undefined,
+})
 export const accounts = writable<Account[]>([
     {
         name: "Compte courant",

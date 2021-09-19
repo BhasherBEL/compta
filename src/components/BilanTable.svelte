@@ -3,17 +3,17 @@
     import {v4 as uuidv4} from 'uuid'
     import { formatMoneyForExport } from "../utils"
     import Icon from "./icon.svelte"
-    export let data = {}
+    export let data: Object = {}
     const id = uuidv4()
     type Row = {
-        category: string
-        income: number
-        expense: number
+        category?: string
+        income?: number
+        expense?: number
     }
 
     let copied: boolean = false
 
-    function generateRows(data): {rows: Row[], income:number, expense: number} {
+    function generateRows(data: Object): {rows: Row[], income:number, expense: number} {
         let rows: Row[] = []
         let [income, expense] = [0,0]
         for (let item in data){
@@ -37,7 +37,7 @@
 
     let { rows: rows, expense: output, income: input } = generateRows(data)
 
-    function copyTable(e) {
+    function copyTable() {
         const table = document.getElementById(id)
         navigator.clipboard.writeText(table.innerText).then(() => {
             copied = true

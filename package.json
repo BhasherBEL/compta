@@ -34,6 +34,7 @@
     "file-saver": "^2.0.5",
     "rollup": "^2.3.4",
     "sirv-cli": "^1.0.0",
+    "svelte-simple-modal": "^1.0.3",
     "uuid": "^8.3.2"
   }
 }

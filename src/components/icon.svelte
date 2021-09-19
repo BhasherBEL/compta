@@ -1,5 +1,4 @@
 <script>
-    let string = "hello"
     export let library = "clarity"
     export let icon;
     export let size = 16;

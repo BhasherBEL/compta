@@ -18,7 +18,7 @@
         return dict
     }
 
-    function generateByEvent(data) {
+    function generateByEvent(data: CashFlow[]): Object {
         const events = data.map(n => n.event).filter(unique)
         let dict = {}
         for (let event of events) {
@@ -34,7 +34,7 @@
         return dict
     }
 
-    function generateByNature(data) {
+    function generateByNature(data: CashFlow[]) {
         let natures = data.map(n => n.nature).filter(unique)
         let dict = {}
         for (let nature of natures) {

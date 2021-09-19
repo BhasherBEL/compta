@@ -15,8 +15,8 @@
         { name: "Bilans détaillés", component: bilan },
     ]
 
-    function importFile(f){
-        f.target.files[0].text().then((text) => {
+    function importFile(f: Event){
+        (f.target as HTMLInputElement).files[0].text().then((text: string) => {
             const data = JSON.parse(text)
             infos.set(data.infos)
             cashFlows.set(data.cashFlows)
@@ -48,7 +48,7 @@
     <div class="nav-right">
         <div class="myGrouped is-vertical-align">
             <label class="button icon-only primary button-start">
-                <Icon class="button-start" icon="folder-open" size={20}/>
+                <Icon icon="folder-open" size={20}/>
                 <input type="file" accept="application/json" class="button icon-only primary" style="display: none;" on:change={importFile}>
             </label>
             <button class="button icon-only primary outline button-end" on:click={saveFile}>
@@ -65,7 +65,12 @@
 </section>
 <span class="separator"></span>
 <footer>
-    <span>Créé par le Louvain-li-Nux</span>
+    <span>
+        Créé par le
+        <a href="https://louvainlinux.org" target="_blank">
+            Louvain-li-Nux
+        </a>
+    </span>
     <span>Outil de gestion de trésorerie destiné aux KAP's</span>
     <span>
         <a href="https://gitlab.com/louvainlinux/compta/" target="_blank">

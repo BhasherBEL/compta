@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { Account, CashFlow, accounts, infos, cashFlows } from "../../store";
+    import { Account, accounts, infos, cashFlows } from "../../store";
     import Icon from "../icon.svelte"
     import EditableValue from '../editableValue.svelte'
     import { GenericColumn, formatMoney, sum } from "../../utils"
 
-    const columns: {[key: keyof Account]: GenericColumn} = {
+    const columns: {[key in keyof Account]: GenericColumn} = {
         name: {
             name: "Nom du compte",
             type: "string",
@@ -22,6 +22,7 @@
             name: "Entrée",
             type: "number",
             nature: "computed",
+            required: false,
             format: (_, account) => formatMoney(sum(
                 $cashFlows
                     .filter(k => k.account === account.name && k.amount > 0)
@@ -32,6 +33,7 @@
             name: "Sortie",
             type: "number",
             nature: "computed",
+            required: false,
             format: (_, account) => formatMoney(sum(
                 $cashFlows
                     .filter(k => k.account === account.name && k.amount < 0)
@@ -42,6 +44,7 @@
             name: "Profit",
             type: "number",
             nature: "computed",
+            required: false,
             format: (_, account) => formatMoney(sum(
                 $cashFlows
                     .filter(k => k.account === account.name)
@@ -100,9 +103,9 @@
             </div>
             <div>
                 <label for="date-start">Date début</label>
-                <input bind:value={$infos.dates} id="date-start" type="date">
+                <input bind:value={$infos.date_start} id="date-start" type="date">
                 <label for="date-end">Date fin</label>
-                <input bind:value={$infos.dates} id="date-end" type="date">
+                <input bind:value={$infos.date_end} id="date-end" type="date">
             </div>
         </div>
     </div>
@@ -115,11 +118,11 @@
             <col style="width: 16%;" span="6">
         </colgroup>
         <tr>
-            {#each Object.entries(columns) as [key, item]}
+            {#each Object.entries(columns) as [_, item]}
                 <th>{item.name}</th>
             {/each}
         </tr>
-        {#each $accounts as account, index}
+        {#each $accounts as account, _}
             <tr>
                 {#each Object.entries(columns) as [key, item]}
                     <td>
