@@ -68,7 +68,7 @@
     <span>Créé par le Louvain-li-Nux</span>
     <span>Outil de gestion de trésorerie destiné aux KAP's</span>
     <span>
-        <a href="https://gitlab.com/louvainlinux/compta/">
+        <a href="https://gitlab.com/louvainlinux/compta/" target="_blank">
             Voir le code source
         </a>
     </span>

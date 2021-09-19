@@ -59,6 +59,7 @@ body {
 
 .separator {
   flex-basis: 100%;
+  min-height: 2rem;
 }
 
 .nav {
