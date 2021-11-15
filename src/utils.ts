@@ -9,14 +9,13 @@ export type GenericColumn = {
     suggestions?: (string | number)[];
     suggestions_keys?: (string|number)[]
     required: boolean
-    format?: (a: any, b: any) => string
+    format?: (a: any, b: any, c: any) => string
 }
 
 export const formatMoney = (k: number): string => k === 0 ? '' : k?.toFixed(2)+" €" || `${k}`
 export const formatMoneyForExport = function (k: number): string {
     if (k === 0) return ''
-    return "<span"
-        + "class='money-export'>"+
+    return "<span class='money-export'>"+
         k?.toFixed(2)
             .replace(".", ",")+
         "</span>"

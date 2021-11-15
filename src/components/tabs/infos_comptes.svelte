@@ -1,10 +1,16 @@
 <script lang="ts">
     import { Account, accounts, infos, cashFlows } from "../../store";
-    import Icon from "../icon.svelte"
-    import EditableValue from '../editableValue.svelte'
+    import EditableTable from '../editableTable.svelte'
     import { GenericColumn, formatMoney, sum } from "../../utils"
 
     const columns: {[key in keyof Account]: GenericColumn} = {
+        id: {
+            name: "Identifiant",
+            type: "string",
+            nature: "computed",
+            required: false,
+            format: (_, __, id) => id
+        },
         name: {
             name: "Nom du compte",
             type: "string",
@@ -24,7 +30,8 @@
             nature: "computed",
             required: false,
             format: (_, account) => formatMoney(sum(
-                $cashFlows
+                Object
+                    .values($cashFlows)
                     .filter(k => k.account === account.name && k.amount > 0)
                     .map(k => k.amount)
             ))
@@ -35,7 +42,8 @@
             nature: "computed",
             required: false,
             format: (_, account) => formatMoney(sum(
-                $cashFlows
+                Object
+                    .values($cashFlows)
                     .filter(k => k.account === account.name && k.amount < 0)
                     .map(k => k.amount)
             ))
@@ -46,7 +54,8 @@
             nature: "computed",
             required: false,
             format: (_, account) => formatMoney(sum(
-                $cashFlows
+                Object
+                    .values($cashFlows)
                     .filter(k => k.account === account.name)
                     .map(k => k.amount)
             ))
@@ -60,11 +69,36 @@
         },
     }
 
+    let accountsBeingEdited: number[] = []
     let newAccount= {};
 
-    function addNewAccount() {
-        accounts.update((a) => [...a, newAccount as Account])
+
+    function toggleEditable(index: number) {
+        if (accountsBeingEdited.includes(index)) {
+            accountsBeingEdited = accountsBeingEdited.filter((v, _) => v
+                !== index)
+        } else {
+            accountsBeingEdited = [ ...accountsBeingEdited, index ]
+        }
     }
+
+    function validateAccount(data: Object): boolean {
+        for (let k in columns){
+            if (columns[k].required && (data[k] === undefined || data[k] === "")){
+                return false
+            }
+        }
+        return true
+    }
+
+    function addNewAccount() {
+        let key = 0
+        while ($accounts[key] !== undefined) {
+            key++
+        }
+        accounts.update((a) => {a[key] = newAccount as Account; return a})
+    }
+
 </script>
 
 <div class="card">
@@ -113,52 +147,54 @@
 <br>
 <div class="card">
     <h2>Comptes</h2>
-    <table class="striped">
-        <colgroup>
-            <col style="width: 16%;" span="6">
-        </colgroup>
-        <tr>
-            {#each Object.entries(columns) as [_, item]}
-                <th>{item.name}</th>
-            {/each}
-        </tr>
-        {#each $accounts as account, _}
-            <tr>
-                {#each Object.entries(columns) as [key, item]}
-                    <td>
-                        {item.format ? item.format(account[key], account) : account[key]}
-                    </td>
-                {/each}
-                <th class="grouped gapless">
-                    <button class="button outline icon-only">
-                        <Icon icon="pencil"/>
-                    </button>
-                    <button class="button outline icon-only"
-                       on:click={() => {}}>
-                        <Icon icon="close"/>
-                    </button>
-                </th>
-            </tr>
-        {/each}
-        <tr>
-            <form id="account-new" on:submit|preventDefault={addNewAccount}></form>
-            {#each Object.entries(columns) as [key, item]}
-                <td>
-                {#if item.nature === "input"}
-                    <EditableValue bind:value={newAccount[key]} type="{item.type}" placeholder="{item.name}" required="{item.required}" form="account-new"/>
-                    {:else }
-                    <i class="text-grey">Valeur calculée</i>
-                    {/if}
-                </td>
-                {/each}
-            <td>
-                <label class="button icon-only">
-                    <input type="submit" class="is-hidden" form="account-new">
-                    <Icon icon="plus"/>
-                </label>
-            </td>
-        </tr>
-    </table>
+    <EditableTable dataStore="{accounts}" columns="{columns}" validateChange="{validateAccount}" colgroup="{[{width: '14%', span: '7'}]}"/>
+<!--    <table class="striped">-->
+<!--        <colgroup>-->
+<!--            <col style="width: 16%;" span="6">-->
+<!--        </colgroup>-->
+<!--        <tr>-->
+<!--            {#each Object.entries(columns) as [_, item]}-->
+<!--                <th>{item.name}</th>-->
+<!--            {/each}-->
+<!--        </tr>-->
+<!--        {#each Object.entries($accounts) as [key, account]}-->
+<!--            <tr>-->
+<!--                {#each Object.entries(columns) as [prop, item]}-->
+<!--                    <td>-->
+<!--                        {item.format ? item.format(account[prop], account) : account[prop]}-->
+<!--                    </td>-->
+<!--                {/each}-->
+<!--                <th class="grouped gapless">-->
+<!--                    <button class="button outline icon-only"-->
+<!--                        on:click={() => {}}>-->
+<!--                        <Icon icon="pencil"/>-->
+<!--                    </button>-->
+<!--                    <button class="button outline icon-only"-->
+<!--                       on:click={() => {}}>-->
+<!--                        <Icon icon="close"/>-->
+<!--                    </button>-->
+<!--                </th>-->
+<!--            </tr>-->
+<!--        {/each}-->
+<!--        <tr>-->
+<!--            <form id="account-new" on:submit|preventDefault={addNewAccount}></form>-->
+<!--            {#each Object.entries(columns) as [key, item]}-->
+<!--                <td>-->
+<!--                {#if item.nature === "input"}-->
+<!--                    <EditableValue bind:value={newAccount[key]} type="{item.type}" placeholder="{item.name}" required="{item.required}" form="account-new"/>-->
+<!--                    {:else }-->
+<!--                    <i class="text-grey">Valeur calculée</i>-->
+<!--                    {/if}-->
+<!--                </td>-->
+<!--                {/each}-->
+<!--            <td>-->
+<!--                <label class="button icon-only">-->
+<!--                    <input type="submit" class="is-hidden" form="account-new">-->
+<!--                    <Icon icon="plus"/>-->
+<!--                </label>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--    </table>-->
 </div>
 
 <style>

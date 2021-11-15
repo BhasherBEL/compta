@@ -18,14 +18,14 @@
         return dict
     }
 
-    function generateByEvent(data: CashFlow[]): Object {
-        const events = data.map(n => n.event).filter(unique)
+    function generateByEvent(data: typeof cashFlows): Object {
+        const events = Object.values(data).map(n => n.event).filter(unique)
         let dict = {}
         for (let event of events) {
-            const natures = data.filter(n => n.event === event).map(n => n.nature).filter(unique)
+            const natures = Object.values(data).filter(n => n.event === event).map(n => n.nature).filter(unique)
             dict[event] = {}
             for (let nature of natures) {
-                dict[event][nature] = convertCashFlows(data.filter(n => (
+                dict[event][nature] = convertCashFlows(Object.values(data).filter(n => (
                     n.event === event && n.nature === nature
                 )))
             }
@@ -34,11 +34,11 @@
         return dict
     }
 
-    function generateByNature(data: CashFlow[]) {
-        let natures = data.map(n => n.nature).filter(unique)
+    function generateByNature(data: typeof cashFlows) {
+        let natures = Object.values(data).map(n => n.nature).filter(unique)
         let dict = {}
         for (let nature of natures) {
-            dict[nature] = convertCashFlows(data.filter(n => (
+            dict[nature] = convertCashFlows(Object.values(data).filter(n => (
                 n.nature === nature
             )))
         }

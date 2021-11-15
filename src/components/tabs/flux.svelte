@@ -1,8 +1,7 @@
 <script lang="ts">
     import { accounts, CashFlow, cashFlows } from "../../store"
     import { unique, GenericColumn, formatMoney } from "../../utils";
-    import EditableValue from "../editableValue.svelte"
-    import Icon from "../icon.svelte";
+    import EditableTable from "../editableTable.svelte"
 
 
     const columns: {[key in keyof CashFlow]: GenericColumn} = {
@@ -77,7 +76,7 @@
 
     resetNewCashFlow()
 
-    cashFlows.subscribe((flows: CashFlow[]) => {
+    cashFlows.subscribe((flows: typeof cashFlows) => {
         let trackedKeys: (keyof CashFlow)[] = [ "event", "nature" ]
         columns.event.suggestions = ["Sans event"]
         columns.nature.suggestions = [
@@ -95,7 +94,7 @@
             "Transfert d'argent"
         ]
         for (const key of trackedKeys) {
-            columns[key].suggestions.concat(flows.map(flow => flow[key])
+            columns[key].suggestions.concat(Object.values(flows).map(flow => flow[key])
                 .filter((_, i) => !cashFlowsBeingEdited.includes(i)))
                 .filter(unique)
         }
@@ -103,62 +102,63 @@
 </script>
 <div class="card">
     <h2>Flux d'argent</h2>
-    <table class="striped">
-        <colgroup>
-            <col style="width: 12%;" span="8">
-        </colgroup>
-        <tr>
-            {#each Object.entries(columns) as [_, item]}
-                <th>{item.name}</th>
-            {/each}
-        </tr>
-        {#each $cashFlows as flow, index}
-            <tr>
-                {#each Object.entries(columns) as [key, item]}
-                    <td>
-                        {#if (
-                            cashFlowsBeingEdited.includes(index)
-                        )}
-                            <EditableValue
-                                bind:value={$cashFlows[index][key]}
-                                placeholder={item.name}
-                                type={item.type}
-                                suggestions={item.suggestions || []}
-                                required={item.required}
-                            />
-                        {:else}
-                            {item.format ? item.format(flow[key], flow) : flow[key]}
-                        {/if}
-                    </td>
-                {/each}
-                <th class="grouped gapless">
-                    <button class="button outline icon-only" on:click={() => toggleEditable(index)} disabled="{!validateCashFlow(flow)}">
-                        <Icon icon="pencil"/>
-                    </button>
-                    <button class="button outline icon-only"
-                       on:click={() => cashFlows.remove(index)}>
-                        <Icon icon="close"/>
-                    </button>
-                </th>
-            </tr>
-        {/each}
-        <tr>
-            {#each Object.entries(columns) as [key, item]}
-                <th>
-                    <EditableValue
-                        bind:value={newCashFlow[key]}
-                        type={item.type}
-                        suggestions={item.suggestions || []}
-                        placeholder="{item.name}"
-                        required={item.required}
-                    />
-                </th>
-            {/each}
-            <th>
-                <button class="button icon-only" on:click="{addCashFlow}" disabled={!validateCashFlow(newCashFlow)}>
-                    <Icon icon="plus"/>
-                </button>
-            </th>
-        </tr>
-    </table>
+    <EditableTable dataStore="{cashFlows}" columns="{columns}" validateChange="{validateCashFlow}" colgroup="{[{width: '12%', span: '8'}]}"/>
+    <!--    <table class="striped">-->
+<!--        <colgroup>-->
+<!--            <col style="width: 12%;" span="8">-->
+<!--        </colgroup>-->
+<!--        <tr>-->
+<!--            {#each Object.entries(columns) as [_, item]}-->
+<!--                <th>{item.name}</th>-->
+<!--            {/each}-->
+<!--        </tr>-->
+<!--        {#each $cashFlows as flow, index}-->
+<!--            <tr>-->
+<!--                {#each Object.entries(columns) as [key, item]}-->
+<!--                    <td>-->
+<!--                        {#if (cashFlowsBeingEdited.includes(index))}-->
+<!--                            <EditableValue-->
+<!--                                bind:value={$cashFlows[index][key]}-->
+<!--                                placeholder={item.name}-->
+<!--                                type={item.type}-->
+<!--                                suggestions={item.suggestions || []}-->
+<!--                                suggestions_keys={item.suggestions_keys || []}-->
+<!--                                required={item.required}-->
+<!--                            />-->
+<!--                        {:else}-->
+<!--                            {item.format ? item.format(flow[key], flow) : flow[key]}-->
+<!--                        {/if}-->
+<!--                    </td>-->
+<!--                {/each}-->
+<!--                <th class="grouped gapless">-->
+<!--                    <button class="button outline icon-only" on:click={() => toggleEditable(index)} disabled="{!validateCashFlow(flow)}">-->
+<!--                        <Icon icon="pencil"/>-->
+<!--                    </button>-->
+<!--                    <button class="button outline icon-only"-->
+<!--                       on:click={() => cashFlows.remove(index)}>-->
+<!--                        <Icon icon="close"/>-->
+<!--                    </button>-->
+<!--                </th>-->
+<!--            </tr>-->
+<!--        {/each}-->
+<!--        <tr>-->
+<!--            {#each Object.entries(columns) as [key, item]}-->
+<!--                <th>-->
+<!--                    <EditableValue-->
+<!--                        bind:value={newCashFlow[key]}-->
+<!--                        type={item.type}-->
+<!--                        suggestions={item.suggestions || []}-->
+<!--                        suggestions_keys={item.suggestions_keys || []}-->
+<!--                        placeholder="{item.name}"-->
+<!--                        required={item.required}-->
+<!--                    />-->
+<!--                </th>-->
+<!--            {/each}-->
+<!--            <th>-->
+<!--                <button class="button icon-only" on:click="{addCashFlow}" disabled={!validateCashFlow(newCashFlow)}>-->
+<!--                    <Icon icon="plus"/>-->
+<!--                </button>-->
+<!--            </th>-->
+<!--        </tr>-->
+<!--    </table>-->
 </div>

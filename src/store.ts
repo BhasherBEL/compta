@@ -12,6 +12,7 @@ export type CashFlow = {
 }
 
 export type Account = {
+    id: string,
     name: string,
     initial_money: number,
     income?: undefined,
@@ -25,8 +26,8 @@ function createCashFlows() {
         subscribe,
         update,
         set,
-    }: Writable<CashFlow[]> = writable<CashFlow[]>([
-        {
+    }: Writable<{[key: number]: CashFlow}> = writable({
+        0: {
             date: "2021-06-18",
             amount: -5.25,
             account: "Compte courant",
@@ -35,8 +36,7 @@ function createCashFlows() {
             details: "Frais de gestion de compte",
             ref: "BNP0008",
             note: "",
-        },
-        {
+        }, 1: {
             date: "2021-06-19",
             amount: -3.89,
             account: "Compte courant",
@@ -45,8 +45,7 @@ function createCashFlows() {
             details: "Frais de carte de débit",
             ref: "BNP0009",
             note: "",
-        },
-        {
+        }, 2: {
             date: "2021-06-24",
             amount: -41.58,
             account: "Compte courant",
@@ -55,17 +54,17 @@ function createCashFlows() {
             details: "Matériel, technique et autres frais",
             ref: "BNP0021",
             note: "Gel hydroalcoolique",
-        },
-        {
+        }, 3: {
             date: "2021-09-17",
             account: "Compte courant",
-            amount: 100, event: "Sans event",
+            amount: 100,
+            event: "Sans event",
             nature: "Fonctionnement hors évènement",
             details: "Subsides et financements",
             ref: "BNP0023",
             note: "Subsides Q1"
         }
-    ])
+    })
     return {
         subscribe,
         push: (elem: CashFlow) => update((c) => [ ...c, elem ]),
@@ -85,11 +84,11 @@ export const infos = writable({
     date_end: undefined,
     address: undefined,
 })
-export const accounts = writable<Account[]>([
-    {
+export const accounts = writable<{[key: number]: Account}>({
+    0: {
         name: "Compte courant",
         initial_money: 345.67,
         current_money: 456.78
-    },
-])
+    }
+})
 export const cashFlows = createCashFlows()
