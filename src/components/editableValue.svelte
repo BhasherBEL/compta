@@ -4,6 +4,11 @@
     export let type = "string"
     export let placeholder;
     export let suggestions = [];
+    export let suggestions_keys = [];
+    console.log(suggestions_keys)
+    if (! suggestions_keys.length){
+        suggestions_keys = Array.from(suggestions)
+    }
     export let value
     export let required = false;
     export let form = null
@@ -17,8 +22,8 @@
 {:else if type === "select"}
     <!--suppress XmlDuplicatedId -->
     <select id="{id}" bind:value={value} {required} {form}>
-        {#each suggestions as suggestion}
-            <option value="{suggestion}">{suggestion}</option>
+        {#each suggestions as _,index}
+            <option value="{suggestions_keys[index]}">{suggestions[index]}</option>
         {/each}
     </select>
 {:else}

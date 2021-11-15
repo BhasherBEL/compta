@@ -16,7 +16,8 @@
         account: {
             name: "Compte",
             type: "select",
-            suggestions: $accounts.map(a => a.name),
+            suggestions: Object.entries($accounts).map(([id, account]) => `${account.name} (${id})`),
+            suggestions_keys: Object.keys($accounts),
             required: true,
         },
         event: {

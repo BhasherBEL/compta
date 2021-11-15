@@ -6,7 +6,8 @@ export type GenericColumn = {
     name: string
     type: "date" | "number" | "select" | "string",
     nature?: "input" | "computed",
-    suggestions?: (string | number)[]
+    suggestions?: (string | number)[];
+    suggestions_keys?: (string|number)[]
     required: boolean
     format?: (a: any, b: any) => string
 }
