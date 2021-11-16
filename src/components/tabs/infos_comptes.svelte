@@ -5,7 +5,7 @@
 
     const columns: {[key in keyof Account]: GenericColumn} = {
         id: {
-            name: "Identifiant",
+            name: "ID",
             type: "string",
             nature: "computed",
             required: false,
@@ -147,7 +147,12 @@
 <br>
 <div class="card">
     <h2>Comptes</h2>
-    <EditableTable dataStore="{accounts}" columns="{columns}" validateChange="{validateAccount}" colgroup="{[{width: '14%', span: '7'}]}"/>
+    <EditableTable
+            dataStore="{accounts}"
+            columns="{columns}"
+            validateChange="{validateAccount}"
+            colgroup="{[{width: '5%', span: '1'}, {width: '14%', span: '6'}]}"
+    />
 <!--    <table class="striped">-->
 <!--        <colgroup>-->
 <!--            <col style="width: 16%;" span="6">-->
