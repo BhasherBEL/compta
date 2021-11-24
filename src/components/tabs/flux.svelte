@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onDestroy } from "svelte"
     import { Account, accounts, CashFlow, cashFlows } from "../../store"
     import { unique, GenericColumn, formatMoney } from "../../utils";
     import EditableTable from "../editableTable.svelte"
@@ -41,7 +42,7 @@
         }
     }
 
-    cashFlows.subscribe((flows) => {
+    const unsubscribe = cashFlows.subscribe((flows) => {
         let trackedKeys: (keyof CashFlow)[] = [ "event", "nature" ]
         columns.event.suggestions = ["Sans event"]
         columns.nature.suggestions = [
@@ -65,6 +66,7 @@
             ).filter(unique)
         }
     })
+    onDestroy(unsubscribe)
 </script>
 <div class="card">
     <h2>Flux d'argent</h2>
