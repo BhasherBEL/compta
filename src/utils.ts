@@ -13,13 +13,18 @@ export type GenericColumn<T> = {
     default?: any
 }
 
-export const formatMoney = (k: number): string => k?.toFixed(2)+" €" || `${k}`
+export const formatMoney = (k: number): string => k?.toLocaleString(
+    undefined,
+    {minimumFractionDigits: 2, maximumFractionDigits: 2}
+)+" €" || `${k}`
+
 export const formatMoneyForExport = (k: number): string => {
     if (k === 0) return ''
     return "<span class='money-export'>"+
-        k?.toFixed(2)
-            .replace(".", ",")+
-        "</span>"
+        k?.toLocaleString(
+            undefined,
+            {minimumFractionDigits: 2, maximumFractionDigits: 2}
+        )+ "</span>"
         || `${k}`
 }
 export const sum = (a: number[]) => a.length ? a.reduce((b, c) => b+c): 0
