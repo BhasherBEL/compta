@@ -71,9 +71,11 @@
             "Transfert d'argent"
         ]
         for (const key of trackedKeys) {
-            columns[key].suggestions.concat(Object.values(flows).map(flow => flow[key])
-                .filter((_, i) => !cashFlowsBeingEdited.includes(i)))
-                .filter(unique)
+            columns[key].suggestions = columns[key].suggestions.concat(Object
+                    .values(flows)
+                    .map(flow => flow[key])
+                    .filter((_, i) => !cashFlowsBeingEdited.includes(i))
+            ).filter(unique)
         }
     })
 </script>
