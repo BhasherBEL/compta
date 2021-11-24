@@ -124,58 +124,11 @@
 <div class="card">
     <h2>Comptes</h2>
     <EditableTable
-            dataStore="{accounts}"
-            columns="{columns}"
-            validateChange="{validateAccount}"
-            colgroup="{[{width: '5%', span: '1'}, {width: '14%', span: '6'}]}"
+        dataStore="{accounts}"
+        columns="{columns}"
+        validateDelete="{validateDelete}"
+        colgroup="{[{width: '16%', span: '6'}]}"
     />
-<!--    <table class="striped">-->
-<!--        <colgroup>-->
-<!--            <col style="width: 16%;" span="6">-->
-<!--        </colgroup>-->
-<!--        <tr>-->
-<!--            {#each Object.entries(columns) as [_, item]}-->
-<!--                <th>{item.name}</th>-->
-<!--            {/each}-->
-<!--        </tr>-->
-<!--        {#each Object.entries($accounts) as [key, account]}-->
-<!--            <tr>-->
-<!--                {#each Object.entries(columns) as [prop, item]}-->
-<!--                    <td>-->
-<!--                        {item.format ? item.format(account[prop], account) : account[prop]}-->
-<!--                    </td>-->
-<!--                {/each}-->
-<!--                <th class="grouped gapless">-->
-<!--                    <button class="button outline icon-only"-->
-<!--                        on:click={() => {}}>-->
-<!--                        <Icon icon="pencil"/>-->
-<!--                    </button>-->
-<!--                    <button class="button outline icon-only"-->
-<!--                       on:click={() => {}}>-->
-<!--                        <Icon icon="close"/>-->
-<!--                    </button>-->
-<!--                </th>-->
-<!--            </tr>-->
-<!--        {/each}-->
-<!--        <tr>-->
-<!--            <form id="account-new" on:submit|preventDefault={addNewAccount}></form>-->
-<!--            {#each Object.entries(columns) as [key, item]}-->
-<!--                <td>-->
-<!--                {#if item.nature === "input"}-->
-<!--                    <EditableValue bind:value={newAccount[key]} type="{item.type}" placeholder="{item.name}" required="{item.required}" form="account-new"/>-->
-<!--                    {:else }-->
-<!--                    <i class="text-grey">Valeur calculée</i>-->
-<!--                    {/if}-->
-<!--                </td>-->
-<!--                {/each}-->
-<!--            <td>-->
-<!--                <label class="button icon-only">-->
-<!--                    <input type="submit" class="is-hidden" form="account-new">-->
-<!--                    <Icon icon="plus"/>-->
-<!--                </label>-->
-<!--            </td>-->
-<!--        </tr>-->
-<!--    </table>-->
 </div>
 
 <style>
