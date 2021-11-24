@@ -3,7 +3,7 @@ import { Writable, writable } from "svelte/store"
 export type CashFlow = {
     date: string, // YYYY-MM-DD
     amount: number,
-    account: string,
+    account: number,
     event: string,
     nature: string,
     details: string,
