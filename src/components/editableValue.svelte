@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { v4 as v4uuid } from "uuid"
 
     export let type = "string"
