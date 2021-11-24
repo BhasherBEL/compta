@@ -5,7 +5,6 @@
     export let placeholder;
     export let suggestions = [];
     export let suggestions_keys = [];
-    console.log(suggestions_keys)
     if (! suggestions_keys.length){
         suggestions_keys = Array.from(suggestions)
     }
