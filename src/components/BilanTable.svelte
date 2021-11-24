@@ -11,8 +11,6 @@
         expense?: number
     }
 
-    let copied: boolean = false
-
     function generateRows(data: Object): {rows: Row[], income:number, expense: number} {
         let rows: Row[] = []
         let [income, expense] = [0,0]
@@ -39,10 +37,7 @@
 
     function copyTable() {
         const table = document.getElementById(id)
-        navigator.clipboard.writeText(table.innerText).then(() => {
-            copied = true
-            setTimeout(() => {copied = false}, 500)
-        }, () => {
+        navigator.clipboard.writeText(table.innerText).catch(() => {
             console.log("An error appended")
         })
     }
@@ -80,6 +75,6 @@
 <style>
   button:active {
     background-color: unset;
-    border-color: var(--color-lightGrey)
+    border-color: var(--color-lightGrey);
   }
 </style>

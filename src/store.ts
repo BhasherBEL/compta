@@ -1,17 +1,17 @@
 import { Writable, writable } from "svelte/store"
 
+export type IndexedObjectData<T> = {[key: string]: T}
+
 export type CashFlow = {
     date: string, // YYYY-MM-DD
     amount: number,
-    account: number,
+    account: string,
     event: string,
     nature: string,
     details: string,
     ref: string,
     note: string
 }
-
-export type IndexedObjectData<T> = {[key: number]: T}
 
 export type Account = {
     name: string,
@@ -24,7 +24,7 @@ export type Account = {
 
 export type IndexedObjectStore<T> = Writable<T> & {
     add: (arg0: T) => void;
-    remove: (arg0: number) => void;
+    remove: (arg0: string) => void;
 }
 
 export const infos = writable({
@@ -40,12 +40,12 @@ export const infos = writable({
 })
 
 function createObjectStore<DataType>(template: IndexedObjectData<DataType>) {
-    const store: Writable<object> = writable(template)
+    const store = writable(template)
     return {
         subscribe: store.subscribe,
         update: store.update,
         set: store.set,
-        add: (newData) => {
+        add: (newData: DataType) => {
             store.update((data) => {
                 let key = 0
                 while (data[key] !== undefined) {
@@ -55,7 +55,7 @@ function createObjectStore<DataType>(template: IndexedObjectData<DataType>) {
                 return data
             })
         },
-        remove: (i: number) => store.update(d => {delete d[i]; return d})
+        remove: (i: string) => store.update(d => {delete d[i]; return d})
     }
 }
 
@@ -63,7 +63,7 @@ export const cashFlows = createObjectStore({
     0: {
         date: "2021-06-18",
         amount: -5.25,
-        account: 0,
+        account: "0",
         event: "Sans event",
         nature: "Fonctionnement hors évènement",
         details: "Frais de gestion de compte",
@@ -72,7 +72,7 @@ export const cashFlows = createObjectStore({
     }, 1: {
         date: "2021-06-19",
         amount: -3.89,
-        account: 0,
+        account: "0",
         event: "Sans event",
         nature: "Fonctionnement hors évènement",
         details: "Frais de carte de débit",
@@ -81,7 +81,7 @@ export const cashFlows = createObjectStore({
     }, 2: {
         date: "2021-06-24",
         amount: -41.58,
-        account: 0,
+        account: "0",
         event: "Sans event",
         nature: "Fonctionnement hors évènement",
         details: "Matériel, technique et autres frais",
@@ -89,7 +89,7 @@ export const cashFlows = createObjectStore({
         note: "Gel hydroalcoolique",
     }, 3: {
         date: "2021-09-17",
-        account: 0,
+        account: "0",
         amount: 100,
         event: "Sans event",
         nature: "Fonctionnement hors évènement",

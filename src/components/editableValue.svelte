@@ -2,13 +2,13 @@
     import { v4 as v4uuid } from "uuid"
 
     export let type = "string"
-    export let placeholder;
+    export let placeholder: string;
     export let suggestions = [];
     export let suggestions_keys = [];
     if (! suggestions_keys.length){
         suggestions_keys = Array.from(suggestions)
     }
-    export let value
+    export let value: any
     export let required = false;
     export let form = null
 

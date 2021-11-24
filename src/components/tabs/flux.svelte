@@ -14,7 +14,7 @@
         account: {
             name: "Compte",
             type: "select",
-            suggestions: Object.entries($accounts).map(([id, account]) => account.name),
+            suggestions: Object.entries($accounts).map(([_, account]) => account.name),
             suggestions_keys: Object.keys($accounts),
             required: true,
             format: (id, _, __) => $accounts[id].name
@@ -41,19 +41,7 @@
         }
     }
 
-    let newCashFlow = {}
-    let cashFlowsBeingEdited: number[] = []
-
-    function resetNewCashFlow() {
-        newCashFlow = {
-            date: new Date().toISOString().substring(0, 10),
-            account: $accounts[0].name || undefined
-        }
-    }
-
-    resetNewCashFlow()
-
-    cashFlows.subscribe((flows: typeof cashFlows) => {
+    cashFlows.subscribe((flows) => {
         let trackedKeys: (keyof CashFlow)[] = [ "event", "nature" ]
         columns.event.suggestions = ["Sans event"]
         columns.nature.suggestions = [
@@ -74,7 +62,6 @@
             columns[key].suggestions = columns[key].suggestions.concat(Object
                     .values(flows)
                     .map(flow => flow[key])
-                    .filter((_, i) => !cashFlowsBeingEdited.includes(i))
             ).filter(unique)
         }
     })

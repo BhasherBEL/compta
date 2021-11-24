@@ -72,7 +72,7 @@
         },
     }
 
-    function validateDelete(account: Account, id: string): boolean {
+    function validateDelete(_: Account, id: string): boolean {
         return ! Object.values($cashFlows).some((c) => c.account === id)
     }
 </script>

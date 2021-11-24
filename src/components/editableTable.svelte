@@ -6,11 +6,11 @@
     export let colgroup = []
     export let columns: {[index: string]: GenericColumn<any>}
     export let dataStore: IndexedObjectStore<object>
-    export let validateDelete: (any, string) => boolean = (_, __) => false
+    export let validateDelete: (arg0: any, arg1: string) => boolean = (_, __) => false
     let dataBeingEdited = []
     let newData = {}
 
-    function toggleEditable(index: number) {
+    function toggleEditable(index: string) {
         if (dataBeingEdited.includes(index)) {
             dataBeingEdited = dataBeingEdited.filter((v, _) => v
                 !== index)

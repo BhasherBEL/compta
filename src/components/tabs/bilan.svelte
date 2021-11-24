@@ -1,6 +1,6 @@
 <script lang="ts">
     import BilanTable from "../BilanTable.svelte";
-    import { cashFlows, CashFlow, IndexedObjectData } from "../../store";
+    import { CashFlow, cashFlows, IndexedObjectData } from "../../store";
     import { unique } from "../../utils";
 
     function convertCashFlows(data: CashFlow[]) {
