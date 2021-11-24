@@ -1,19 +1,20 @@
-export function unique(value: any, index: number, self: Array<any>) {
+export function unique(value: any, index: number, self: any[]): boolean {
     return self.indexOf(value) === index;
 }
 
-export type GenericColumn = {
+export type GenericColumn<T> = {
     name: string
-    type: "date" | "number" | "select" | "string",
-    nature?: "input" | "computed",
-    suggestions?: (string | number)[];
+    type: "date" | "number" | "select" | "string"
+    nature?: "input" | "computed"
+    suggestions?: (string | number)[]
     suggestions_keys?: (string|number)[]
     required: boolean
-    format?: (a: any, b: any, c: any) => string
+    format?: (a: any, b: T, c: any) => string
+    default?: any
 }
 
-export const formatMoney = (k: number): string => k === 0 ? '' : k?.toFixed(2)+" €" || `${k}`
-export const formatMoneyForExport = function (k: number): string {
+export const formatMoney = (k: number): string => k?.toFixed(2)+" €" || `${k}`
+export const formatMoneyForExport = (k: number): string => {
     if (k === 0) return ''
     return "<span class='money-export'>"+
         k?.toFixed(2)

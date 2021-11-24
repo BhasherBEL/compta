@@ -11,8 +11,9 @@ export type CashFlow = {
     note: string
 }
 
+export type IndexedObjectData<T> = {[key: number]: T}
+
 export type Account = {
-    id: string,
     name: string,
     initial_money: number,
     income?: undefined,
@@ -21,56 +22,9 @@ export type Account = {
     current_money: number
 }
 
-function createCashFlows() {
-    const {
-        subscribe,
-        update,
-        set,
-    }: Writable<{[key: number]: CashFlow}> = writable({
-        0: {
-            date: "2021-06-18",
-            amount: -5.25,
-            account: "Compte courant",
-            event: "Sans event",
-            nature: "Fonctionnement hors évènement",
-            details: "Frais de gestion de compte",
-            ref: "BNP0008",
-            note: "",
-        }, 1: {
-            date: "2021-06-19",
-            amount: -3.89,
-            account: "Compte courant",
-            event: "Sans event",
-            nature: "Fonctionnement hors évènement",
-            details: "Frais de carte de débit",
-            ref: "BNP0009",
-            note: "",
-        }, 2: {
-            date: "2021-06-24",
-            amount: -41.58,
-            account: "Compte courant",
-            event: "Sans event",
-            nature: "Fonctionnement hors évènement",
-            details: "Matériel, technique et autres frais",
-            ref: "BNP0021",
-            note: "Gel hydroalcoolique",
-        }, 3: {
-            date: "2021-09-17",
-            account: "Compte courant",
-            amount: 100,
-            event: "Sans event",
-            nature: "Fonctionnement hors évènement",
-            details: "Subsides et financements",
-            ref: "BNP0023",
-            note: "Subsides Q1"
-        }
-    })
-    return {
-        subscribe,
-        push: (elem: CashFlow) => update((c) => [ ...c, elem ]),
-        remove: (i: number) => update(c => c.filter((_, index) => i !== index)),
-        set,
-    }
+export type IndexedObjectStore<T> = Writable<T> & {
+    add: (arg0: T) => void;
+    remove: (arg0: number) => void;
 }
 
 export const infos = writable({
@@ -84,11 +38,71 @@ export const infos = writable({
     date_end: undefined,
     address: undefined,
 })
-export const accounts = writable<{[key: number]: Account}>({
+
+function createObjectStore<DataType>(template: IndexedObjectData<DataType>) {
+    const store: Writable<object> = writable(template)
+    return {
+        subscribe: store.subscribe,
+        update: store.update,
+        set: store.set,
+        add: (newData) => {
+            store.update((data) => {
+                let key = 0
+                while (data[key] !== undefined) {
+                    key++
+                }
+                data[key] = newData
+                return data
+            })
+        },
+        remove: (i: number) => store.update(d => {delete d[i]; return d})
+    }
+}
+
+export const cashFlows = createObjectStore({
+    0: {
+        date: "2021-06-18",
+        amount: -5.25,
+        account: 0,
+        event: "Sans event",
+        nature: "Fonctionnement hors évènement",
+        details: "Frais de gestion de compte",
+        ref: "BNP0008",
+        note: "",
+    }, 1: {
+        date: "2021-06-19",
+        amount: -3.89,
+        account: 0,
+        event: "Sans event",
+        nature: "Fonctionnement hors évènement",
+        details: "Frais de carte de débit",
+        ref: "BNP0009",
+        note: "",
+    }, 2: {
+        date: "2021-06-24",
+        amount: -41.58,
+        account: 0,
+        event: "Sans event",
+        nature: "Fonctionnement hors évènement",
+        details: "Matériel, technique et autres frais",
+        ref: "BNP0021",
+        note: "Gel hydroalcoolique",
+    }, 3: {
+        date: "2021-09-17",
+        account: 0,
+        amount: 100,
+        event: "Sans event",
+        nature: "Fonctionnement hors évènement",
+        details: "Subsides et financements",
+        ref: "BNP0023",
+        note: "Subsides Q1"
+    }
+})
+
+export const accounts = createObjectStore({
     0: {
         name: "Compte courant",
         initial_money: 345.67,
         current_money: 456.78
     }
 })
-export const cashFlows = createCashFlows()

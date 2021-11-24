@@ -1,13 +1,12 @@
 <script lang="ts">
-    import type { Writable } from "svelte/store"
+    import type { IndexedObjectStore } from "../store"
     import type { GenericColumn } from "../utils"
     import EditableValue from "./editableValue.svelte"
     import Icon from "./icon.svelte"
     export let colgroup = []
-    export let columns: {[index: string]: GenericColumn}
-    export let dataStore: Writable<Object>;
-    export let validateChange: (arg0: Object) => boolean
-    export let addNew: (arg0: Object) => void
+    export let columns: {[index: string]: GenericColumn<any>}
+    export let dataStore: IndexedObjectStore<object>
+    export let validateDelete: (any, string) => boolean = (_, __) => false
     let dataBeingEdited = []
     let newData = {}
 
@@ -19,9 +18,25 @@
             dataBeingEdited = [ ...dataBeingEdited, index ]
         }
     }
+
+    function validateChange(data: Object): boolean {
+        for (let k in columns){
+            if (columns[k].required && (data[k] === undefined || data[k] === "")){
+                return false
+            }
+        }
+        return true
+    }
+
+    function addNew() {
+        let thisNewData = Object.assign({}, newData)
+        dataStore.add(thisNewData)
+        newData = {}
+    }
+
 </script>
 
-<table class="striped" width="90%">
+<table class="striped">
     <colgroup>
         {#each colgroup as col}
             <col style="width: {col.width};" span="{col.span}">
@@ -37,44 +52,64 @@
             {#each Object.entries(columns) as [key, column]}
                 <td>
                     {#if (dataBeingEdited.includes(index))}
-                        <EditableValue
-                            bind:value={$dataStore[index][key]}
-                            placeholder={column.name}
-                            type={column.type}
-                            suggestions={column.suggestions || []}
-                            suggestions_keys={column.suggestions_keys || []}
-                            required={column.required}
-                        />
+                        {#if column.nature === "computed"}
+                            <i class="text-grey">Valeur calculée</i>
+                        {:else}
+                            <EditableValue
+                                bind:value={$dataStore[index][key]}
+                                placeholder={column.name}
+                                type={column.type}
+                                suggestions={column.suggestions || []}
+                                suggestions_keys={column.suggestions_keys || []}
+                                required={column.required}
+                            />
+                        {/if}
                     {:else}
-                        {column.format ? column.format(data[key], data, index) : data[key]}
+                        {@html column.format ? column.format(data[key], data, index) : data[key]}
                     {/if}
                 </td>
             {/each}
-            <th class="grouped gapless pull-right">
-                <button class="button outline icon-only" on:click={() => toggleEditable(index)} disabled="{!validateChange(data)}">
+            <td class="grouped gapless pull-right">
+                <button
+                        class="button outline icon-only"
+                        on:click={() => toggleEditable(index)}
+                        disabled="{!validateChange(data)}"
+                >
                     <Icon icon="pencil"/>
                 </button>
-                <button class="button outline icon-only"
-                        on:click={() => $dataStore.remove(index)}>
+                <button
+                        class="button outline icon-only"
+                        on:click={() => dataStore.remove(index)}
+                        disabled="{validateDelete(data, index)}"
+                        title="Test"
+                >
                     <Icon icon="close"/>
                 </button>
-            </th>
+            </td>
         </tr>
     {/each}
     <tr>
-        <form id="new-data" on:submit|preventDefault={addNew}></form>
+        <form id="new-data" on:submit|preventDefault={() => addNew()}></form>
         {#each Object.entries(columns) as [key, item]}
             <td>
-            {#if item.nature === "input"}
-                <EditableValue bind:value={newData[key]} type="{item.type}" placeholder="{item.name}" required="{item.required}" form="new-data-"/>
-                {:else }
+            {#if item.nature === "computed"}
                 <i class="text-grey">Valeur calculée</i>
-                {/if}
+            {:else }
+                <EditableValue
+                        bind:value={newData[key]}
+                        type={item.type}
+                        placeholder={item.name}
+                        required={item.required}
+                        form="new-data"
+                        suggestions={item.suggestions || []}
+                        suggestions_keys={item.suggestions_keys || []}
+                />
+            {/if}
             </td>
-            {/each}
+        {/each}
         <td>
-            <label class="button icon-only">
-                <input type="submit" class="is-hidden" form="account-new">
+            <label class="button icon-only pull-right">
+                <input type="submit" class="is-hidden" form="new-data">
                 <Icon icon="plus"/>
             </label>
         </td>

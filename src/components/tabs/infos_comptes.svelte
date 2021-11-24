@@ -3,14 +3,7 @@
     import EditableTable from '../editableTable.svelte'
     import { GenericColumn, formatMoney, sum } from "../../utils"
 
-    const columns: {[key in keyof Account]: GenericColumn} = {
-        id: {
-            name: "ID",
-            type: "string",
-            nature: "computed",
-            required: false,
-            format: (_, __, id) => id
-        },
+    const columns: {[key in keyof Account]: GenericColumn<Account>} = {
         name: {
             name: "Nom du compte",
             type: "string",
@@ -29,22 +22,24 @@
             type: "number",
             nature: "computed",
             required: false,
-            format: (_, account) => formatMoney(sum(
-                Object
-                    .values($cashFlows)
-                    .filter(k => k.account === account.name && k.amount > 0)
-                    .map(k => k.amount)
-            ))
+            format: (_, __, id) => {
+                return formatMoney(sum(
+                    Object
+                        .values($cashFlows)
+                        .filter(k => k.account == id && k.amount > 0)
+                        .map(k => k.amount),
+                ))
+            }
         },
         expense: {
             name: "Sortie",
             type: "number",
             nature: "computed",
             required: false,
-            format: (_, account) => formatMoney(sum(
+            format: (_, __, id) => formatMoney(sum(
                 Object
                     .values($cashFlows)
-                    .filter(k => k.account === account.name && k.amount < 0)
+                    .filter(k => k.account == id && k.amount < 0)
                     .map(k => k.amount)
             ))
         },
@@ -53,10 +48,10 @@
             type: "number",
             nature: "computed",
             required: false,
-            format: (_, account) => formatMoney(sum(
+            format: (_, __, id) => formatMoney(sum(
                 Object
                     .values($cashFlows)
-                    .filter(k => k.account === account.name)
+                    .filter(k => k.account == id)
                     .map(k => k.amount)
             ))
         },
@@ -65,40 +60,21 @@
             type: "number",
             nature: "input",
             required: true,
-            format: formatMoney
+            format: (amount, account, id) => {
+                let calculated = sum(
+                    Object
+                        .values($cashFlows)
+                        .filter(k => k.account == id)
+                        .map(k => k.amount)
+                ) + account.initial_money
+                return `<span class="${Math.round(calculated*100) == Math.round(account.current_money*100) ? '' : 'text-error'}">${formatMoney(amount)}</span>`
+            }
         },
     }
 
-    let accountsBeingEdited: number[] = []
-    let newAccount= {};
-
-
-    function toggleEditable(index: number) {
-        if (accountsBeingEdited.includes(index)) {
-            accountsBeingEdited = accountsBeingEdited.filter((v, _) => v
-                !== index)
-        } else {
-            accountsBeingEdited = [ ...accountsBeingEdited, index ]
-        }
+    function validateDelete(account: Account, id: string): boolean {
+        return ! Object.values($cashFlows).some((c) => c.account === id)
     }
-
-    function validateAccount(data: Object): boolean {
-        for (let k in columns){
-            if (columns[k].required && (data[k] === undefined || data[k] === "")){
-                return false
-            }
-        }
-        return true
-    }
-
-    function addNewAccount() {
-        let key = 0
-        while ($accounts[key] !== undefined) {
-            key++
-        }
-        accounts.update((a) => {a[key] = newAccount as Account; return a})
-    }
-
 </script>
 
 <div class="card">

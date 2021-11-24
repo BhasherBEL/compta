@@ -1,6 +1,6 @@
 <script lang="ts">
     import BilanTable from "../BilanTable.svelte";
-    import { cashFlows, CashFlow } from "../../store";
+    import { cashFlows, CashFlow, IndexedObjectData } from "../../store";
     import { unique } from "../../utils";
 
     function convertCashFlows(data: CashFlow[]) {
@@ -18,7 +18,7 @@
         return dict
     }
 
-    function generateByEvent(data: typeof cashFlows): Object {
+    function generateByEvent(data: IndexedObjectData<CashFlow>): Object {
         const events = Object.values(data).map(n => n.event).filter(unique)
         let dict = {}
         for (let event of events) {
@@ -34,7 +34,7 @@
         return dict
     }
 
-    function generateByNature(data: typeof cashFlows) {
+    function generateByNature(data: IndexedObjectData<CashFlow>) {
         let natures = Object.values(data).map(n => n.nature).filter(unique)
         let dict = {}
         for (let nature of natures) {
