@@ -6,7 +6,7 @@
     export let colgroup = []
     export let columns: {[index: string]: GenericColumn<any>}
     export let dataStore: IndexedObjectStore<object>
-    export let validateDelete: (arg0: any, arg1: string) => boolean = (_, __) => false
+    export let validateDelete: (arg0: any, arg1: string) => boolean = (_, __) => true
     let dataBeingEdited = []
     let newData = {}
 
@@ -80,7 +80,7 @@
                 <button
                         class="button outline icon-only"
                         on:click={() => dataStore.remove(index)}
-                        disabled="{validateDelete(data, index)}"
+                        disabled="{!validateDelete(data, index)}"
                         title="Test"
                 >
                     <Icon icon="close"/>
