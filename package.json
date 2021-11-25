@@ -1,6 +1,6 @@
 {
   "name": "compta",
-  "version": "0.2",
+  "version": "0.2.1",
   "private": true,
   "scripts": {
     "build": "rollup -c",
@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-typescript": "^8.0.0",
     "@tsconfig/svelte": "^2.0.0",
