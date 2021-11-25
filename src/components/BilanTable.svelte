@@ -33,7 +33,7 @@
         return {rows: rows, income: income, expense: expense}
     }
 
-    let { rows: rows, expense: output, income: input } = generateRows(data)
+    $: generated = generateRows(data)
 
     function copyTable() {
         const table = document.getElementById(id)
@@ -50,7 +50,7 @@
         <th>Entrée</th>
         <th>Total général</th>
     </tr>
-    {#each rows as item}
+    {#each generated.rows as item}
         <tr>
             <td>{item.category}</td>
             <td>{@html formatMoneyForExport(item.expense)}</td>
@@ -62,9 +62,9 @@
         <th>
             Grand total
         </th>
-        <th>{@html formatMoneyForExport(output)}</th>
-        <th>{@html formatMoneyForExport(input)}</th>
-        <th>{@html formatMoneyForExport(output+input)}</th>
+        <th>{@html formatMoneyForExport(generated.expense)}</th>
+        <th>{@html formatMoneyForExport(generated.income)}</th>
+        <th>{@html formatMoneyForExport(generated.expense+generated.income)}</th>
     </tr>
 </table>
 <button class="button icon-only pull-right" on:click={copyTable}>
