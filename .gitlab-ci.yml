@@ -44,7 +44,7 @@ rollup:
   script:
     - node_modules/.bin/rollup --silent --compact -c
 
-sveltte-check:
+svelte-check:
   stage: test
   script:
     - npm run svelte-check

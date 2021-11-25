@@ -1,24 +1,8 @@
-FROM node:16-alpine
-
-# Install non-node dependencies
-RUN apk add gzip
+FROM busybox:stable
 
 # Create app directory.
 WORKDIR /usr/src/app
 # Install app dependencies.
-COPY package*.json ./
-RUN npm ci --only=production
+COPY public/ /www/
 
-# Copy app sources.
-# Copying package*.json and install dependencies first allows us to take
-# advantage of docker layers cache.
-# See https://bitjudo.com/blog/2014/03/13/building-efficient-dockerfiles-node-dot-js/
-COPY . .
-RUN ./node_modules/.bin/rollup --compact --silent -c
-
-# TODO: Support --http2
-ENTRYPOINT [ "./node_modules/.bin/sirv", "public", \
-    "--no-clear", "--gzip", \
-    "--port", "80", \
-    "--host", "compta.louvainlinux.org" \
-]
+CMD ["busybox", "httpd", "-p", "0.0.0.0:8080", "-f", "-v", "-h", "/www"]
