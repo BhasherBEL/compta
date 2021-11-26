@@ -34,6 +34,11 @@
         newData = {}
     }
 
+    function computeAndFormat(column, key, data, index): string {
+        let value = column.compute ? column.compute(data[key], data, index) : data[key]
+        return (column.format ? column.format(value, data, index) : value)
+    }
+
 </script>
 
 <table class="striped">
@@ -52,7 +57,7 @@
             {#each Object.entries(columns) as [key, column]}
                 <td>
                     {#if (dataBeingEdited.includes(index))}
-                        {#if column.nature === "computed"}
+                        {#if column.compute}
                             <i class="text-grey">Valeur calculée</i>
                         {:else}
                             <EditableValue
@@ -65,7 +70,7 @@
                             />
                         {/if}
                     {:else}
-                        {@html column.format ? column.format(data[key], data, index) : data[key]}
+                        {@html computeAndFormat(column, key, data, index)}
                     {/if}
                 </td>
             {/each}
@@ -92,7 +97,7 @@
         <form id="new-data" on:submit|preventDefault={() => addNew()}></form>
         {#each Object.entries(columns) as [key, item]}
             <td>
-            {#if item.nature === "computed"}
+            {#if item.compute}
                 <i class="text-grey">Valeur calculée</i>
             {:else }
                 <EditableValue
