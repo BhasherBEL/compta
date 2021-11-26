@@ -32,7 +32,12 @@
             suggestions: [],
             required: true
         },
-        details: { name: "Détails", type: "string", required: true },
+        details: {
+            name: "Détails",
+            type: "string",
+            suggestions: [],
+            required: true
+        },
         ref: { name: "Référence", type: "string", required: true },
         note: {
             name: "Remarque",
@@ -43,7 +48,7 @@
     }
 
     const unsubscribe = cashFlows.subscribe((flows) => {
-        let trackedKeys: (keyof CashFlow)[] = [ "event", "nature" ]
+        let trackedKeys: (keyof CashFlow)[] = [ "event", "nature", "details"]
         columns.event.suggestions = ["Sans event"]
         columns.nature.suggestions = [
             "Recettes hors événement",
