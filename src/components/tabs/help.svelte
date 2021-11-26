@@ -3,26 +3,25 @@
 </script>
 
 <div class="card">
-    <h2>
-        Les différentes vues disponibles
-    </h2>
     <h3>
+        Les différents onglets disponibles
+    </h3>
+    <h4>
         Infos et comptes
-    </h3>
+    </h4>
     <p>
-        Permet de remplir les informations générales concernant votre
-        kot-à-projet ainsi que les différents comptes tenu
-        par le projet (compte bancaire courant, caisse, ...).<br>
+        Cet onglet permet de remplir les informations générales concernant votre
+        kot-à-projet ainsi que les différents comptes tenus
+        par le projet (compte courant, épargne, caisse, ...).<br>
         Pour chaque compte en banque, il est possible de définir le montant de
-        départ ainsi que le montant réel sur
-        compte.
+        départ ainsi que le montant réel sur compte.<br>
         Si le montant réel ne correspond pas au montant calculé après que les
-        différents flux d'argent aient été ajouté
-        au montant de départ, un avertissement s'affiche.
+        différents flux d'argent aient été ajouté au montant de départ,
+        un avertissement s'affiche.
     </p>
-    <h3>
+    <h4>
         Flux d'argent
-    </h3>
+    </h4>
     <p>
         Vous pouvez créer, éditer et supprimer les différentes entrées et
         sorties d'argent dans cet onglet.<br>
@@ -34,14 +33,24 @@
         prochaines créations de flux.
         Les autres champs sont totalement libres.
     </p>
-    <h3>
+    <h4>
         Bilans détaillés
-    </h3>
+    </h4>
     <p>
         Vous pouvez consulter les bilans de vos comptes par évènements et par
         nature, présenté de la même façon que dans l'Excel de trésorerie. <br>
         Vous pouvez également utiliser le bouton
         <Icon icon="clipboard"/> afin de pouvoir facilement copier les tableaux
         dans l'Excel de Bilan.
+    </p>
+    <h3>
+        Besoin d'aide ?
+    </h3>
+    <p>
+        En cas de bug ou soucis technique rencontré durant l'utilisation de
+        cette application, n'hésitez pas à contacter le Louvain-li-Nux,
+        par <a href="mailto:info@louvainlinux.org">mail</a>,
+        sur <a href="https://www.facebook.com/LouvainliNuxKap">Facebook</a>
+        ou par <a href="https://discord.gg/JFRT2f3pEV">Discord</a>.
     </p>
 </div>
