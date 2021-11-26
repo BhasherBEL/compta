@@ -37,10 +37,10 @@
     <div class="nav-left">
         <div class="tabs">
             {#each tabs as tab}
-                <a id="tab-{tab.name}"
-                   href="#tab-{tab.name}"
+                <a href="#"
                    class="{tab.component === current_tab ? 'active' : ''}"
-                   on:click="{() => current_tab = tab.component}">
+                   on:click="{() => current_tab = tab.component}"
+                >
                     {tab.name}
                 </a>
             {/each}
