@@ -70,13 +70,20 @@
         Créé par le
         <a href="https://louvainlinux.org" target="_blank">
             Louvain-li-Nux
+        </a><br>
+        <a href="https://gitlab.com/louvainlinux/compta/" target="_blank">
+            Voir le code source
         </a>
     </span>
     <span>Outil de gestion de trésorerie destiné aux KAP's</span>
-    <span>
-        <a href="https://gitlab.com/louvainlinux/compta/" target="_blank">
-            Voir le code source
-        </a><br>Version {process.env.npm_package_version}
+    <span class="text-right">
+        Version {process.env.npm_package_version}<br>
+        <a
+            href="https://gitlab.com/louvainlinux/compta/-/releases"
+            target="_blank"
+        >
+            Voir les notes de mise à jour
+        </a>
     </span>
 </footer>
 
