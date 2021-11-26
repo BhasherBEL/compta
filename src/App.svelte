@@ -6,7 +6,6 @@
     import help from "./components/tabs/help.svelte"
     import infos_comptes from "./components/tabs/infos_comptes.svelte";
     import {infos, cashFlows, accounts} from "./store"
-    import {version as VERSION} from "../package.json"
 
     let current_tab = infos_comptes
 
@@ -77,7 +76,7 @@
     <span>
         <a href="https://gitlab.com/louvainlinux/compta/" target="_blank">
             Voir le code source
-        </a><br>Version {VERSION}
+        </a><br>Version {process.env.npm_package_version}
     </span>
 </footer>
 
