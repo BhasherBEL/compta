@@ -13,12 +13,7 @@ export type GenericColumn<T> = {
     default?: any
 }
 
-export const formatMoney = (k: number): string => k?.toLocaleString(
-    undefined,
-    {minimumFractionDigits: 2, maximumFractionDigits: 2}
-)+" €" || `${k}`
-
-export const formatMoneyForExport = (k: number): string => {
+export const formatMoney = (k: number): string => {
     if (k === 0) return ''
     return "<span class='money-export'>"+
         k?.toLocaleString(
