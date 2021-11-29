@@ -64,7 +64,8 @@
                         .filter(k => k.account == id)
                         .map(k => k.amount)
                 ) + account.initial_money
-                return `<span class="${Math.round(calculated*100) == Math.round(account.current_money*100) ? '' : 'text-error'}">${formatMoney(amount)}</span>`
+                let okay = Math.round(calculated*100) == Math.round(account.current_money*100)
+                return `<span class="${okay ? '' : 'text-error'}">${formatMoney(amount)} ${okay ? '' : `(écart de ${formatMoney(calculated - account.current_money)})`}</span>`
             }
         },
     }
