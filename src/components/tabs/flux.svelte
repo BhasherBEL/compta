@@ -1,10 +1,10 @@
 <script lang="ts">
     import { onDestroy } from "svelte"
-    import { Account, accounts, CashFlow, cashFlows } from "../../store"
+    import { accounts, CashFlow, cashFlows } from "../../store"
     import { unique, GenericColumn, formatMoney } from "../../utils";
     import EditableTable from "../editableTable.svelte"
 
-    const columns: {[key in keyof CashFlow]: GenericColumn<Account>} = {
+    const columns: {[key in keyof CashFlow]: GenericColumn<CashFlow>} = {
         date: { name: "Date", type: "date", required: true },
         amount: {
             name: "Montant",

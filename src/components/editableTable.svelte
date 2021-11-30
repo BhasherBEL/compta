@@ -34,7 +34,7 @@
         newData = {}
     }
 
-    function computeAndFormat(column, key, data, index): string {
+    function computeAndFormat<T>(column: GenericColumn<T>, key: string, data: T, index: string): string {
         let value = column.compute ? column.compute(data[key], data, index) : data[key]
         return (column.format ? column.format(value, data, index) : value)
     }
