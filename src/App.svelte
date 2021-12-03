@@ -5,7 +5,8 @@
     import flux from "./components/tabs/flux.svelte";
     import help from "./components/tabs/help.svelte"
     import infos_comptes from "./components/tabs/infos_comptes.svelte";
-    import {infos, cashFlows, accounts} from "./store"
+    import { exportJSON, importJSON } from "./io"
+    import {infos} from "./store"
 
     let current_tab = infos_comptes
 
@@ -17,16 +18,11 @@
     ]
 
     function importFile(f: Event){
-        (f.target as HTMLInputElement).files[0].text().then((text: string) => {
-            const data = JSON.parse(text)
-            infos.set(data.infos)
-            cashFlows.set(data.cashFlows)
-            accounts.set(data.accounts)
-        })
+        (f.target as HTMLInputElement).files[0].text().then(importJSON)
     }
 
     function saveFile(){
-        let data = JSON.stringify({infos: $infos, cashFlows: $cashFlows, accounts: $accounts})
+        const data = exportJSON()
         let blob = new Blob([data], {type: "application/json"})
         saveAs(blob, `Trésorerie_${$infos.orga || "KAP"}_${$infos.year || "ANNEE"}_${$infos.quarter || "QUADRI"}.json`)
     }
