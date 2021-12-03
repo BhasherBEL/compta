@@ -1,12 +1,10 @@
 <script lang="ts">
-    import { saveAs } from 'file-saver';
     import Icon from "./components/icon.svelte";
     import bilan from "./components/tabs/bilan.svelte";
     import flux from "./components/tabs/flux.svelte";
     import help from "./components/tabs/help.svelte"
     import infos_comptes from "./components/tabs/infos_comptes.svelte";
-    import { exportJSON, importJSON } from "./io"
-    import {infos} from "./store"
+    import { exportFile, importFile } from "./io"
 
     let current_tab = infos_comptes
 
@@ -16,16 +14,6 @@
         { name: "Flux d'argent", component: flux },
         { name: "Bilans détaillés", component: bilan },
     ]
-
-    function importFile(f: Event){
-        (f.target as HTMLInputElement).files[0].text().then(importJSON)
-    }
-
-    function saveFile(){
-        const data = exportJSON()
-        let blob = new Blob([data], {type: "application/json"})
-        saveAs(blob, `Trésorerie_${$infos.orga || "KAP"}_${$infos.year || "ANNEE"}_${$infos.quarter || "QUADRI"}.json`)
-    }
 </script>
 
 <nav class="nav">
@@ -48,7 +36,7 @@
                 <Icon icon="folder-open" size={20}/>
                 <input type="file" accept="application/json" class="button icon-only primary" style="display: none;" on:change={importFile}>
             </label>
-            <button class="button icon-only primary outline button-end" on:click={saveFile}>
+            <button class="button icon-only primary outline button-end" on:click={exportFile}>
                 <Icon color="#ff5b00" icon="download" size={20}/>
             </button>
         </div>

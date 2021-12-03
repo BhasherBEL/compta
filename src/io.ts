@@ -1,3 +1,4 @@
+import { saveAs } from "file-saver"
 import { get } from "svelte/store"
 import { accounts, cashFlows, infos } from "./store"
 
@@ -14,4 +15,15 @@ export function exportJSON(): string {
         cashFlows: get(cashFlows),
         accounts: get(accounts),
     })
+}
+
+export function importFile(f: Event){
+    (f.target as HTMLInputElement).files[0].text().then(importJSON)
+}
+
+export function exportFile(){
+    const data = exportJSON()
+    const blob = new Blob([data], {type: "application/json"})
+    const infosObj = get(infos)
+    saveAs(blob, `Trésorerie_${infosObj.orga || "KAP"}_${infosObj.year || "ANNEE"}_${infosObj.quarter || "QUADRI"}.json`)
 }
