@@ -27,3 +27,15 @@ export function exportFile(){
     const infosObj = get(infos)
     saveAs(blob, `Trésorerie_${infosObj.orga || "KAP"}_${infosObj.year || "ANNEE"}_${infosObj.quarter || "QUADRI"}.json`)
 }
+
+export function shortcutKeyboard(){
+    document.onkeydown = (e) => {
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            exportFile();
+        } if (e.ctrlKey && e.key === 'o') {
+            e.preventDefault();
+            document.getElementById("importButton").click()
+        }
+    }
+}

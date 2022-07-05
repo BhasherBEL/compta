@@ -4,7 +4,8 @@
     import flux from "./components/tabs/flux.svelte";
     import help from "./components/tabs/help.svelte"
     import infos_comptes from "./components/tabs/infos_comptes.svelte";
-    import { exportFile, importFile } from "./io"
+    import { exportFile, importFile, shortcutKeyboard } from "./io"
+    shortcutKeyboard();
 
     let current_tab = infos_comptes
 
@@ -34,7 +35,7 @@
         <div class="myGrouped is-vertical-align">
             <label class="button icon-only primary button-start">
                 <Icon icon="folder-open" size={20}/>
-                <input type="file" accept="application/json" class="button icon-only primary" style="display: none;" on:change={importFile}>
+                <input id="importButton" type="file" accept="application/json" class="button icon-only primary" style="display: none;" on:change={importFile}>
             </label>
             <button class="button icon-only primary outline button-end" on:click={exportFile}>
                 <Icon color="#ff5b00" icon="download" size={20}/>
@@ -43,12 +44,15 @@
     </div>
     <span class="spacer"></span>
 </nav>
+
 <section class="container">
     {#key current_tab}
         <svelte:component this={current_tab}/>
     {/key}
 </section>
+
 <span class="separator"></span>
+
 <footer>
     <span>
         Créé par le
