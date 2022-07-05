@@ -12,8 +12,8 @@
 
     function toggleEditable(index: string) {
         if (dataBeingEdited.includes(index)) {
-            dataBeingEdited = dataBeingEdited.filter((v, _) => v
-                !== index)
+            dataBeingEdited = dataBeingEdited.filter((v, _) => v !== index);
+            dataStore.add(dataStore.remove(index));
         } else {
             dataBeingEdited = [ ...dataBeingEdited, index ]
         }
@@ -79,6 +79,7 @@
                         class="button outline icon-only"
                         on:click={() => toggleEditable(index)}
                         disabled="{!validateChange(data)}"
+                        style="background-color: #feebd4"
                 >
                     <Icon icon="pencil"/>
                 </button>
@@ -86,7 +87,8 @@
                         class="button outline icon-only"
                         on:click={() => dataStore.remove(index)}
                         disabled="{!validateDelete(data, index)}"
-                        title="Test"
+                        title="Supprimer"
+                        style="background-color: #fed4d4"
                 >
                     <Icon icon="close"/>
                 </button>
@@ -113,7 +115,9 @@
             </td>
         {/each}
         <td>
-            <label class="button icon-only pull-right">
+            <label class="button outline icon-only pull-right"
+                   style="background-color: #dfffdf"
+            >
                 <input type="submit" class="is-hidden" form="new-data">
                 <Icon icon="plus"/>
             </label>
