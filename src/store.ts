@@ -25,6 +25,7 @@ export type Account = {
 export type IndexedObjectStore<T> = Writable<T> & {
     add: (arg0: T) => void;
     remove: (arg0: string) => void;
+    swap: (arg0: string) => void;
 }
 
 export const infos = writable({
@@ -55,7 +56,16 @@ function createObjectStore<DataType>(template: IndexedObjectData<DataType>) {
                 return data
             })
         },
-        remove: (i: string) => store.update(d => {delete d[i]; return d})
+        remove: (i: string) => store.update(d => {delete d[i]; return d}),
+        swap: (i: string) => store.update(d => {
+            const newData = d[i];
+            let key = 0
+            while (d[key] !== undefined) {
+                key++
+            }
+            d[key] = newData
+            return d
+        }),
     }
 }
 
@@ -85,11 +95,9 @@ function createCashFlowStore(template: IndexedObjectData<CashFlow>) {
             })
         },
         remove: (i: string) => {
-            let removeData;
             store.update(d => {
                 const resultData: IndexedObjectData<CashFlow> = {};
                 const index: number = +i;
-                removeData = d[i];
                 const keys = [0, 0];
                 while (d[keys[0]] !== undefined) {
                     if (keys[0] === index) {
@@ -102,7 +110,42 @@ function createCashFlowStore(template: IndexedObjectData<CashFlow>) {
                 }
                 return resultData;
             })
-            return removeData;
+        },
+        swap: (i: string) => {
+            store.update((d) => {
+                const sortedData: IndexedObjectData<CashFlow> = {};
+                const reorderedData = d[i];
+                const index: number = +i;
+
+                const keys = [0, 0];
+                let flagIsNotAdded = true;
+
+                while (d[keys[0]] !== undefined) {
+                    const foundWhereRemove = keys[0] === index;
+                    const foundWhereAdd = reorderedData.date < d[keys[0]].date && flagIsNotAdded;
+
+                    if (foundWhereRemove && foundWhereAdd) { // Data at the same place
+                        sortedData[keys[1]] = d[keys[0]];
+                        keys[0]++; keys[1]++;
+
+                    } else {
+                        if (foundWhereRemove) { // Found where remove data
+                            keys[0]++;
+
+                        } else if (foundWhereAdd) { // Found where add data
+                            sortedData[keys[1]] = reorderedData;
+                            flagIsNotAdded = false; keys[1]++;
+
+                        } else { // Data not found at this iteration for add or remove
+                            sortedData[keys[1]] = d[keys[0]];
+                            keys[0]++; keys[1]++;
+                        }
+                    }
+                }
+
+                if (flagIsNotAdded) { sortedData[keys[1]] = reorderedData; }
+                return sortedData
+            })
         }
     }
 }

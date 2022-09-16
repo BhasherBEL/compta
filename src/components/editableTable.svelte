@@ -13,7 +13,7 @@
     function toggleEditable(index: string) {
         if (dataBeingEdited.includes(index)) {
             dataBeingEdited = dataBeingEdited.filter((v, _) => v !== index);
-            dataStore.add(dataStore.remove(index));
+            dataStore.swap(index);
         } else {
             dataBeingEdited = [ ...dataBeingEdited, index ]
         }
@@ -116,7 +116,7 @@
         {/each}
         <td>
             <label class="button outline icon-only pull-right"
-                   style="background-color: #dfffdf"
+                   style="background-color: #dfffdf;"
             >
                 <input type="submit" class="is-hidden" form="new-data">
                 <Icon icon="plus"/>
