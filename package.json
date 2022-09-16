@@ -1,6 +1,6 @@
 {
   "name": "compta",
-  "version": "0.2.1",
+  "version": "0.3",
   "private": true,
   "scripts": {
     "build": "rollup -c",
