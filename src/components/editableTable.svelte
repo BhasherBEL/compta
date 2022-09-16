@@ -12,8 +12,8 @@
 
     function toggleEditable(index: string) {
         if (dataBeingEdited.includes(index)) {
-            dataBeingEdited = dataBeingEdited.filter((v, _) => v
-                !== index)
+            dataBeingEdited = dataBeingEdited.filter((v, _) => v !== index);
+            dataStore.add(dataStore.remove(index));
         } else {
             dataBeingEdited = [ ...dataBeingEdited, index ]
         }
@@ -34,6 +34,11 @@
         newData = {}
     }
 
+    function computeAndFormat<T>(column: GenericColumn<T>, key: string, data: T, index: string): string {
+        let value = column.compute ? column.compute(data[key], data, index) : data[key]
+        return (column.format ? column.format(value, data, index) : value)
+    }
+
 </script>
 
 <table class="striped">
@@ -52,7 +57,7 @@
             {#each Object.entries(columns) as [key, column]}
                 <td>
                     {#if (dataBeingEdited.includes(index))}
-                        {#if column.nature === "computed"}
+                        {#if column.compute}
                             <i class="text-grey">Valeur calculée</i>
                         {:else}
                             <EditableValue
@@ -65,7 +70,7 @@
                             />
                         {/if}
                     {:else}
-                        {@html column.format ? column.format(data[key], data, index) : data[key]}
+                        {@html computeAndFormat(column, key, data, index)}
                     {/if}
                 </td>
             {/each}
@@ -74,6 +79,7 @@
                         class="button outline icon-only"
                         on:click={() => toggleEditable(index)}
                         disabled="{!validateChange(data)}"
+                        style="background-color: #feebd4"
                 >
                     <Icon icon="pencil"/>
                 </button>
@@ -81,7 +87,8 @@
                         class="button outline icon-only"
                         on:click={() => dataStore.remove(index)}
                         disabled="{!validateDelete(data, index)}"
-                        title="Test"
+                        title="Supprimer"
+                        style="background-color: #fed4d4"
                 >
                     <Icon icon="close"/>
                 </button>
@@ -92,7 +99,7 @@
         <form id="new-data" on:submit|preventDefault={() => addNew()}></form>
         {#each Object.entries(columns) as [key, item]}
             <td>
-            {#if item.nature === "computed"}
+            {#if item.compute}
                 <i class="text-grey">Valeur calculée</i>
             {:else }
                 <EditableValue
@@ -108,7 +115,9 @@
             </td>
         {/each}
         <td>
-            <label class="button icon-only pull-right">
+            <label class="button outline icon-only pull-right"
+                   style="background-color: #dfffdf"
+            >
                 <input type="submit" class="is-hidden" form="new-data">
                 <Icon icon="plus"/>
             </label>

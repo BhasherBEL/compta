@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { saveAs } from 'file-saver';
     import Icon from "./components/icon.svelte";
     import bilan from "./components/tabs/bilan.svelte";
     import flux from "./components/tabs/flux.svelte";
     import help from "./components/tabs/help.svelte"
     import infos_comptes from "./components/tabs/infos_comptes.svelte";
-    import {infos, cashFlows, accounts} from "./store"
+    import { exportFile, importFile, shortcutKeyboard } from "./io"
+    shortcutKeyboard();
 
     let current_tab = infos_comptes
 
@@ -15,21 +15,6 @@
         { name: "Flux d'argent", component: flux },
         { name: "Bilans détaillés", component: bilan },
     ]
-
-    function importFile(f: Event){
-        (f.target as HTMLInputElement).files[0].text().then((text: string) => {
-            const data = JSON.parse(text)
-            infos.set(data.infos)
-            cashFlows.set(data.cashFlows)
-            accounts.set(data.accounts)
-        })
-    }
-
-    function saveFile(){
-        let data = JSON.stringify({infos: $infos, cashFlows: $cashFlows, accounts: $accounts})
-        let blob = new Blob([data], {type: "application/json"})
-        saveAs(blob, `Trésorerie_${$infos.orga || "KAP"}_${$infos.year || "ANNEE"}_${$infos.quarter || "QUADRI"}.json`)
-    }
 </script>
 
 <nav class="nav">
@@ -37,10 +22,10 @@
     <div class="nav-left">
         <div class="tabs">
             {#each tabs as tab}
-                <a id="tab-{tab.name}"
-                   href="#tab-{tab.name}"
+                <a href="#"
                    class="{tab.component === current_tab ? 'active' : ''}"
-                   on:click="{() => current_tab = tab.component}">
+                   on:click="{() => current_tab = tab.component}"
+                >
                     {tab.name}
                 </a>
             {/each}
@@ -50,33 +35,43 @@
         <div class="myGrouped is-vertical-align">
             <label class="button icon-only primary button-start">
                 <Icon icon="folder-open" size={20}/>
-                <input type="file" accept="application/json" class="button icon-only primary" style="display: none;" on:change={importFile}>
+                <input id="importButton" type="file" accept="application/json" class="button icon-only primary" style="display: none;" on:change={importFile}>
             </label>
-            <button class="button icon-only primary outline button-end" on:click={saveFile}>
+            <button class="button icon-only primary outline button-end" on:click={exportFile}>
                 <Icon color="#ff5b00" icon="download" size={20}/>
             </button>
         </div>
     </div>
     <span class="spacer"></span>
 </nav>
+
 <section class="container">
     {#key current_tab}
         <svelte:component this={current_tab}/>
     {/key}
 </section>
+
 <span class="separator"></span>
+
 <footer>
     <span>
         Créé par le
         <a href="https://louvainlinux.org" target="_blank">
             Louvain-li-Nux
+        </a><br>
+        <a href="https://gitlab.com/louvainlinux/compta/" target="_blank">
+            Voir le code source
         </a>
     </span>
     <span>Outil de gestion de trésorerie destiné aux KAP's</span>
-    <span>
-        <a href="https://gitlab.com/louvainlinux/compta/" target="_blank">
-            Voir le code source
-        </a><br>Version {process.env.npm_package_version}
+    <span class="text-right">
+        Version {process.env.npm_package_version}<br>
+        <a
+            href="https://gitlab.com/louvainlinux/compta/-/releases"
+            target="_blank"
+        >
+            Voir les notes de mise à jour
+        </a>
     </span>
 </footer>
 

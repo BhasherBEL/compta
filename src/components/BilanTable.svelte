@@ -1,7 +1,7 @@
 <!--suppress JSUnfilteredForInLoop -->
 <script lang="ts">
     import {v4 as uuidv4} from 'uuid'
-    import { formatMoneyForExport } from "../utils"
+    import { formatMoney } from "../utils"
     import Icon from "./icon.svelte"
     export let data: Object = {}
     const id = uuidv4()
@@ -53,18 +53,18 @@
     {#each generated.rows as item}
         <tr>
             <td>{item.category}</td>
-            <td>{@html formatMoneyForExport(item.expense)}</td>
-            <td>{@html formatMoneyForExport(item.income)}</td>
-            <td>{@html formatMoneyForExport(item.income+item.expense)}</td>
+            <td>{@html formatMoney(item.expense)}</td>
+            <td>{@html formatMoney(item.income)}</td>
+            <td>{@html formatMoney(item.income+item.expense)}</td>
         </tr>
     {/each}
     <tr>
         <th>
             Grand total
         </th>
-        <th>{@html formatMoneyForExport(generated.expense)}</th>
-        <th>{@html formatMoneyForExport(generated.income)}</th>
-        <th>{@html formatMoneyForExport(generated.expense+generated.income)}</th>
+        <th>{@html formatMoney(generated.expense)}</th>
+        <th>{@html formatMoney(generated.income)}</th>
+        <th>{@html formatMoney(generated.expense+generated.income)}</th>
     </tr>
 </table>
 <button class="button icon-only pull-right" on:click={copyTable}>

@@ -59,7 +59,55 @@ function createObjectStore<DataType>(template: IndexedObjectData<DataType>) {
     }
 }
 
-export const cashFlows = createObjectStore({
+function createCashFlowStore(template: IndexedObjectData<CashFlow>) {
+    const store = writable(template)
+    return {
+        subscribe: store.subscribe,
+        update: store.update,
+        set: store.set,
+        add: (newData: CashFlow) => {
+            store.update((data) => {
+                const sortedData: IndexedObjectData<CashFlow> = {};
+                const keys = [0, 0];
+                let flagIsNotAdded = true;
+                while (data[keys[0]] !== undefined) {
+                    if (newData.date < data[keys[0]].date && flagIsNotAdded) {
+                        sortedData[keys[1]] = newData;
+                        flagIsNotAdded = false;
+                    } else {
+                        sortedData[keys[1]] = data[keys[0]];
+                        keys[0]++;
+                    }
+                    keys[1]++;
+                }
+                if (flagIsNotAdded) { sortedData[keys[1]] = newData; }
+                return sortedData;
+            })
+        },
+        remove: (i: string) => {
+            let removeData;
+            store.update(d => {
+                const resultData: IndexedObjectData<CashFlow> = {};
+                const index: number = +i;
+                removeData = d[i];
+                const keys = [0, 0];
+                while (d[keys[0]] !== undefined) {
+                    if (keys[0] === index) {
+                        keys[0]++;
+                    }
+                    else {
+                        resultData[keys[1]] = d[keys[0]];
+                        keys[0]++; keys[1]++;
+                    }
+                }
+                return resultData;
+            })
+            return removeData;
+        }
+    }
+}
+
+export const cashFlows = createCashFlowStore({
     0: {
         date: "2021-06-18",
         amount: -5.25,

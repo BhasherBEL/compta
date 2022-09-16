@@ -7,58 +7,55 @@
         name: {
             name: "Nom du compte",
             type: "string",
-            nature: "input",
             required: true,
         },
         initial_money: {
             name: "Montant de départ",
             type: "number",
-            nature: "input",
             required: true,
             format: formatMoney
         },
         income: {
             name: "Entrée",
             type: "number",
-            nature: "computed",
             required: false,
-            format: (_, __, id) => {
-                return formatMoney(sum(
+            compute: (_, __, id) => (
+                sum(
                     Object
                         .values($cashFlows)
                         .filter(k => k.account == id && k.amount > 0)
                         .map(k => k.amount),
-                ))
-            }
+                )
+            ),
+            format: formatMoney
         },
         expense: {
             name: "Sortie",
             type: "number",
-            nature: "computed",
             required: false,
-            format: (_, __, id) => formatMoney(sum(
+            compute: (_, __, id) => sum(
                 Object
                     .values($cashFlows)
                     .filter(k => k.account == id && k.amount < 0)
                     .map(k => k.amount)
-            ))
+            ),
+            format: formatMoney
         },
         profit: {
             name: "Profit",
             type: "number",
-            nature: "computed",
             required: false,
-            format: (_, __, id) => formatMoney(sum(
+            compute: (_, __, id) => sum(
                 Object
                     .values($cashFlows)
                     .filter(k => k.account == id)
                     .map(k => k.amount)
-            ))
+            ),
+            format: formatMoney
         },
         current_money: {
             name: "Réel sur le compte",
             type: "number",
-            nature: "input",
             required: true,
             format: (amount, account, id) => {
                 let calculated = sum(
@@ -67,7 +64,8 @@
                         .filter(k => k.account == id)
                         .map(k => k.amount)
                 ) + account.initial_money
-                return `<span class="${Math.round(calculated*100) == Math.round(account.current_money*100) ? '' : 'text-error'}">${formatMoney(amount)}</span>`
+                let okay = Math.round(calculated*100) == Math.round(account.current_money*100)
+                return `<span class="${okay ? '' : 'text-error'}">${formatMoney(amount)} ${okay ? '' : `(écart de ${formatMoney(calculated - account.current_money)})`}</span>`
             }
         },
     }
