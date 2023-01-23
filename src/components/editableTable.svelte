@@ -45,7 +45,7 @@
     <colgroup>
         {#each colgroup as col}
             <col style="width: {col.width};" span="{col.span}">
-            {/each}
+        {/each}
     </colgroup>
     <tr>
         {#each Object.entries(columns) as [_, item]}
@@ -81,16 +81,15 @@
                         disabled="{!validateChange(data)}"
                         style="background-color: #feebd4"
                 >
-                    <Icon icon="pencil"/>
+                    <Icon title="éditer la ligne" icon="pencil"/>
                 </button>
                 <button
                         class="button outline icon-only"
                         on:click={() => dataStore.remove(index)}
                         disabled="{!validateDelete(data, index)}"
-                        title="Supprimer"
                         style="background-color: #fed4d4"
                 >
-                    <Icon icon="close"/>
+                    <Icon title="supprimer la ligne" icon="close"/>
                 </button>
             </td>
         </tr>
@@ -115,12 +114,12 @@
             </td>
         {/each}
         <td>
-            <label class="button outline icon-only pull-right"
+            <button class="button outline icon-only pull-right"
                    style="background-color: #dfffdf;"
             >
-                <input type="submit" class="is-hidden" form="new-data">
-                <Icon icon="plus"/>
-            </label>
+                <input type="submit" class="is-hidden" form="new-data"/>
+                <Icon title="ajouter une ligne" icon="plus"/>
+            </button>
         </td>
     </tr>
 </table>

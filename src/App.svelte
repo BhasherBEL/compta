@@ -33,12 +33,12 @@
     </div>
     <div class="nav-right">
         <div class="myGrouped is-vertical-align">
-            <label class="button icon-only primary button-start">
-                <Icon icon="folder-open" size={20}/>
-                <input id="importButton" type="file" accept="application/json" class="button icon-only primary" style="display: none;" on:change={importFile}>
-            </label>
+            <button class="button icon-only primary button-start">
+                <Icon title="restaurer une sauvegarde" icon="folder-open" size={20}/>
+                <input id="importButton" type="file" accept="application/json" class="button icon-only primary" style="display: none;" on:change={importFile}/>
+            </button>
             <button class="button icon-only primary outline button-end" on:click={exportFile}>
-                <Icon color="#ff5b00" icon="download" size={20}/>
+                <Icon title="sauvegarder" color="#ff5b00" icon="download" size={20}/>
             </button>
         </div>
     </div>
