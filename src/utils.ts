@@ -15,11 +15,19 @@ export type GenericColumn<T> = {
 
 export const formatMoney = (k: number): string => {
     if (k === 0) return ''
-    return "<span class='money-export'>"+
+    return `<span class='money-export'>`+
         k?.toLocaleString(
             undefined,
             {minimumFractionDigits: 2, maximumFractionDigits: 2}
         )+ "</span>"
         || `${k}`
 }
-export const sum = (a: number[]) => a.length ? a.reduce((b, c) => b+c): 0
+
+export const formatColor = (k: number, format: string): string => {
+    if (k === 0) return ''
+    return `<span style="background-color: ${incomeOrExpenseColor(k)}">`+ format + "</span>"
+}
+const incomeOrExpenseColor = (a: number) => a < 0 ? "#fed4d4" : (a > 0 ? "#dfffdf" : "");
+
+export const sum = (a: number[]) => a.length ? a.reduce((b, c) => b+c): 0;
+export const incomeOrExpense = (a: number) => a < 0 ? "Sortie" : (a > 0 ? "Entrée" : "");

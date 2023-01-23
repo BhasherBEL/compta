@@ -10,7 +10,8 @@ export type CashFlow = {
     nature: string,
     details: string,
     ref: string,
-    note: string
+    note: string,
+    in_out: string
 }
 
 export type Account = {
@@ -158,6 +159,7 @@ export const cashFlows = createCashFlowStore({
         details: "Frais de gestion de compte",
         ref: "BNP0008",
         note: "",
+        in_out: "Sortie",
     }, 1: {
         date: "2021-06-19",
         amount: -3.89,
@@ -167,6 +169,7 @@ export const cashFlows = createCashFlowStore({
         details: "Frais de carte de débit",
         ref: "BNP0009",
         note: "",
+        in_out: "Sortie",
     }, 2: {
         date: "2021-06-24",
         amount: -41.58,
@@ -176,6 +179,7 @@ export const cashFlows = createCashFlowStore({
         details: "Gel hydroalcoolique",
         ref: "BNP0021",
         note: "",
+        in_out: "Sortie",
     }, 3: {
         date: "2021-09-17",
         account: "0",
@@ -184,7 +188,8 @@ export const cashFlows = createCashFlowStore({
         nature: "Subsides",
         details: "Subsides Q1",
         ref: "BNP0023",
-        note: ""
+        note: "",
+        in_out: "Entrée",
     }, 4: {
         date: "2021-09-28",
         account: "0",
@@ -193,7 +198,8 @@ export const cashFlows = createCashFlowStore({
         nature: "Ventes",
         details: "Ventes de muffins",
         ref: "BNP0025",
-        note: ""
+        note: "",
+        in_out: "Entrée",
     }
 })
 
