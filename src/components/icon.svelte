@@ -1,7 +1,7 @@
 <script>
     export let library = "clarity"
     export let icon;
-    export let tooltip;
+    export let tooltip = "";
     export let size = 16;
     export let color = "#000"
 </script>
