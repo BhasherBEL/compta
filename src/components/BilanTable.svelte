@@ -68,7 +68,7 @@
     </tr>
 </table>
 <button class="button icon-only pull-right" on:click={copyTable}>
-    <Icon icon="clipboard"/>
+    <Icon title="copier dans le presse-papier" icon="clipboard"/>
 </button>
 
 
