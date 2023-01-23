@@ -1,6 +1,7 @@
 <script lang="ts">
+    import Icon from "../icon.svelte";
     import { onDestroy } from "svelte"
-    import { accounts, CashFlow, cashFlows } from "../../store"
+    import {Account, accounts, CashFlow, cashFlows} from "../../store"
     import { unique, GenericColumn, formatMoney } from "../../utils";
     import EditableTable from "../editableTable.svelte"
 
@@ -73,11 +74,12 @@
     })
     onDestroy(unsubscribe)
 </script>
+
 <div class="card">
-    <h2>Flux d'argent</h2>
     <EditableTable
-            dataStore="{cashFlows}"
-            columns="{columns}"
-            colgroup="{[{width: '12%', span: '8'}]}"
+        tableName="Flux d'argent"
+        dataStore="{cashFlows}"
+        columns="{columns}"
+        colgroup="{[{width: '12%', span: '8'}]}"
     />
 </div>

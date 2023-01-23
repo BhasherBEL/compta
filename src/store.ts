@@ -57,16 +57,14 @@ function createObjectStore<DataType>(template: IndexedObjectData<DataType>) {
             })
         },
         remove: (i: string) => store.update(d => {delete d[i]; return d}),
-        swap: (i: string) => store.update(d => {
-            const newData = d[i];
-            let key = 0
-            while (d[key] !== undefined) {
-                key++
-            }
-            d[key] = newData
-            return d
-        }),
+        swap: (_: string) => store.update(d => {return d}),
     }
+}
+
+function cashFlowComparatorOrder(newCF: CashFlow, CF: CashFlow) {
+    if (newCF.date === CF.date) {
+        return newCF.ref < CF.ref;
+    } return newCF.date < CF.date;
 }
 
 function createCashFlowStore(template: IndexedObjectData<CashFlow>) {
@@ -81,7 +79,7 @@ function createCashFlowStore(template: IndexedObjectData<CashFlow>) {
                 const keys = [0, 0];
                 let flagIsNotAdded = true;
                 while (data[keys[0]] !== undefined) {
-                    if (newData.date < data[keys[0]].date && flagIsNotAdded) {
+                    if (cashFlowComparatorOrder(newData, data[keys[0]]) && flagIsNotAdded) {
                         sortedData[keys[1]] = newData;
                         flagIsNotAdded = false;
                     } else {
@@ -122,7 +120,7 @@ function createCashFlowStore(template: IndexedObjectData<CashFlow>) {
 
                 while (d[keys[0]] !== undefined) {
                     const foundWhereRemove = keys[0] === index;
-                    const foundWhereAdd = reorderedData.date < d[keys[0]].date && flagIsNotAdded;
+                    const foundWhereAdd = cashFlowComparatorOrder(reorderedData, d[keys[0]]) && flagIsNotAdded;
 
                     if (foundWhereRemove && foundWhereAdd) { // Data at the same place
                         sortedData[keys[1]] = d[keys[0]];
@@ -156,7 +154,7 @@ export const cashFlows = createCashFlowStore({
         amount: -5.25,
         account: "0",
         event: "Sans event",
-        nature: "Fonctionnement hors évènement",
+        nature: "Matériel, technique et autres frais",
         details: "Frais de gestion de compte",
         ref: "BNP0008",
         note: "",
@@ -165,7 +163,7 @@ export const cashFlows = createCashFlowStore({
         amount: -3.89,
         account: "0",
         event: "Sans event",
-        nature: "Fonctionnement hors évènement",
+        nature: "Matériel, technique et autres frais",
         details: "Frais de carte de débit",
         ref: "BNP0009",
         note: "",
@@ -174,19 +172,28 @@ export const cashFlows = createCashFlowStore({
         amount: -41.58,
         account: "0",
         event: "Sans event",
-        nature: "Fonctionnement hors évènement",
-        details: "Matériel, technique et autres frais",
+        nature: "Matériel, technique et autres frais",
+        details: "Gel hydroalcoolique",
         ref: "BNP0021",
-        note: "Gel hydroalcoolique",
+        note: "",
     }, 3: {
         date: "2021-09-17",
         account: "0",
         amount: 100,
         event: "Sans event",
-        nature: "Fonctionnement hors évènement",
-        details: "Subsides et financements",
+        nature: "Subsides",
+        details: "Subsides Q1",
         ref: "BNP0023",
-        note: "Subsides Q1"
+        note: ""
+    }, 4: {
+        date: "2021-09-28",
+        account: "0",
+        amount: 31.83,
+        event: "Acitivité n°1",
+        nature: "Ventes",
+        details: "Ventes de muffins",
+        ref: "BNP0025",
+        note: ""
     }
 })
 

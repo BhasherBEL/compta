@@ -120,8 +120,8 @@
 </div>
 <br>
 <div class="card">
-    <h2>Comptes</h2>
     <EditableTable
+        tableName="Comptes"
         dataStore="{accounts}"
         columns="{columns}"
         validateDelete="{validateDelete}"
