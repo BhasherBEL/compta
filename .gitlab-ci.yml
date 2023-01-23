@@ -42,7 +42,7 @@ rollup:
     - rm -rf public/build
     - npm ci
   script:
-    - node_modules/.bin/rollup --silent --compact -c
+    - npx -- rollup --silent --compact -c
 
 svelte-check:
   stage: test

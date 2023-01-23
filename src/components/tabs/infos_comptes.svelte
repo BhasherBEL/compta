@@ -81,47 +81,47 @@
         <div class="col myform">
             <div>
                 <label for="orga">Organisation</label>
-                <input bind:value={$infos.orga} id="orga">
+                <input bind:value={$infos.orga} id="orga"/>
             </div>
             <div>
                 <label for="address">Adresse</label>
-                <input bind:value={$infos.address} id="address">
+                <input bind:value={$infos.address} id="address"/>
             </div>
             <div>
                 <label for="company">Numéro d'entreprise</label>
-                <input bind:value={$infos.company} id="company">
+                <input bind:value={$infos.company} id="company"/>
             </div>
             <div>
                 <label for="manager">Responsable</label>
-                <input bind:value={$infos.manager} id="manager">
+                <input bind:value={$infos.manager} id="manager"/>
             </div>
             <div>
                 <label for="email">Adresse mail</label>
-                <input bind:value={$infos.email} id="email" type="email">
+                <input bind:value={$infos.email} id="email" type="email"/>
             </div>
         </div>
         <div class="col myform">
             <div>
                 <label for="year">Année académique</label>
-                <input bind:value={$infos.year} id="year">
+                <input bind:value={$infos.year} id="year"/>
             </div>
             <div>
                 <label for="quarter">Quadrimestre</label>
-                <input bind:value={$infos.quarter} id="quarter">
+                <input bind:value={$infos.quarter} id="quarter"/>
             </div>
             <div>
                 <label for="date-start">Date début</label>
-                <input bind:value={$infos.date_start} id="date-start" type="date">
+                <input bind:value={$infos.date_start} id="date-start" type="date"/>
                 <label for="date-end">Date fin</label>
-                <input bind:value={$infos.date_end} id="date-end" type="date">
+                <input bind:value={$infos.date_end} id="date-end" type="date"/>
             </div>
         </div>
     </div>
 </div>
 <br>
 <div class="card">
-    <h2>Comptes</h2>
     <EditableTable
+        tableName="Comptes"
         dataStore="{accounts}"
         columns="{columns}"
         validateDelete="{validateDelete}"

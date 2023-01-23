@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onDestroy } from "svelte"
     import { accounts, CashFlow, cashFlows } from "../../store"
-    import { unique, GenericColumn, formatMoney } from "../../utils";
+    import {unique, GenericColumn, formatColor, incomeOrExpense, formatMoney} from "../../utils";
     import EditableTable from "../editableTable.svelte"
 
     const columns: {[key in keyof CashFlow]: GenericColumn<CashFlow>} = {
@@ -10,7 +10,7 @@
             name: "Montant",
             type: "number",
             required: true,
-            format: formatMoney
+            format: (val, _, __) => formatColor(val, formatMoney(val))
         },
         account: {
             name: "Compte",
@@ -44,11 +44,17 @@
             type: "string",
             required: false,
             format: a => a || ""
+        },
+        in_out: {
+            name: "Entrée/Sortie",
+            type: "string",
+            required: false,
+            compute: (_, cashFlow, __) => (formatColor(cashFlow.amount, incomeOrExpense(cashFlow.amount)))
         }
     }
 
     const unsubscribe = cashFlows.subscribe((flows) => {
-        let trackedKeys: (keyof CashFlow)[] = [ "event", "nature", "details"]
+        let trackedKeys: (keyof CashFlow)[] = [ "event", "nature", "details" ]
         columns.event.suggestions = ["Sans event"]
         columns.nature.suggestions = [
             "Recettes hors événement",
@@ -73,11 +79,12 @@
     })
     onDestroy(unsubscribe)
 </script>
+
 <div class="card">
-    <h2>Flux d'argent</h2>
     <EditableTable
-            dataStore="{cashFlows}"
-            columns="{columns}"
-            colgroup="{[{width: '12%', span: '8'}]}"
+        tableName="Flux d'argent"
+        dataStore="{cashFlows}"
+        columns="{columns}"
+        colgroup="{[{width: '12%', span: '8'}]}"
     />
 </div>

@@ -25,7 +25,7 @@ export function exportFile(){
     const data = exportJSON()
     const blob = new Blob([data], {type: "application/json"})
     const infosObj = get(infos)
-    saveAs(blob, `Trésorerie_${infosObj.orga || "KAP"}_${infosObj.year || "ANNEE"}_${infosObj.quarter || "QUADRI"}.json`)
+    saveAs(blob, `Trésorerie_${infosObj.orga || "KAP"}_${infosObj.year || "ANNEE"}_${infosObj.quarter || "QUADRI"}_${Date.now()}.json`)
 }
 
 export function shortcutKeyboard(){

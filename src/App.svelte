@@ -31,13 +31,16 @@
             {/each}
         </div>
     </div>
+
     <div class="nav-right">
         <div class="myGrouped is-vertical-align">
-            <label class="button icon-only primary button-start">
+            <label class="button icon-only primary button-start" title="Restaurer une sauvegarde">
                 <Icon icon="folder-open" size={20}/>
-                <input id="importButton" type="file" accept="application/json" class="button icon-only primary" style="display: none;" on:change={importFile}>
+                <input id="importButton" type="file" accept="application/json" class="button icon-only primary"
+                       style="display: none;" on:change={importFile}>
             </label>
-            <button class="button icon-only primary outline button-end" on:click={exportFile}>
+            <button class="button icon-only primary outline button-end" on:click={exportFile}
+                    title="Sauvegarder les modifications">
                 <Icon color="#ff5b00" icon="download" size={20}/>
             </button>
         </div>
@@ -67,7 +70,7 @@
     <span class="text-right">
         Version {process.env.npm_package_version}<br>
         <a
-            href="https://gitlab.com/louvainlinux/compta/-/releases"
+            href="https://gitlab.com/louvainlinux/compta/-/tags"
             target="_blank"
         >
             Voir les notes de mise à jour
@@ -97,5 +100,4 @@
   .button-end {
     border-radius: 0 4px 4px 0 !important;
   }
-
 </style>

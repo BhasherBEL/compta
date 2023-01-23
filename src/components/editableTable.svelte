@@ -3,10 +3,12 @@
     import type { GenericColumn } from "../utils"
     import EditableValue from "./editableValue.svelte"
     import Icon from "./icon.svelte"
+    export let tableName = ""
     export let colgroup = []
     export let columns: {[index: string]: GenericColumn<any>}
     export let dataStore: IndexedObjectStore<object>
     export let validateDelete: (arg0: any, arg1: string) => boolean = (_, __) => true
+    let lockDelete: boolean = true
     let dataBeingEdited = []
     let newData = {}
 
@@ -38,14 +40,31 @@
         let value = column.compute ? column.compute(data[key], data, index) : data[key]
         return (column.format ? column.format(value, data, index) : value)
     }
-
 </script>
+
+<div class="myGrouped is-vertical-align">
+    <h2>{tableName}</h2>
+    <div class="nav-right">
+        <button
+            on:click={() => {lockDelete=!lockDelete}}
+            class="button icon-only outline button-end"
+            title="{lockDelete ? 'Débloquer' : 'Bloquer'} la suppression"
+            style="background-color: {lockDelete ? '#dfffdf' : '#fed4d4'}"
+        >
+            {#if lockDelete}
+                <Icon library="material" color="#008a00" icon="lock-outline" size={25}/>
+            {:else}
+                <Icon library="material" color="#ac0000" icon="lock-open-variant-outline" size={25}/>
+            {/if}
+        </button>
+    </div>
+</div>
 
 <table class="striped">
     <colgroup>
         {#each colgroup as col}
             <col style="width: {col.width};" span="{col.span}">
-            {/each}
+        {/each}
     </colgroup>
     <tr>
         {#each Object.entries(columns) as [_, item]}
@@ -79,6 +98,7 @@
                         class="button outline icon-only"
                         on:click={() => toggleEditable(index)}
                         disabled="{!validateChange(data)}"
+                        title="Éditer la ligne"
                         style="background-color: #feebd4"
                 >
                     <Icon icon="pencil"/>
@@ -86,8 +106,8 @@
                 <button
                         class="button outline icon-only"
                         on:click={() => dataStore.remove(index)}
-                        disabled="{!validateDelete(data, index)}"
-                        title="Supprimer"
+                        disabled="{!validateDelete(data, index) || lockDelete}"
+                        title="Supprimer la ligne"
                         style="background-color: #fed4d4"
                 >
                     <Icon icon="close"/>
@@ -116,9 +136,9 @@
         {/each}
         <td>
             <label class="button outline icon-only pull-right"
-                   style="background-color: #dfffdf;"
+                    style="background-color: #dfffdf;" title="Ajouter une ligne"
             >
-                <input type="submit" class="is-hidden" form="new-data">
+                <input type="submit" class="is-hidden" form="new-data"/>
                 <Icon icon="plus"/>
             </label>
         </td>
