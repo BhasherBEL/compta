@@ -40,7 +40,7 @@
         Vous pouvez consulter les bilans de vos comptes par évènements et par
         nature, présenté de la même façon que dans l'Excel de trésorerie. <br>
         Vous pouvez également utiliser le bouton
-        <Icon icon="clipboard"/> afin de pouvoir facilement copier les tableaux
+        <Icon tooltip="Copier dans le presse-papier" icon="clipboard"/> afin de pouvoir facilement copier les tableaux
         dans l'Excel de Bilan.
     </p>
     <h3>

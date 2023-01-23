@@ -136,9 +136,9 @@
         {/each}
         <td>
             <label class="button outline icon-only pull-right"
-                   style="background-color: #dfffdf;" title="Ajouter une nouvelle ligne"
+                    style="background-color: #dfffdf;" title="Ajouter une ligne"
             >
-                <input type="submit" class="is-hidden" form="new-data">
+                <input type="submit" class="is-hidden" form="new-data"/>
                 <Icon icon="plus"/>
             </label>
         </td>

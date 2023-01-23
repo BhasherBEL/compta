@@ -67,10 +67,10 @@
         <th>{@html formatMoney(generated.expense+generated.income)}</th>
     </tr>
 </table>
-<button class="button icon-only pull-right" on:click={copyTable} title="Copier les données">
+
+<button class="button icon-only pull-right" on:click={copyTable} title="Copier dans le presse-papier">
     <Icon icon="clipboard"/>
 </button>
-
 
 <style>
   button:active {

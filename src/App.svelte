@@ -34,7 +34,7 @@
 
     <div class="nav-right">
         <div class="myGrouped is-vertical-align">
-            <label class="button icon-only primary button-start" title="Ouvrir un fichier">
+            <label class="button icon-only primary button-start" title="Restaurer une sauvegarde">
                 <Icon icon="folder-open" size={20}/>
                 <input id="importButton" type="file" accept="application/json" class="button icon-only primary"
                        style="display: none;" on:change={importFile}>
@@ -100,5 +100,4 @@
   .button-end {
     border-radius: 0 4px 4px 0 !important;
   }
-
 </style>
