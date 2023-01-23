@@ -48,7 +48,7 @@
         <button
             on:click={() => {lockDelete=!lockDelete}}
             class="button icon-only outline button-end"
-            title="Bloquer/Débloquer la suppression"
+            title="{lockDelete ? 'Débloquer' : 'Bloquer'} la suppression"
             style="background-color: {lockDelete ? '#dfffdf' : '#fed4d4'}"
         >
             {#if lockDelete}
