@@ -3,6 +3,7 @@
     import type { GenericColumn } from "../utils"
     import EditableValue from "./editableValue.svelte"
     import Icon from "./icon.svelte"
+    import { tooltipText, text } from "../lang/textFR"
     export let tableName = ""
     export let colgroup = []
     export let columns: {[index: string]: GenericColumn<any>}
@@ -48,13 +49,13 @@
         <button
             on:click={() => {lockDelete=!lockDelete}}
             class="button icon-only outline button-end"
-            title="{lockDelete ? 'Débloquer' : 'Bloquer'} la suppression"
+            title="{tooltipText.safe_delete(lockDelete)}"
             style="background-color: {lockDelete ? '#dfffdf' : '#fed4d4'}"
         >
             {#if lockDelete}
-                <Icon library="material" color="#008a00" icon="lock-outline" size={25}/>
+                <Icon title="{tooltipText.safe_delete(lockDelete)}" library="material" color="#008a00" icon="lock-outline" size={25}/>
             {:else}
-                <Icon library="material" color="#ac0000" icon="lock-open-variant-outline" size={25}/>
+                <Icon title="{tooltipText.safe_delete(lockDelete)}" library="material" color="#ac0000" icon="lock-open-variant-outline" size={25}/>
             {/if}
         </button>
     </div>
@@ -77,7 +78,7 @@
                 <td>
                     {#if (dataBeingEdited.includes(index))}
                         {#if column.compute}
-                            <i class="text-grey">Valeur calculée</i>
+                            <i class="text-grey">{text.calc_val}</i>
                         {:else}
                             <EditableValue
                                 bind:value={$dataStore[index][key]}
@@ -98,19 +99,19 @@
                         class="button outline icon-only"
                         on:click={() => toggleEditable(index)}
                         disabled="{!validateChange(data)}"
-                        title="Éditer la ligne"
+                        title="{tooltipText.edit_line}"
                         style="background-color: #feebd4"
                 >
-                    <Icon icon="pencil"/>
+                    <Icon title="{tooltipText.edit_line}" icon="pencil"/>
                 </button>
                 <button
                         class="button outline icon-only"
                         on:click={() => dataStore.remove(index)}
                         disabled="{!validateDelete(data, index) || lockDelete}"
-                        title="Supprimer la ligne"
+                        title="{tooltipText.delete_line}"
                         style="background-color: #fed4d4"
                 >
-                    <Icon icon="close"/>
+                    <Icon title="{tooltipText.delete_line}" icon="close"/>
                 </button>
             </td>
         </tr>
@@ -120,7 +121,7 @@
         {#each Object.entries(columns) as [key, item]}
             <td>
             {#if item.compute}
-                <i class="text-grey">Valeur calculée</i>
+                <i class="text-grey">{text.calc_val}</i>
             {:else }
                 <EditableValue
                         bind:value={newData[key]}
@@ -135,11 +136,10 @@
             </td>
         {/each}
         <td>
-            <label class="button outline icon-only pull-right"
-                    style="background-color: #dfffdf;" title="Ajouter une ligne"
-            >
+            <label class="button outline icon-only pull-right" style="background-color: #dfffdf;"
+                   title="{tooltipText.add_line}">
                 <input type="submit" class="is-hidden" form="new-data"/>
-                <Icon icon="plus"/>
+                <Icon title="{tooltipText.add_line}" icon="plus"/>
             </label>
         </td>
     </tr>

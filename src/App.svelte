@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { tooltipText, text } from "./lang/textFR"
     import Icon from "./components/icon.svelte";
     import bilan from "./components/tabs/bilan.svelte";
     import flux from "./components/tabs/flux.svelte";
@@ -10,10 +11,10 @@
     let current_tab = infos_comptes
 
     const tabs = [
-        { name: "Aide", component: help },
-        { name: "Infos et comptes", component: infos_comptes },
-        { name: "Flux d'argent", component: flux },
-        { name: "Bilans détaillés", component: bilan },
+        { name: text.help, component: help },
+        { name: `${text.help} ${text.and} ${text.accounts}`, component: infos_comptes },
+        { name: text.cash_flow, component: flux },
+        { name: text.detail_balances, component: bilan },
     ]
 </script>
 
@@ -34,14 +35,13 @@
 
     <div class="nav-right">
         <div class="myGrouped is-vertical-align">
-            <label class="button icon-only primary button-start" title="Restaurer une sauvegarde">
-                <Icon icon="folder-open" size={20}/>
+            <label class="button icon-only primary button-start" title="{tooltipText.open_file}">
+                <Icon title="{tooltipText.open_file}" icon="folder-open" size={20}/>
                 <input id="importButton" type="file" accept="application/json" class="button icon-only primary"
                        style="display: none;" on:change={importFile}>
             </label>
-            <button class="button icon-only primary outline button-end" on:click={exportFile}
-                    title="Sauvegarder les modifications">
-                <Icon color="#ff5b00" icon="download" size={20}/>
+            <button class="button icon-only primary outline button-end" on:click={exportFile} title="{tooltipText.save_file}">
+                <Icon title="{tooltipText.save_file}" color="#ff5b00" icon="download" size={20}/>
             </button>
         </div>
     </div>

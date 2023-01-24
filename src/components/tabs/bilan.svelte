@@ -2,6 +2,7 @@
     import BilanTable from "../BilanTable.svelte";
     import { CashFlow, cashFlows, IndexedObjectData } from "../../store";
     import { unique } from "../../utils";
+    import { text } from "../../lang/textFR";
 
     function convertCashFlows(data: CashFlow[]) {
         let dict = {}
@@ -47,11 +48,11 @@
 </script>
 <div class="row">
     <div class="col card">
-        <h3 class="text-center">Bilan par évènements</h3>
+        <h3 class="text-center">{text.events_balance}</h3>
         <BilanTable data={generateByEvent($cashFlows)}/>
     </div>
     <div class="col card">
-        <h3 class="text-center">Bilan par natures</h3>
+        <h3 class="text-center">{text.natures_balance}</h3>
         <BilanTable data={generateByNature($cashFlows)}/>
     </div>
 </div>

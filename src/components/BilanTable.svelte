@@ -3,6 +3,7 @@
     import {v4 as uuidv4} from 'uuid'
     import { formatMoney } from "../utils"
     import Icon from "./icon.svelte"
+    import { tooltipText, text } from "../lang/textFR"
     export let data: Object = {}
     const id = uuidv4()
     type Row = {
@@ -45,10 +46,10 @@
 
 <table class="striped" {id}>
     <tr>
-        <th>Catégorie</th>
-        <th>Sortie</th>
-        <th>Entrée</th>
-        <th>Total général</th>
+        <th>{text.category}</th>
+        <th>{text.expense}</th>
+        <th>{text.income}</th>
+        <th>{text.total}</th>
     </tr>
     {#each generated.rows as item}
         <tr>
@@ -60,7 +61,7 @@
     {/each}
     <tr>
         <th>
-            Grand total
+            {text.total_all}
         </th>
         <th>{@html formatMoney(generated.expense)}</th>
         <th>{@html formatMoney(generated.income)}</th>
@@ -68,8 +69,8 @@
     </tr>
 </table>
 
-<button class="button icon-only pull-right" on:click={copyTable} title="Copier dans le presse-papier">
-    <Icon icon="clipboard"/>
+<button class="button icon-only pull-right" on:click={copyTable} title="{tooltipText.clipboard}">
+    <Icon title="{tooltipText.clipboard}" icon="clipboard"/>
 </button>
 
 <style>

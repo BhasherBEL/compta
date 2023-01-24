@@ -1,19 +1,20 @@
 <script lang="ts">
     import { onDestroy } from "svelte"
     import { accounts, CashFlow, cashFlows } from "../../store"
-    import {unique, GenericColumn, formatColor, incomeOrExpense, formatMoney} from "../../utils";
+    import { unique, GenericColumn, formatColor, incomeOrExpense, formatMoney } from "../../utils";
     import EditableTable from "../editableTable.svelte"
+    import { text } from "../../lang/textFR";
 
     const columns: {[key in keyof CashFlow]: GenericColumn<CashFlow>} = {
-        date: { name: "Date", type: "date", required: true },
+        date: { name: text.date, type: "date", required: true },
         amount: {
-            name: "Montant",
+            name: text.amount,
             type: "number",
             required: true,
             format: (val, _, __) => formatColor(val, formatMoney(val))
         },
         account: {
-            name: "Compte",
+            name: text.account,
             type: "select",
             suggestions: Object.entries($accounts).map(([_, account]) => account.name),
             suggestions_keys: Object.keys($accounts),
@@ -21,32 +22,32 @@
             format: (id, _, __) => $accounts[id].name
         },
         event: {
-            name: "Évènement",
+            name: text.event,
             type: "string",
             suggestions: [],
             required: true,
         },
         nature: {
-            name: "Nature",
+            name: text.nature,
             type: "string",
             suggestions: [],
             required: true
         },
         details: {
-            name: "Détails",
+            name: text.details,
             type: "string",
             suggestions: [],
             required: true
         },
-        ref: { name: "Référence", type: "string", required: true },
+        ref: { name: text.ref, type: "string", required: true },
         note: {
-            name: "Remarque",
+            name: text.ref,
             type: "string",
             required: false,
             format: a => a || ""
         },
         in_out: {
-            name: "Entrée/Sortie",
+            name: text.income+"/"+text.expense,
             type: "string",
             required: false,
             compute: (_, cashFlow, __) => (formatColor(cashFlow.amount, incomeOrExpense(cashFlow.amount)))
@@ -82,7 +83,7 @@
 
 <div class="card">
     <EditableTable
-        tableName="Flux d'argent"
+        tableName="{text.cash_flow}"
         dataStore="{cashFlows}"
         columns="{columns}"
         colgroup="{[{width: '12%', span: '8'}]}"

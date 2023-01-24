@@ -2,21 +2,22 @@
     import { Account, accounts, infos, cashFlows } from "../../store";
     import EditableTable from '../editableTable.svelte'
     import { GenericColumn, formatMoney, sum } from "../../utils"
+    import { text, infoText } from "../../lang/textFR"
 
     const columns: {[key in keyof Account]: GenericColumn<Account>} = {
         name: {
-            name: "Nom du compte",
+            name: text.account_name,
             type: "string",
             required: true,
         },
         initial_money: {
-            name: "Montant de départ",
+            name: text.initial_money,
             type: "number",
             required: true,
             format: formatMoney
         },
         income: {
-            name: "Entrée",
+            name: text.income,
             type: "number",
             required: false,
             compute: (_, __, id) => (
@@ -30,7 +31,7 @@
             format: formatMoney
         },
         expense: {
-            name: "Sortie",
+            name: text.expense,
             type: "number",
             required: false,
             compute: (_, __, id) => sum(
@@ -42,7 +43,7 @@
             format: formatMoney
         },
         profit: {
-            name: "Profit",
+            name: text.profit,
             type: "number",
             required: false,
             compute: (_, __, id) => sum(
@@ -54,7 +55,7 @@
             format: formatMoney
         },
         current_money: {
-            name: "Réel sur le compte",
+            name: text.current_money,
             type: "number",
             required: true,
             format: (amount, account, id) => {
@@ -65,7 +66,7 @@
                         .map(k => k.amount)
                 ) + account.initial_money
                 let okay = Math.round(calculated*100) == Math.round(account.current_money*100)
-                return `<span class="${okay ? '' : 'text-error'}">${formatMoney(amount)} ${okay ? '' : `(écart de ${formatMoney(calculated - account.current_money)})`}</span>`
+                return `<span class="${okay ? '' : 'text-error'}">${formatMoney(amount)} ${okay ? '' : `(${text.diff_of} ${formatMoney(calculated - account.current_money)})`}</span>`
             }
         },
     }
@@ -76,43 +77,43 @@
 </script>
 
 <div class="card">
-    <h2>Informations générales</h2>
+    <h2>{infoText.gen_info}</h2>
     <div class=" row">
         <div class="col myform">
             <div>
-                <label for="orga">Organisation</label>
+                <label for="orga">{infoText.orga}</label>
                 <input bind:value={$infos.orga} id="orga"/>
             </div>
             <div>
-                <label for="address">Adresse</label>
+                <label for="address">{infoText.address}</label>
                 <input bind:value={$infos.address} id="address"/>
             </div>
             <div>
-                <label for="company">Numéro d'entreprise</label>
+                <label for="company">{infoText.company}</label>
                 <input bind:value={$infos.company} id="company"/>
             </div>
             <div>
-                <label for="manager">Responsable</label>
+                <label for="manager">{infoText.manager}</label>
                 <input bind:value={$infos.manager} id="manager"/>
             </div>
             <div>
-                <label for="email">Adresse mail</label>
+                <label for="email">{infoText.email}</label>
                 <input bind:value={$infos.email} id="email" type="email"/>
             </div>
         </div>
         <div class="col myform">
             <div>
-                <label for="year">Année académique</label>
+                <label for="year">{infoText.year}</label>
                 <input bind:value={$infos.year} id="year"/>
             </div>
             <div>
-                <label for="quarter">Quadrimestre</label>
+                <label for="quarter">{infoText.quarter}</label>
                 <input bind:value={$infos.quarter} id="quarter"/>
             </div>
             <div>
-                <label for="date-start">Date début</label>
+                <label for="date-start">{infoText.date_start}</label>
                 <input bind:value={$infos.date_start} id="date-start" type="date"/>
-                <label for="date-end">Date fin</label>
+                <label for="date-end">{infoText.date_end}</label>
                 <input bind:value={$infos.date_end} id="date-end" type="date"/>
             </div>
         </div>
@@ -121,7 +122,7 @@
 <br>
 <div class="card">
     <EditableTable
-        tableName="Comptes"
+        tableName="{text.accounts}"
         dataStore="{accounts}"
         columns="{columns}"
         validateDelete="{validateDelete}"
