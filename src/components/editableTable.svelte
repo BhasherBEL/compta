@@ -53,9 +53,9 @@
             style="background-color: {lockDelete ? '#dfffdf' : '#fed4d4'}"
         >
             {#if lockDelete}
-                <Icon title="{tooltipText.safe_delete(lockDelete)}" library="material" color="#008a00" icon="lock-outline" size={25}/>
+                <Icon title="{tooltipText.safe_delete(lockDelete)}" color="#008a00" icon="lock" size={25}/>
             {:else}
-                <Icon title="{tooltipText.safe_delete(lockDelete)}" library="material" color="#ac0000" icon="lock-open-variant-outline" size={25}/>
+                <Icon title="{tooltipText.safe_delete(lockDelete)}" color="#ac0000" icon="unlock" size={25}/>
             {/if}
         </button>
     </div>
@@ -102,7 +102,7 @@
                         title="{tooltipText.edit_line}"
                         style="background-color: #feebd4"
                 >
-                    <Icon title="{tooltipText.edit_line}" icon="pencil"/>
+                    <Icon title="{tooltipText.edit_line}" color="#a55500" icon="pencil"/>
                 </button>
                 <button
                         class="button outline icon-only"
@@ -111,7 +111,7 @@
                         title="{tooltipText.delete_line}"
                         style="background-color: #fed4d4"
                 >
-                    <Icon title="{tooltipText.delete_line}" icon="close"/>
+                    <Icon title="{tooltipText.delete_line}" color="#ac0000" icon="close"/>
                 </button>
             </td>
         </tr>
@@ -139,7 +139,7 @@
             <label class="button outline icon-only pull-right" style="background-color: #dfffdf;"
                    title="{tooltipText.add_line}">
                 <input type="submit" class="is-hidden" form="new-data"/>
-                <Icon title="{tooltipText.add_line}" icon="plus"/>
+                <Icon title="{tooltipText.add_line}" color="#008a00" icon="plus"/>
             </label>
         </td>
     </tr>
