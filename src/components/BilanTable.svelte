@@ -3,7 +3,7 @@
     import {v4 as uuidv4} from 'uuid'
     import { formatMoney } from "../utils"
     import Icon from "./icon.svelte"
-    import { tooltipText, text } from "../lang/textFR"
+    import { textFR as text } from "../lang/textFR";
     export let data: Object = {}
     const id = uuidv4()
     type Row = {
@@ -69,8 +69,8 @@
     </tr>
 </table>
 
-<button class="button icon-only pull-right" on:click={copyTable} title="{tooltipText.clipboard}">
-    <Icon title="{tooltipText.clipboard}" icon="clipboard"/>
+<button class="button icon-only pull-right" on:click={copyTable} title="{text.tooltips.clipboard}">
+    <Icon title="{text.tooltips.clipboard}" icon="clipboard"/>
 </button>
 
 <style>

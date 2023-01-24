@@ -3,7 +3,7 @@
     import { accounts, CashFlow, cashFlows } from "../../store"
     import { unique, GenericColumn, formatColor, picker, formatMoney } from "../../utils";
     import EditableTable from "../editableTable.svelte"
-    import { text } from "../../lang/textFR";
+    import { textFR as text } from "../../lang/textFR";
 
     const columns: {[key in keyof CashFlow]: GenericColumn<CashFlow>} = {
         date: { name: text.date, type: "date", required: true },
@@ -41,7 +41,7 @@
         },
         ref: { name: text.ref, type: "string", required: true },
         note: {
-            name: text.ref,
+            name: text.note,
             type: "string",
             required: false,
             format: a => a || ""

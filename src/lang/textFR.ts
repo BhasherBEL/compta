@@ -1,27 +1,28 @@
-export const tooltipText = {
-    add_line: "Ajouter une ligne",
-    clipboard: "Copier dans le presse-papier",
-    delete_line: "Supprimer la ligne",
-    edit_line: "Éditer la ligne",
-    open_file: "Restaurer une sauvegarde",
-    safe_delete: (isLocked) => (isLocked ? 'Débloquer' : 'Bloquer') + " la suppression",
-    save_file: "Sauvegarder les modifications",
-}
-
-export const infoText = {
-    address: "Adresse",
-    company: "Numéro d'entreprise",
-    date_end: "Date fin",
-    date_start: "Date début",
-    email: "Adresse mail",
-    gen_info: "Informations générales",
-    manager: "Responsable",
-    orga: "Organisation",
-    quarter: "Quadrimestre",
-    year: "Année académique",
-}
-
-export const text = {
+export const textFR = {
+    lang: "fr",
+    tooltips: {
+        add_line: "Ajouter une ligne",
+        clipboard: "Copier dans le presse-papier",
+        delete_line: "Supprimer la ligne",
+        edit_line: "Éditer la ligne",
+        lang_en: "Changer les textes et formats en ANGLAIS",
+        lang_fr: "Changer les textes et formats en FRANÇAIS",
+        open_file: "Restaurer une sauvegarde",
+        safe_delete: (isLocked) => (isLocked ? 'Débloquer' : 'Bloquer') + " la suppression",
+        save_file: "Sauvegarder les modifications",
+    },
+    infos: {
+        address: "Adresse",
+        company: "Numéro d'entreprise",
+        date_end: "Date fin",
+        date_start: "Date début",
+        email: "Adresse mail",
+        gen_info: "Informations générales",
+        manager: "Responsable",
+        orga: "Organisation",
+        quarter: "Quadrimestre",
+        year: "Année académique",
+    },
     account: "Compte",
     account_name: "Nom du compte",
     accounts: "Comptes",

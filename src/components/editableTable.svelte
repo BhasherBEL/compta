@@ -3,7 +3,7 @@
     import type { GenericColumn } from "../utils"
     import EditableValue from "./editableValue.svelte"
     import Icon from "./icon.svelte"
-    import { tooltipText, text } from "../lang/textFR"
+    import { textFR as text } from "../lang/textFR";
     export let tableName = ""
     export let colgroup = []
     export let columns: {[index: string]: GenericColumn<any>}
@@ -56,13 +56,13 @@
         <button
             on:click={() => {lockDelete=!lockDelete}}
             class="button icon-only outline button-end"
-            title="{tooltipText.safe_delete(lockDelete)}"
+            title="{text.tooltips.safe_delete(lockDelete)}"
             style="background-color: {lockDelete ? '#dfffdf' : '#fed4d4'}"
         >
             {#if lockDelete}
-                <Icon title="{tooltipText.safe_delete(lockDelete)}" color="#008a00" icon="lock" size={25}/>
+                <Icon title="{text.tooltips.safe_delete(lockDelete)}" color="#008a00" icon="lock" size={25}/>
             {:else}
-                <Icon title="{tooltipText.safe_delete(lockDelete)}" color="#ac0000" icon="unlock" size={25}/>
+                <Icon title="{text.tooltips.safe_delete(lockDelete)}" color="#ac0000" icon="unlock" size={25}/>
             {/if}
         </button>
     </div>
@@ -118,19 +118,19 @@
                             class="button outline icon-only"
                             on:click={() => toggleEditable(index)}
                             disabled="{!validateChange(data)}"
-                            title="{tooltipText.edit_line}"
+                            title="{text.tooltips.edit_line}"
                             style="background-color: #feebd4"
                     >
-                        <Icon title="{tooltipText.edit_line}" color="#a55500" icon="pencil"/>
+                        <Icon title="{text.tooltips.edit_line}" color="#a55500" icon="pencil"/>
                     </button>
                     <button
                             class="button outline icon-only"
                             on:click={() => dataStore.remove(index)}
                             disabled="{!validateDelete(data, index) || lockDelete}"
-                            title="{tooltipText.delete_line}"
+                            title="{text.tooltips.delete_line}"
                             style="background-color: #fed4d4"
                     >
-                        <Icon title="{tooltipText.delete_line}" color="#ac0000" icon="close"/>
+                        <Icon title="{text.tooltips.delete_line}" color="#ac0000" icon="close"/>
                     </button>
                 </td>
             </tr>
@@ -156,9 +156,9 @@
             {/each}
             <td>
                 <label class="button outline icon-only pull-right" style="background-color: #dfffdf;"
-                       title="{tooltipText.add_line}">
+                       title="{text.tooltips.add_line}">
                     <input type="submit" class="is-hidden" form="new-data"/>
-                    <Icon title="{tooltipText.add_line}" color="#008a00" icon="plus"/>
+                    <Icon title="{text.tooltips.add_line}" color="#008a00" icon="plus"/>
                 </label>
             </td>
         </tr>

@@ -1,6 +1,6 @@
 <script>
     import Icon from "../icon.svelte"
-    import { tooltipText } from "../../lang/textFR"
+    import { textFR as text } from "../../lang/textFR";
 </script>
 
 <div class="card">
@@ -41,7 +41,7 @@
         Vous pouvez consulter les bilans de vos comptes par évènements et par
         nature, présenté de la même façon que dans l'Excel de trésorerie. <br>
         Vous pouvez également utiliser le bouton
-        <Icon title="{tooltipText.clipboard}" icon="clipboard"/> afin de pouvoir facilement copier les tableaux
+        <Icon title="{text.tooltips.clipboard}" icon="clipboard"/> afin de pouvoir facilement copier les tableaux
         dans l'Excel de Bilan.
     </p>
     <h3>

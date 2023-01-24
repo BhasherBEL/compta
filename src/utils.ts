@@ -1,3 +1,6 @@
+import { textFR } from "./lang/textFR";
+import { textEN } from "./lang/textEN";
+
 export function unique(value: any, index: number, self: any[]): boolean {
     return self.indexOf(value) === index;
 }
@@ -16,8 +19,7 @@ export type GenericColumn<T> = {
 export const formatMoney = (k: number): string => {
     if (k === 0) return ''
     return `<span class='money-export'>`+
-        k?.toLocaleString(
-            undefined,
+        k?.toLocaleString(textEN.lang,
             {minimumFractionDigits: 2, maximumFractionDigits: 2}
         )+ "</span>"
         || `${k}`

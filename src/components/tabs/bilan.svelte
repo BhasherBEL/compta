@@ -2,7 +2,7 @@
     import BilanTable from "../BilanTable.svelte";
     import { CashFlow, cashFlows, IndexedObjectData } from "../../store";
     import { unique } from "../../utils";
-    import { text } from "../../lang/textFR";
+    import { textFR as text } from "../../lang/textFR";
 
     function convertCashFlows(data: CashFlow[]) {
         let dict = {}

@@ -1,6 +1,7 @@
 <script lang="ts">
-    import { tooltipText, text } from "./lang/textFR"
+    import { textFR as text } from "./lang/textFR";
     import Icon from "./components/icon.svelte";
+    import Flag from "./lang/flag.svelte"
     import bilan from "./components/tabs/bilan.svelte";
     import flux from "./components/tabs/flux.svelte";
     import help from "./components/tabs/help.svelte"
@@ -9,7 +10,6 @@
     shortcutKeyboard();
 
     let current_tab = infos_comptes
-
     const tabs = [
         { name: text.help, component: help },
         { name: `${text.help} ${text.and} ${text.accounts}`, component: infos_comptes },
@@ -33,15 +33,26 @@
         </div>
     </div>
 
+    <!--<div class="myGrouped is-vertical-align">
+        <button class="button icon-only button-end" style="background: none"
+                title="{text.tooltips.lang_fr}">
+            <Flag lang="fr" title="{text.tooltips.lang_fr}" size="{50}"/>
+        </button>
+        <button class="button icon-only button-end" style="background: none"
+                title="{text.tooltips.lang_en}">
+            <Flag lang="en" title="{text.tooltips.lang_en}" size="{50}"/>
+        </button>
+    </div>-->
+
     <div class="nav-right">
         <div class="myGrouped is-vertical-align">
-            <label class="button icon-only primary button-start" title="{tooltipText.open_file}">
-                <Icon title="{tooltipText.open_file}" icon="folder-open" size={20}/>
+            <label class="button icon-only primary button-start" title="{text.tooltips.open_file}">
+                <Icon title="{text.tooltips.open_file}" icon="folder-open" size={20}/>
                 <input id="importButton" type="file" accept="application/json" class="button icon-only primary"
                        style="display: none;" on:change={importFile}>
             </label>
-            <button class="button icon-only primary outline button-end" on:click={exportFile} title="{tooltipText.save_file}">
-                <Icon title="{tooltipText.save_file}" color="#ff5b00" icon="download" size={20}/>
+            <button class="button icon-only primary outline button-end" on:click={exportFile} title="{text.tooltips.save_file}">
+                <Icon title="{text.tooltips.save_file}" color="#ff5b00" icon="download" size={20}/>
             </button>
         </div>
     </div>

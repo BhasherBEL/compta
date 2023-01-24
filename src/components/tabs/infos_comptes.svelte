@@ -2,7 +2,7 @@
     import { Account, accounts, infos, cashFlows } from "../../store";
     import EditableTable from '../editableTable.svelte'
     import {GenericColumn, formatMoney, sum, picker} from "../../utils"
-    import { text, infoText } from "../../lang/textFR"
+    import { textFR as text } from "../../lang/textFR";
 
     const totalRow: {[key in keyof Account]: GenericColumn<Account>} = {
         name: {
@@ -167,43 +167,43 @@
 </script>
 
 <div class="card">
-    <h2>{infoText.gen_info}</h2>
+    <h2>{text.infos.gen_info}</h2>
     <div class=" row">
         <div class="col myform">
             <div>
-                <label for="orga">{infoText.orga}</label>
+                <label for="orga">{text.infos.orga}</label>
                 <input bind:value={$infos.orga} id="orga"/>
             </div>
             <div>
-                <label for="address">{infoText.address}</label>
+                <label for="address">{text.infos.address}</label>
                 <input bind:value={$infos.address} id="address"/>
             </div>
             <div>
-                <label for="company">{infoText.company}</label>
+                <label for="company">{text.infos.company}</label>
                 <input bind:value={$infos.company} id="company"/>
             </div>
             <div>
-                <label for="manager">{infoText.manager}</label>
+                <label for="manager">{text.infos.manager}</label>
                 <input bind:value={$infos.manager} id="manager"/>
             </div>
             <div>
-                <label for="email">{infoText.email}</label>
+                <label for="email">{text.infos.email}</label>
                 <input bind:value={$infos.email} id="email" type="email"/>
             </div>
         </div>
         <div class="col myform">
             <div>
-                <label for="year">{infoText.year}</label>
+                <label for="year">{text.infos.year}</label>
                 <input bind:value={$infos.year} id="year"/>
             </div>
             <div>
-                <label for="quarter">{infoText.quarter}</label>
+                <label for="quarter">{text.infos.quarter}</label>
                 <input bind:value={$infos.quarter} id="quarter"/>
             </div>
             <div>
-                <label for="date-start">{infoText.date_start}</label>
+                <label for="date-start">{text.infos.date_start}</label>
                 <input bind:value={$infos.date_start} id="date-start" type="date"/>
-                <label for="date-end">{infoText.date_end}</label>
+                <label for="date-end">{text.infos.date_end}</label>
                 <input bind:value={$infos.date_end} id="date-end" type="date"/>
             </div>
         </div>
