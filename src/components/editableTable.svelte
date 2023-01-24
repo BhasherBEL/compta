@@ -7,6 +7,7 @@
     export let tableName = ""
     export let colgroup = []
     export let columns: {[index: string]: GenericColumn<any>}
+    export let totalRow: {[index: string]: GenericColumn<any>}
     export let dataStore: IndexedObjectStore<object>
     export let validateDelete: (arg0: any, arg1: string) => boolean = (_, __) => true
     let lockDelete: boolean = true
@@ -41,6 +42,12 @@
         let value = column.compute ? column.compute(data[key], data, index) : data[key]
         return (column.format ? column.format(value, data, index) : value)
     }
+
+    function computeAndFormatTotal<T>(column: GenericColumn<T>, key: string, data: T, indexes: string[]): string {
+        let value = column.compute ? column.compute(data[key], data, indexes) : column.name
+        return (column.format ? column.format(value, data, indexes) : value)
+    }
+
 </script>
 
 <div class="myGrouped is-vertical-align">
@@ -67,80 +74,93 @@
             <col style="width: {col.width};" span="{col.span}">
         {/each}
     </colgroup>
-    <tr>
-        {#each Object.entries(columns) as [_, item]}
-            <th>{item.name}</th>
-        {/each}
-    </tr>
-    {#each Object.entries($dataStore) as [index, data]}
+
+    {#if totalRow}
+        <thead class="total-row">
+            {#each Object.entries(totalRow) as [key, column]}
+                <th>
+                    {@html computeAndFormatTotal(column, key, Object.values($dataStore), Object.keys($dataStore))}
+                </th>
+            {/each}
+        </thead>
+    {/if}
+
+    <tbody>
         <tr>
-            {#each Object.entries(columns) as [key, column]}
-                <td>
-                    {#if (dataBeingEdited.includes(index))}
-                        {#if column.compute}
-                            <i class="text-grey">{text.calc_val}</i>
+            {#each Object.entries(columns) as [_, item]}
+                <th>{item.name}</th>
+            {/each}
+        </tr>
+        {#each Object.entries($dataStore) as [index, data]}
+            <tr>
+                {#each Object.entries(columns) as [key, column]}
+                    <td>
+                        {#if (dataBeingEdited.includes(index))}
+                            {#if column.compute}
+                                <i class="text-grey">{text.calc_val}</i>
+                            {:else}
+                                <EditableValue
+                                    bind:value={$dataStore[index][key]}
+                                    placeholder={column.name}
+                                    type={column.type}
+                                    suggestions={column.suggestions || []}
+                                    suggestions_keys={column.suggestions_keys || []}
+                                    required={column.required}
+                                />
+                            {/if}
                         {:else}
-                            <EditableValue
-                                bind:value={$dataStore[index][key]}
-                                placeholder={column.name}
-                                type={column.type}
-                                suggestions={column.suggestions || []}
-                                suggestions_keys={column.suggestions_keys || []}
-                                required={column.required}
-                            />
+                            {@html computeAndFormat(column, key, data, index)}
                         {/if}
-                    {:else}
-                        {@html computeAndFormat(column, key, data, index)}
-                    {/if}
+                    </td>
+                {/each}
+                <td class="grouped gapless pull-right">
+                    <button
+                            class="button outline icon-only"
+                            on:click={() => toggleEditable(index)}
+                            disabled="{!validateChange(data)}"
+                            title="{tooltipText.edit_line}"
+                            style="background-color: #feebd4"
+                    >
+                        <Icon title="{tooltipText.edit_line}" color="#a55500" icon="pencil"/>
+                    </button>
+                    <button
+                            class="button outline icon-only"
+                            on:click={() => dataStore.remove(index)}
+                            disabled="{!validateDelete(data, index) || lockDelete}"
+                            title="{tooltipText.delete_line}"
+                            style="background-color: #fed4d4"
+                    >
+                        <Icon title="{tooltipText.delete_line}" color="#ac0000" icon="close"/>
+                    </button>
+                </td>
+            </tr>
+        {/each}
+        <tr>
+            <form id="new-data" on:submit|preventDefault={() => addNew()}></form>
+            {#each Object.entries(columns) as [key, item]}
+                <td>
+                {#if item.compute}
+                    <i class="text-grey">{text.calc_val}</i>
+                {:else }
+                    <EditableValue
+                            bind:value={newData[key]}
+                            type={item.type}
+                            placeholder={item.name}
+                            required={item.required}
+                            form="new-data"
+                            suggestions={item.suggestions || []}
+                            suggestions_keys={item.suggestions_keys || []}
+                    />
+                {/if}
                 </td>
             {/each}
-            <td class="grouped gapless pull-right">
-                <button
-                        class="button outline icon-only"
-                        on:click={() => toggleEditable(index)}
-                        disabled="{!validateChange(data)}"
-                        title="{tooltipText.edit_line}"
-                        style="background-color: #feebd4"
-                >
-                    <Icon title="{tooltipText.edit_line}" color="#a55500" icon="pencil"/>
-                </button>
-                <button
-                        class="button outline icon-only"
-                        on:click={() => dataStore.remove(index)}
-                        disabled="{!validateDelete(data, index) || lockDelete}"
-                        title="{tooltipText.delete_line}"
-                        style="background-color: #fed4d4"
-                >
-                    <Icon title="{tooltipText.delete_line}" color="#ac0000" icon="close"/>
-                </button>
+            <td>
+                <label class="button outline icon-only pull-right" style="background-color: #dfffdf;"
+                       title="{tooltipText.add_line}">
+                    <input type="submit" class="is-hidden" form="new-data"/>
+                    <Icon title="{tooltipText.add_line}" color="#008a00" icon="plus"/>
+                </label>
             </td>
         </tr>
-    {/each}
-    <tr>
-        <form id="new-data" on:submit|preventDefault={() => addNew()}></form>
-        {#each Object.entries(columns) as [key, item]}
-            <td>
-            {#if item.compute}
-                <i class="text-grey">{text.calc_val}</i>
-            {:else }
-                <EditableValue
-                        bind:value={newData[key]}
-                        type={item.type}
-                        placeholder={item.name}
-                        required={item.required}
-                        form="new-data"
-                        suggestions={item.suggestions || []}
-                        suggestions_keys={item.suggestions_keys || []}
-                />
-            {/if}
-            </td>
-        {/each}
-        <td>
-            <label class="button outline icon-only pull-right" style="background-color: #dfffdf;"
-                   title="{tooltipText.add_line}">
-                <input type="submit" class="is-hidden" form="new-data"/>
-                <Icon title="{tooltipText.add_line}" color="#008a00" icon="plus"/>
-            </label>
-        </td>
-    </tr>
+    </tbody>
 </table>

@@ -25,9 +25,8 @@ export const formatMoney = (k: number): string => {
 
 export const formatColor = (k: number, format: string): string => {
     if (k === 0) return ''
-    return `<span style="background-color: ${incomeOrExpenseColor(k)}">`+ format + "</span>"
+    return `<span style="background-color: ${picker(k, "#dfffdf", "#fed4d4")}">`+ format + "</span>"
 }
-const incomeOrExpenseColor = (a: number) => a < 0 ? "#fed4d4" : (a > 0 ? "#dfffdf" : "");
 
 export const sum = (a: number[]) => a.length ? a.reduce((b, c) => b+c): 0;
-export const incomeOrExpense = (a: number) => a < 0 ? "Sortie" : (a > 0 ? "Entrée" : "");
+export const picker = (nbr: number, positive: any, negative: any) => nbr > 0 ? positive : (nbr < 0 ? negative : "");

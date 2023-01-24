@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onDestroy } from "svelte"
     import { accounts, CashFlow, cashFlows } from "../../store"
-    import { unique, GenericColumn, formatColor, incomeOrExpense, formatMoney } from "../../utils";
+    import { unique, GenericColumn, formatColor, picker, formatMoney } from "../../utils";
     import EditableTable from "../editableTable.svelte"
     import { text } from "../../lang/textFR";
 
@@ -50,7 +50,7 @@
             name: text.income+"/"+text.expense,
             type: "string",
             required: false,
-            compute: (_, cashFlow, __) => (formatColor(cashFlow.amount, incomeOrExpense(cashFlow.amount)))
+            compute: (_, cashFlow, __) => (formatColor(cashFlow.amount, picker(cashFlow.amount, text.income, text.expense)))
         }
     }
 

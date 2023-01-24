@@ -1,8 +1,98 @@
 <script lang="ts">
     import { Account, accounts, infos, cashFlows } from "../../store";
     import EditableTable from '../editableTable.svelte'
-    import { GenericColumn, formatMoney, sum } from "../../utils"
+    import {GenericColumn, formatMoney, sum, picker} from "../../utils"
     import { text, infoText } from "../../lang/textFR"
+
+    const totalRow: {[key in keyof Account]: GenericColumn<Account>} = {
+        name: {
+            name: "Total",
+            type: "string",
+            required: true,
+        },
+        initial_money: {
+            name: text.initial_money,
+            type: "number",
+            required: false,
+            compute: (_, __, ___) => (
+                sum(
+                    Object
+                        .values($accounts)
+                        .map(a => a.initial_money)
+                )
+            ),
+            format: formatMoney
+        },
+        income: {
+            name: text.income,
+            type: "number",
+            required: false,
+            compute: (_, __, ___) => (
+                sum(
+                    Object
+                        .values($cashFlows)
+                        .filter(k => k.amount > 0)
+                        .map(k => k.amount)
+                )
+            ),
+            format: formatMoney
+        },
+        expense: {
+            name: text.expense,
+            type: "number",
+            required: false,
+            compute: (_, __, ___) => (
+                sum(
+                    Object
+                        .values($cashFlows)
+                        .filter(k => k.amount < 0)
+                        .map(k => k.amount)
+                )
+            ),
+            format: formatMoney
+        },
+        profit: {
+            name: text.profit,
+            type: "number",
+            required: false,
+            compute: (_, __, ___) => (
+                sum(
+                    Object
+                        .values($cashFlows)
+                        .map(k => k.amount)
+                )
+            ),
+            format: (amount, __, _) => {
+                return `<span
+                            style="background-color: ${picker(amount, '#dfffdf', '#fed4d4')}"
+                            class="${picker(amount, 'text-success', 'text-error')}">
+                            ${formatMoney(amount)}
+                        </span>`;
+            }
+        },
+        current_money: {
+            name: text.current_money,
+            type: "number",
+            required: false,
+            compute: (_, __, ___) => (
+                sum(
+                    Object
+                        .values($accounts)
+                        .map(a => a.current_money)
+                )
+            ),
+            format: (amount, __, _) => {
+                let all_initial_money = sum(Object.values($accounts).map(a => a.initial_money))
+                let calculated = sum(
+                    Object
+                        .values($cashFlows)
+                        .map(k => k.amount)
+                ) + all_initial_money
+                let okay = Math.round(calculated*100) == Math.round(amount*100)
+                return `<span class="${okay ? '' : 'text-error'}">${formatMoney(amount)} ${okay ? '' : `(${text.diff_of} ${formatMoney(calculated - amount)})`}</span>`
+            }
+        },
+    }
 
     const columns: {[key in keyof Account]: GenericColumn<Account>} = {
         name: {
@@ -125,6 +215,7 @@
         tableName="{text.accounts}"
         dataStore="{accounts}"
         columns="{columns}"
+        totalRow="{totalRow}"
         validateDelete="{validateDelete}"
         colgroup="{[{width: '16%', span: '6'}]}"
     />
