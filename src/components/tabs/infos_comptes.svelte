@@ -2,11 +2,14 @@
     import { Account, accounts, infos, cashFlows } from "../../store";
     import EditableTable from '../editableTable.svelte'
     import {GenericColumn, formatMoney, sum, picker} from "../../utils"
-    import { textFR as text } from "../../lang/textFR";
+    import { lang } from "../../lang/language";
+    import { onDestroy } from 'svelte';
+
+    let text; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
 
     const totalRow: {[key in keyof Account]: GenericColumn<Account>} = {
         name: {
-            name: "Total",
+            name: text.total_all,
             type: "string",
             required: true,
         },

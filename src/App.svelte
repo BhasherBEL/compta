@@ -1,7 +1,8 @@
 <script lang="ts">
-    import { textFR as text } from "./lang/textFR";
     import Icon from "./components/icon.svelte";
     import Flag from "./lang/flag.svelte"
+    import { lang, translation } from "./lang/language";
+    import { onDestroy } from 'svelte';
     import bilan from "./components/tabs/bilan.svelte";
     import flux from "./components/tabs/flux.svelte";
     import help from "./components/tabs/help.svelte"
@@ -9,8 +10,10 @@
     import { exportFile, importFile, shortcutKeyboard } from "./io"
     shortcutKeyboard();
 
+    let text; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
+
     let current_tab = infos_comptes
-    const tabs = [
+    $: tabs = [
         { name: text.help, component: help },
         { name: `${text.help} ${text.and} ${text.accounts}`, component: infos_comptes },
         { name: text.cash_flow, component: flux },
@@ -33,16 +36,16 @@
         </div>
     </div>
 
-    <!--<div class="myGrouped is-vertical-align">
-        <button class="button icon-only button-end" style="background: none"
+    <div class="myGrouped is-vertical-align">
+        <button class="button icon-only button-end" style="background: none" on:click={() => translation("fr")}
                 title="{text.tooltips.lang_fr}">
             <Flag lang="fr" title="{text.tooltips.lang_fr}" size="{50}"/>
         </button>
-        <button class="button icon-only button-end" style="background: none"
+        <button class="button icon-only button-end" style="background: none" on:click={() => translation("en")}
                 title="{text.tooltips.lang_en}">
             <Flag lang="en" title="{text.tooltips.lang_en}" size="{50}"/>
         </button>
-    </div>-->
+    </div>
 
     <div class="nav-right">
         <div class="myGrouped is-vertical-align">
@@ -69,22 +72,22 @@
 
 <footer>
     <span>
-        Créé par le
+        {text.footer.created_by}
         <a href="https://louvainlinux.org" target="_blank">
             Louvain-li-Nux
         </a><br>
         <a href="https://gitlab.com/louvainlinux/compta/" target="_blank">
-            Voir le code source
+            {text.footer.see_source_code}
         </a>
     </span>
-    <span>Outil de gestion de trésorerie destiné aux KAP's</span>
+    <span>{text.footer.abstract}</span>
     <span class="text-right">
-        Version {process.env.npm_package_version}<br>
+        {text.footer.version} {process.env.npm_package_version}<br>
         <a
             href="https://gitlab.com/louvainlinux/compta/-/tags"
             target="_blank"
         >
-            Voir les notes de mise à jour
+            {text.footer.see_release_notes}
         </a>
     </span>
 </footer>

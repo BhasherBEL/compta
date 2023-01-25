@@ -1,9 +1,11 @@
 <script lang="ts">
-    import { onDestroy } from "svelte"
     import { accounts, CashFlow, cashFlows } from "../../store"
     import { unique, GenericColumn, formatColor, picker, formatMoney } from "../../utils";
     import EditableTable from "../editableTable.svelte"
-    import { textFR as text } from "../../lang/textFR";
+    import { lang } from "../../lang/language";
+    import { onDestroy } from 'svelte';
+
+    let text; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
 
     const columns: {[key in keyof CashFlow]: GenericColumn<CashFlow>} = {
         date: { name: text.date, type: "date", required: true },

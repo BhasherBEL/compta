@@ -3,7 +3,8 @@
     import type { GenericColumn } from "../utils"
     import EditableValue from "./editableValue.svelte"
     import Icon from "./icon.svelte"
-    import { textFR as text } from "../lang/textFR";
+    import { lang } from "../lang/language";
+    import { onDestroy } from 'svelte';
     export let tableName = ""
     export let colgroup = []
     export let columns: {[index: string]: GenericColumn<any>}
@@ -13,6 +14,8 @@
     let lockDelete: boolean = true
     let dataBeingEdited = []
     let newData = {}
+
+    let text; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
 
     function toggleEditable(index: string) {
         if (dataBeingEdited.includes(index)) {

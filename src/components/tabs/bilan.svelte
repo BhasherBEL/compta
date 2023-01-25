@@ -2,7 +2,10 @@
     import BilanTable from "../BilanTable.svelte";
     import { CashFlow, cashFlows, IndexedObjectData } from "../../store";
     import { unique } from "../../utils";
-    import { textFR as text } from "../../lang/textFR";
+    import { lang } from "../../lang/language";
+    import { onDestroy } from 'svelte';
+
+    let text; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
 
     function convertCashFlows(data: CashFlow[]) {
         let dict = {}
@@ -34,6 +37,7 @@
         console.log(dict)
         return dict
     }
+    $: categoriesByEvent = [`${text.event}`, `${text.nature}`, `${text.details}`]
 
     function generateByNature(data: IndexedObjectData<CashFlow>) {
         let natures = Object.values(data).map(n => n.nature).filter(unique)
@@ -45,14 +49,15 @@
         }
         return dict
     }
+    $: categoriesByNature = [`${text.nature}`, `${text.details}`]
 </script>
 <div class="row">
     <div class="col card">
         <h3 class="text-center">{text.events_balance}</h3>
-        <BilanTable data={generateByEvent($cashFlows)}/>
+        <BilanTable data={generateByEvent($cashFlows)} categories="{categoriesByEvent}"/>
     </div>
     <div class="col card">
         <h3 class="text-center">{text.natures_balance}</h3>
-        <BilanTable data={generateByNature($cashFlows)}/>
+        <BilanTable data={generateByNature($cashFlows)} categories="{categoriesByNature}"/>
     </div>
 </div>

@@ -1,5 +1,5 @@
-import { textFR } from "./lang/textFR";
-import { textEN } from "./lang/textEN";
+import {lang} from "./lang/language";
+import {onDestroy} from "svelte";
 
 export function unique(value: any, index: number, self: any[]): boolean {
     return self.indexOf(value) === index;
@@ -18,8 +18,11 @@ export type GenericColumn<T> = {
 
 export const formatMoney = (k: number): string => {
     if (k === 0) return ''
+    let text;
+    const unsubscribeLang = lang.subscribe(langData => {text = langData;});
+    onDestroy(unsubscribeLang);
     return `<span class='money-export'>`+
-        k?.toLocaleString(textEN.lang,
+        k?.toLocaleString(text.lang,
             {minimumFractionDigits: 2, maximumFractionDigits: 2}
         )+ "</span>"
         || `${k}`
