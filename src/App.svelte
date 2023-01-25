@@ -1,7 +1,7 @@
 <script lang="ts">
     import Icon from "./components/icon.svelte";
     import Flag from "./lang/flag.svelte"
-    import { lang, translation } from "./lang/language";
+    import {lang, Language, translation } from "./lang/language";
     import { onDestroy } from 'svelte';
     import bilan from "./components/tabs/bilan.svelte";
     import flux from "./components/tabs/flux.svelte";
@@ -10,7 +10,7 @@
     import { exportFile, importFile, shortcutKeyboard } from "./io"
     shortcutKeyboard();
 
-    let text; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
+    let text: Language; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
 
     let current_tab = infos_comptes
     $: tabs = [
@@ -26,7 +26,7 @@
     <div class="nav-left">
         <div class="tabs">
             {#each tabs as tab}
-                <a href="#"
+                <a href="#/"
                    class="{tab.component === current_tab ? 'active' : ''}"
                    on:click="{() => current_tab = tab.component}"
                 >
@@ -37,11 +37,11 @@
     </div>
 
     <div class="myGrouped is-vertical-align">
-        <button class="button icon-only button-end" style="background: none" on:click={() => translation("fr")}
+        <button class="button icon-only button-end" style="background: none;" on:click={() => translation("fr")}
                 title="{text.tooltips.lang_fr}">
             <Flag lang="fr" title="{text.tooltips.lang_fr}" size="{50}"/>
         </button>
-        <button class="button icon-only button-end" style="background: none" on:click={() => translation("en")}
+        <button class="button icon-only button-end" style="background: none;" on:click={() => translation("en")}
                 title="{text.tooltips.lang_en}">
             <Flag lang="en" title="{text.tooltips.lang_en}" size="{50}"/>
         </button>

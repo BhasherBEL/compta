@@ -1,4 +1,4 @@
-import {lang} from "./lang/language";
+import {lang, Language} from "./lang/language";
 import {onDestroy} from "svelte";
 
 export function unique(value: any, index: number, self: any[]): boolean {
@@ -18,7 +18,7 @@ export type GenericColumn<T> = {
 
 export const formatMoney = (k: number): string => {
     if (k === 0) return ''
-    let text;
+    let text: Language;
     const unsubscribeLang = lang.subscribe(langData => {text = langData;});
     onDestroy(unsubscribeLang);
     return `<span class='money-export'>`+

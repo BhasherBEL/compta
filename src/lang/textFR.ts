@@ -1,7 +1,7 @@
-import type Icon from "../icon.svelte"
 import {links} from "./links";
+import type {Language} from "./language";
 
-export const textFR = {
+export const textFR: Language = {
     lang: "fr",
     tooltips: {
         add_line: "Ajouter une ligne",
@@ -11,7 +11,7 @@ export const textFR = {
         lang_en: "Changer les textes et formats en ANGLAIS",
         lang_fr: "Changer les textes et formats en FRANÇAIS",
         open_file: "Restaurer une sauvegarde",
-        safe_delete: (isLocked) => (isLocked ? 'Débloquer' : 'Bloquer') + " la suppression",
+        safe_delete: (isLocked: boolean) => (isLocked ? 'Débloquer' : 'Bloquer') + " la suppression",
         save_file: "Sauvegarder les modifications",
     },
     infos: {

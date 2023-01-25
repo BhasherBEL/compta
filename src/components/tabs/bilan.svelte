@@ -2,10 +2,10 @@
     import BilanTable from "../BilanTable.svelte";
     import { CashFlow, cashFlows, IndexedObjectData } from "../../store";
     import { unique } from "../../utils";
-    import { lang } from "../../lang/language";
+    import {lang, Language } from "../../lang/language";
     import { onDestroy } from 'svelte';
 
-    let text; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
+    let text: Language; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
 
     function convertCashFlows(data: CashFlow[]) {
         let dict = {}

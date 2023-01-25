@@ -3,7 +3,7 @@
     import {v4 as uuidv4} from 'uuid'
     import { formatMoney } from "../utils"
     import Icon from "./icon.svelte"
-    import { lang } from "../lang/language";
+    import {lang, Language } from "../lang/language";
     import { onDestroy } from 'svelte';
     export let data: Object = {}
     export let categories: string[];
@@ -16,7 +16,7 @@
         expense?: number
     }
 
-    let text; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
+    let text: Language; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
 
     function generateRows(data: Object): {rows: Row[], income: number, expense: number} {
         let rows: Row[] = []

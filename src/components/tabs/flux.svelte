@@ -2,10 +2,10 @@
     import { accounts, CashFlow, cashFlows } from "../../store"
     import { unique, GenericColumn, formatColor, picker, formatMoney } from "../../utils";
     import EditableTable from "../editableTable.svelte"
-    import { lang } from "../../lang/language";
+    import {lang, Language } from "../../lang/language";
     import { onDestroy } from 'svelte';
 
-    let text; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
+    let text: Language; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
 
     const columns: {[key in keyof CashFlow]: GenericColumn<CashFlow>} = {
         date: { name: text.date, type: "date", required: true },
@@ -88,6 +88,7 @@
         tableName="{text.cash_flow}"
         dataStore="{cashFlows}"
         columns="{columns}"
+        totalRow="{false}"
         colgroup="{[{width: '12%', span: '8'}]}"
     />
 </div>

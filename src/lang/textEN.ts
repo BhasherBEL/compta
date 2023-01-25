@@ -1,7 +1,7 @@
-import type Icon from "../icon.svelte"
 import {links} from "./links";
+import type {Language} from "./language";
 
-export const textEN = {
+export const textEN: Language = {
     lang: "en",
     tooltips: {
         add_line: "Add a row",
@@ -11,7 +11,7 @@ export const textEN = {
         lang_en: "Change text and formats to ENGLISH",
         lang_fr: "Change texts and formats to FRENCH",
         open_file: "Restore a backup",
-        safe_delete: (isLocked) => (isLocked ? 'Unblock' : 'Block') + " the removal",
+        safe_delete: (isLocked: boolean) => (isLocked ? 'Unblock' : 'Block') + " the removal",
         save_file: "Save changes",
     },
     infos: {

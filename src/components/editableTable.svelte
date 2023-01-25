@@ -3,19 +3,19 @@
     import type { GenericColumn } from "../utils"
     import EditableValue from "./editableValue.svelte"
     import Icon from "./icon.svelte"
-    import { lang } from "../lang/language";
+    import {lang, Language } from "../lang/language";
     import { onDestroy } from 'svelte';
     export let tableName = ""
     export let colgroup = []
     export let columns: {[index: string]: GenericColumn<any>}
-    export let totalRow: {[index: string]: GenericColumn<any>}
+    export let totalRow: ({[index: string]: GenericColumn<any>}|false)
     export let dataStore: IndexedObjectStore<object>
     export let validateDelete: (arg0: any, arg1: string) => boolean = (_, __) => true
     let lockDelete: boolean = true
     let dataBeingEdited = []
     let newData = {}
 
-    let text; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
+    let text: Language; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
 
     function toggleEditable(index: string) {
         if (dataBeingEdited.includes(index)) {

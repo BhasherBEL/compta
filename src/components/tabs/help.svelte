@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
     import Icon from "../icon.svelte"
-    import { lang } from "../../lang/language";
+    import {lang, Language } from "../../lang/language";
     import { onDestroy } from 'svelte';
 
-    let text; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
+    let text: Language; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
 </script>
 
 <div class="card">
