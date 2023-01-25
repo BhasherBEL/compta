@@ -56,8 +56,8 @@
         {#each categories as category}
             <th>{category}</th>
         {/each}
-        <th>{text.expense}</th>
         <th>{text.income}</th>
+        <th>{text.expense}</th>
         <th>{text.total}</th>
     </tr>
     {#each generated.rows as item}
@@ -65,8 +65,8 @@
             <td>{item.categoryA}</td>
             {#if categories.length >= 3}<td>{item.categoryB}</td>{/if}
             <td>{item.categoryC}</td>
-            <td>{@html formatMoney(item.expense)}</td>
             <td>{@html formatMoney(item.income)}</td>
+            <td>{@html formatMoney(item.expense)}</td>
             <td>{@html formatMoney(item.income+item.expense)}</td>
         </tr>
     {/each}
@@ -76,8 +76,8 @@
         </th>
         {#if categories.length >= 3}<th></th>{/if}
         <th></th>
-        <th>{@html formatMoney(generated.expense)}</th>
         <th>{@html formatMoney(generated.income)}</th>
+        <th>{@html formatMoney(generated.expense)}</th>
         <th>{@html formatMoney(generated.expense+generated.income)}</th>
     </tr>
 </table>
