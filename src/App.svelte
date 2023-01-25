@@ -1,5 +1,8 @@
 <script lang="ts">
     import Icon from "./components/icon.svelte";
+    import Flag from "./lang/flag.svelte"
+    import {lang, Language, translation } from "./lang/language";
+    import { onDestroy } from 'svelte';
     import bilan from "./components/tabs/bilan.svelte";
     import flux from "./components/tabs/flux.svelte";
     import help from "./components/tabs/help.svelte"
@@ -7,13 +10,14 @@
     import { exportFile, importFile, shortcutKeyboard } from "./io"
     shortcutKeyboard();
 
-    let current_tab = infos_comptes
+    let text: Language; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
 
-    const tabs = [
-        { name: "Aide", component: help },
-        { name: "Infos et comptes", component: infos_comptes },
-        { name: "Flux d'argent", component: flux },
-        { name: "Bilans détaillés", component: bilan },
+    let current_tab = infos_comptes
+    $: tabs = [
+        { name: text.help, component: help },
+        { name: `${text.help} ${text.and} ${text.accounts}`, component: infos_comptes },
+        { name: text.cash_flow, component: flux },
+        { name: text.detail_balances, component: bilan },
     ]
 </script>
 
@@ -22,7 +26,7 @@
     <div class="nav-left">
         <div class="tabs">
             {#each tabs as tab}
-                <a href="#"
+                <a href="#/"
                    class="{tab.component === current_tab ? 'active' : ''}"
                    on:click="{() => current_tab = tab.component}"
                 >
@@ -32,16 +36,26 @@
         </div>
     </div>
 
+    <div class="myGrouped is-vertical-align">
+        <button class="button icon-only button-end" style="background: none;" on:click={() => translation("fr")}
+                title="{text.tooltips.lang_fr}">
+            <Flag lang="fr" title="{text.tooltips.lang_fr}" size="{50}"/>
+        </button>
+        <button class="button icon-only button-end" style="background: none;" on:click={() => translation("en")}
+                title="{text.tooltips.lang_en}">
+            <Flag lang="en" title="{text.tooltips.lang_en}" size="{50}"/>
+        </button>
+    </div>
+
     <div class="nav-right">
         <div class="myGrouped is-vertical-align">
-            <label class="button icon-only primary button-start" title="Restaurer une sauvegarde">
-                <Icon icon="folder-open" size={20}/>
+            <label class="button icon-only primary button-start" title="{text.tooltips.open_file}">
+                <Icon title="{text.tooltips.open_file}" icon="folder-open" size={20}/>
                 <input id="importButton" type="file" accept="application/json" class="button icon-only primary"
                        style="display: none;" on:change={importFile}>
             </label>
-            <button class="button icon-only primary outline button-end" on:click={exportFile}
-                    title="Sauvegarder les modifications">
-                <Icon color="#ff5b00" icon="download" size={20}/>
+            <button class="button icon-only primary outline button-end" on:click={exportFile} title="{text.tooltips.save_file}">
+                <Icon title="{text.tooltips.save_file}" color="#ff5b00" icon="download" size={20}/>
             </button>
         </div>
     </div>
@@ -58,22 +72,22 @@
 
 <footer>
     <span>
-        Créé par le
+        {text.footer.created_by}
         <a href="https://louvainlinux.org" target="_blank">
             Louvain-li-Nux
         </a><br>
         <a href="https://gitlab.com/louvainlinux/compta/" target="_blank">
-            Voir le code source
+            {text.footer.see_source_code}
         </a>
     </span>
-    <span>Outil de gestion de trésorerie destiné aux KAP's</span>
+    <span>{text.footer.abstract}</span>
     <span class="text-right">
-        Version {process.env.npm_package_version}<br>
+        {text.footer.version} {process.env.npm_package_version}<br>
         <a
             href="https://gitlab.com/louvainlinux/compta/-/tags"
             target="_blank"
         >
-            Voir les notes de mise à jour
+            {text.footer.see_release_notes}
         </a>
     </span>
 </footer>

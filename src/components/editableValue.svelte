@@ -14,6 +14,7 @@
 
     let id = v4uuid()
 </script>
+
 {#if type === "number"}
     <input type="number" bind:value={value} {placeholder} list="{id}" step="0.01" {required} {form}/>
 {:else if type === "date"}
@@ -28,6 +29,7 @@
 {:else}
     <input bind:value={value} {placeholder} list="{id}" {required} {form}/>
 {/if}
+
 {#if suggestions?.length > 0 && type !== "select"}
     <!--suppress XmlDuplicatedId -->
     <datalist id="{id}">

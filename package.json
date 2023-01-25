@@ -1,11 +1,12 @@
 {
   "name": "compta",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
+    "test": "npm run stylelint && npm run tslint && npm run svelte-check",
     "stylelint": "stylelint **/*.{css,html,ts,svelte}",
     "svelte-check": "svelte-check --tsconfig ./tsconfig.json",
     "tslint": "tslint -p ."

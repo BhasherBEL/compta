@@ -3,28 +3,36 @@
     import {v4 as uuidv4} from 'uuid'
     import { formatMoney } from "../utils"
     import Icon from "./icon.svelte"
+    import {lang, Language } from "../lang/language";
+    import { onDestroy } from 'svelte';
     export let data: Object = {}
+    export let categories: string[];
     const id = uuidv4()
     type Row = {
-        category?: string
+        categoryA?: string
+        categoryB?: string
+        categoryC?: string
         income?: number
         expense?: number
     }
 
-    function generateRows(data: Object): {rows: Row[], income:number, expense: number} {
+    let text: Language; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
+
+    function generateRows(data: Object): {rows: Row[], income: number, expense: number} {
         let rows: Row[] = []
         let [income, expense] = [0,0]
         for (let item in data){
             if (typeof data[item].expense == "number" && typeof data[item].income == "number") {
-                rows.push({category: item, income: data[item].income, expense: data[item].expense})
+                rows.push({categoryC: item, income: data[item].income, expense: data[item].expense})
                 income += data[item].income
                 expense += data[item].expense
             } else {
                 let {rows: newRows, income: newIncome, expense: newExpense} = generateRows(data[item])
                 for (let row in newRows) {
-                    newRows[row].category = '  '+newRows[row].category
+                    newRows[row].categoryB = newRows[row].categoryA
+                    newRows[row].categoryA = ''
                 }
-                rows.push({category: item, income: newIncome, expense: newExpense})
+                rows.push({categoryA: item, categoryB: '', categoryC: '', income: newIncome, expense: newExpense})
                 rows = rows.concat(newRows)
                 expense += newExpense
                 income += newIncome
@@ -45,14 +53,18 @@
 
 <table class="striped" {id}>
     <tr>
-        <th>Catégorie</th>
-        <th>Sortie</th>
-        <th>Entrée</th>
-        <th>Total général</th>
+        {#each categories as category}
+            <th>{category}</th>
+        {/each}
+        <th>{text.expense}</th>
+        <th>{text.income}</th>
+        <th>{text.total}</th>
     </tr>
     {#each generated.rows as item}
         <tr>
-            <td>{item.category}</td>
+            <td>{item.categoryA}</td>
+            {#if categories.length >= 3}<td>{item.categoryB}</td>{/if}
+            <td>{item.categoryC}</td>
             <td>{@html formatMoney(item.expense)}</td>
             <td>{@html formatMoney(item.income)}</td>
             <td>{@html formatMoney(item.income+item.expense)}</td>
@@ -60,16 +72,18 @@
     {/each}
     <tr>
         <th>
-            Grand total
+            {text.total_all}
         </th>
+        {#if categories.length >= 3}<th></th>{/if}
+        <th></th>
         <th>{@html formatMoney(generated.expense)}</th>
         <th>{@html formatMoney(generated.income)}</th>
         <th>{@html formatMoney(generated.expense+generated.income)}</th>
     </tr>
 </table>
 
-<button class="button icon-only pull-right" on:click={copyTable} title="Copier dans le presse-papier">
-    <Icon icon="clipboard"/>
+<button class="button icon-only pull-right" on:click={copyTable} title="{text.tooltips.clipboard}">
+    <Icon title="{text.tooltips.clipboard}" icon="clipboard"/>
 </button>
 
 <style>

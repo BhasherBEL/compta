@@ -28,6 +28,19 @@ th {
   padding: 0 0.6rem;
 }
 
+th {
+  padding-top: 10px;
+}
+
+thead.total-row {
+  text-align: center;
+  font-size: large;
+}
+
+thead.total-row th {
+  padding-bottom: 10px;
+}
+
 .card {
   padding: 0.5rem 2rem 2rem 2rem;
 }
