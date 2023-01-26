@@ -15,6 +15,7 @@
         income?: number
         expense?: number
     }
+    let extendA = true;
 
     let text: Language; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
 
@@ -33,7 +34,7 @@
                     newRows[row].categoryA = ''
                 }
                 rows.push({categoryA: item, categoryB: '', categoryC: '', income: newIncome, expense: newExpense})
-                rows = rows.concat(newRows)
+                if (extendA) rows = rows.concat(newRows)
                 expense += newExpense
                 income += newIncome
             }
@@ -41,7 +42,12 @@
         return {rows: rows, income: income, expense: expense}
     }
 
-    $: generated = generateRows(data)
+    $: generated = generateRows(data);
+
+    const regenerateData = (isExtended: boolean) => {
+        extendA = isExtended;
+        generated = generateRows(data);
+    }
 
     function copyTable() {
         const table = document.getElementById(id)
@@ -51,22 +57,39 @@
     }
 </script>
 
+<button class="button icon-only pull-right"
+        on:click={() => regenerateData(!extendA)}
+        title="{text.tooltips.scale_balance(extendA)}"
+>
+    {#if extendA}
+        <Icon title="{text.tooltips.scale_balance(extendA)}" icon="minus"/>
+    {:else}
+        <Icon title="{text.tooltips.scale_balance(extendA)}" icon="plus"/>
+    {/if}
+</button>
+
 <table class="striped" {id}>
     <tr>
-        {#each categories as category}
-            <th>{category}</th>
-        {/each}
-        <th>{text.expense}</th>
+        {#if extendA}
+            {#each categories as category}
+                <th>{category}</th>
+            {/each}
+        {:else}
+            <th>{categories[0]}</th>
+        {/if}
         <th>{text.income}</th>
+        <th>{text.expense}</th>
         <th>{text.total}</th>
     </tr>
     {#each generated.rows as item}
         <tr>
             <td>{item.categoryA}</td>
-            {#if categories.length >= 3}<td>{item.categoryB}</td>{/if}
-            <td>{item.categoryC}</td>
-            <td>{@html formatMoney(item.expense)}</td>
+            {#if extendA}
+                {#if categories.length >= 3}<td>{item.categoryB}</td>{/if}
+                <td>{item.categoryC}</td>
+            {/if}
             <td>{@html formatMoney(item.income)}</td>
+            <td>{@html formatMoney(item.expense)}</td>
             <td>{@html formatMoney(item.income+item.expense)}</td>
         </tr>
     {/each}
@@ -74,10 +97,12 @@
         <th>
             {text.total_all}
         </th>
-        {#if categories.length >= 3}<th></th>{/if}
-        <th></th>
-        <th>{@html formatMoney(generated.expense)}</th>
+        {#if extendA}
+            {#if categories.length >= 3}<th></th>{/if}
+            <th></th>
+        {/if}
         <th>{@html formatMoney(generated.income)}</th>
+        <th>{@html formatMoney(generated.expense)}</th>
         <th>{@html formatMoney(generated.expense+generated.income)}</th>
     </tr>
 </table>

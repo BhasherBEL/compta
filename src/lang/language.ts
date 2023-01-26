@@ -20,6 +20,7 @@ export type Language = {
         lang_fr: string,
         open_file: string,
         safe_delete: (isLocked: boolean) => string,
+        scale_balance: (isExpanded: boolean) => string,
         save_file: string,
     },
     infos: {
@@ -69,11 +70,13 @@ export type Language = {
         see_release_notes: string
     },
     help_section: {
+        lang_description: string,
         tabs_description: string,
         infos_accounts: string,
         cash_flow: string,
         detail_balances1: string,
         detail_balances2: string,
+        detail_balances3: string,
         need_help: string,
     },
 }
