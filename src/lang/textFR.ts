@@ -12,6 +12,7 @@ export const textFR: Language = {
         lang_fr: "Changer les textes et formats en FRANÇAIS",
         open_file: "Restaurer une sauvegarde",
         safe_delete: (isLocked: boolean) => (isLocked ? 'Débloquer' : 'Bloquer') + " la suppression",
+        scale_balance: (isExpanded: boolean) => (isExpanded ? "Réduire" : "Étendre") + " les détails du bilan",
         save_file: "Sauvegarder les modifications",
     },
     infos: {
@@ -61,14 +62,27 @@ export const textFR: Language = {
         see_release_notes: "Voir les notes de mise à jour"
     },
     help_section: {
+        lang_description: "",
         tabs_description: "Les différents onglets disponibles",
         infos_accounts: "",
         cash_flow: "",
         detail_balances1: "",
         detail_balances2: "",
+        detail_balances3: "",
         need_help: "",
     },
 }
+
+textFR.help_section.lang_description = `
+    <h3>
+        Les différentes langues disponibles
+    </h3>
+    <p>
+        Cette application est disponible en deux langues: Anglais et Français. <br>
+        Chaque langue peut être choisie en cliquant sur le drapeau correspondant. <br>
+        Lorsque vous changer de langue, le format des différents nombres changeront en fonction de la langue choisie.
+    </p>
+`
 
 textFR.help_section.infos_accounts = `
     <h4>
@@ -110,9 +124,9 @@ textFR.help_section.detail_balances1 = `
         Vous pouvez consulter les bilans de vos comptes par évènements et par
         nature, présenté de la même façon que dans l'Excel de trésorerie. <br>
         Vous pouvez également utiliser le bouton `
-textFR.help_section.detail_balances2 = ` afin de pouvoir facilement copier les tableaux
-        dans l'Excel de Bilan.
-`
+textFR.help_section.detail_balances2 = ` pour étendre/réduire les détails du Bilan ainsi que le bouton `
+textFR.help_section.detail_balances3 = ` afin de pouvoir facilement copier les tableaux (étendus ou non)
+        dans l'Excel de Bilan.`
 
 textFR.help_section.need_help = `
     <h3>

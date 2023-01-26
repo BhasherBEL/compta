@@ -1,5 +1,6 @@
 import {links} from "./links";
 import type {Language} from "./language";
+import {textFR} from "./textFR";
 
 export const textEN: Language = {
     lang: "en",
@@ -12,6 +13,7 @@ export const textEN: Language = {
         lang_fr: "Change texts and formats to FRENCH",
         open_file: "Restore a backup",
         safe_delete: (isLocked: boolean) => (isLocked ? 'Unblock' : 'Block') + " the removal",
+        scale_balance: (isExpanded: boolean) => (isExpanded ? "Collapse" : "Expand") + " balance sheet details",
         save_file: "Save changes",
     },
     infos: {
@@ -61,14 +63,27 @@ export const textEN: Language = {
         see_release_notes: "See Release Notes"
     },
     help_section: {
+        lang_description: "",
         tabs_description: "The different tabs available",
         infos_accounts: "",
         cash_flow: "",
         detail_balances1: "",
         detail_balances2: "",
+        detail_balances3: "",
         need_help: "",
     },
 }
+
+textEN.help_section.lang_description = `
+    <h3>
+        The different languages available
+    </h3>
+    <p>
+        This application is available in two languages: English and French. <br>
+        Each language can be chosen by clicking on the corresponding flag. <br>
+        When you change language, the format of the different numbers will change depending on the language chosen.
+    </p>
+`
 
 textEN.help_section.infos_accounts = `
     <h4>
@@ -110,7 +125,8 @@ textEN.help_section.detail_balances1 = `
         You can consult the balance sheets of your accounts by events and by
         nature, presented in the same way as in the Treasury Excel. <br>
         You can also use the `
-textEN.help_section.detail_balances2 = ` button so that you can easily copy the tables
+textEN.help_section.detail_balances2 = ` button to expand/collapse the Balance Sheet details as well as the `
+textEN.help_section.detail_balances3 = ` button so that you can easily copy the tables (extended or not)
         in the Excel Balance Sheet.
 `
 
