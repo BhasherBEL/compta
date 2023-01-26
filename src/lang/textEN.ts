@@ -1,6 +1,5 @@
 import {links} from "./links";
 import type {Language} from "./language";
-import {textFR} from "./textFR";
 
 export const textEN: Language = {
     lang: "en",
