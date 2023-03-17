@@ -42,7 +42,11 @@ thead.total-row th {
 }
 
 .card {
-  padding: 0.5rem 2rem 2rem 2rem;
+  padding: 0.5rem 2rem 10rem 2rem;
+}
+
+.table-vline {
+  border-left: 1px solid lightgray;
 }
 
 .button {
