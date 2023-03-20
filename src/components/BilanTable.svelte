@@ -106,7 +106,7 @@
         </tr>
     {/each}
     <tr style="border-top:2px solid gray;">
-        <th>
+        <th style="font-size: 17px;">
             {text.total_all}
         </th>
         {#if extendA}
