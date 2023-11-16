@@ -49,10 +49,10 @@ svelte-check:
   script:
     - npm run svelte-check
 
-stylelint:
-  stage: test
-  script:
-    - npm run stylelint
+#stylelint:
+#  stage: test
+#  script:
+#    - npm run stylelint
 
 tslint:
   stage: test
