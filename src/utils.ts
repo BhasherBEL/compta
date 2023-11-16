@@ -14,6 +14,7 @@ export type GenericColumn<T> = {
     compute?: (a: any, b: T, c: any) => any
     format?: (a: any, b: T, c: any) => string
     default?: any
+    filterable?: boolean
 }
 
 export const formatMoney = (k: number): string => {

@@ -194,7 +194,7 @@ export const cashFlows = createCashFlowStore({
         date: "2021-09-28",
         account: "0",
         amount: 31.83,
-        event: "Acitivité n°1",
+        event: "Activité n°1",
         nature: "Ventes",
         details: "Ventes de muffins",
         ref: "BNP0025",
