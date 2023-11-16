@@ -1,0 +1,8 @@
+services:
+  compta:
+    container_name: compta
+    build:
+      context: .
+    ports:
+    - 8080:8080/tcp
+    
