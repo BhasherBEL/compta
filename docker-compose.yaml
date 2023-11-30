@@ -1,0 +1,7 @@
+services:
+  compta:
+    container_name: compta
+    image: louvainlinux/compta:latest 
+    ports:
+    - 8080:8080/tcp
+    
