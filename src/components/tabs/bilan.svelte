@@ -51,13 +51,14 @@
     }
     $: categoriesByNature = [`${text.nature}`, `${text.details}`]
 </script>
-<div class="row">
-    <div class="col card">
-        <h3 class="text-center">{text.events_balance}</h3>
-        <BilanTable data={generateByEvent($cashFlows)} categories="{categoriesByEvent}"/>
-    </div>
-    <div class="col card">
-        <h3 class="text-center">{text.natures_balance}</h3>
-        <BilanTable data={generateByNature($cashFlows)} categories="{categoriesByNature}"/>
-    </div>
+
+<!--<div class="row">-->
+<div class="col card">
+    <h2 class="text-center">{text.events_balance}</h2>
+    <BilanTable data={generateByEvent($cashFlows)} categories="{categoriesByEvent}"/>
 </div>
+<div class="col card">
+    <h2 class="text-center">{text.natures_balance}</h2>
+    <BilanTable data={generateByNature($cashFlows)} categories="{categoriesByNature}"/>
+</div>
+<!--</div>-->

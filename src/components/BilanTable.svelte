@@ -12,10 +12,15 @@
         categoryA?: string
         categoryB?: string
         categoryC?: string
+        rowStyle?: string,
         income?: number
         expense?: number
     }
     let extendA = true;
+
+    const table_bilan_categoryA: string = "background-color: lightgray; border-bottom: 1px solid darkgray; font-weight: bold;"
+    const table_bilan_categoryB: string = "font-weight: 500;"
+    const table_bilan_categoryC: string = "font-weight: 300;"
 
     let text: Language; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
 
@@ -24,7 +29,7 @@
         let [income, expense] = [0,0]
         for (let item in data){
             if (typeof data[item].expense == "number" && typeof data[item].income == "number") {
-                rows.push({categoryC: item, income: data[item].income, expense: data[item].expense})
+                rows.push({categoryC: item, rowStyle: table_bilan_categoryC, income: data[item].income, expense: data[item].expense})
                 income += data[item].income
                 expense += data[item].expense
             } else {
@@ -32,9 +37,16 @@
                 for (let row in newRows) {
                     newRows[row].categoryB = newRows[row].categoryA
                     newRows[row].categoryA = ''
+                    if (newRows[row].categoryC === '') newRows[row].rowStyle = table_bilan_categoryB
                 }
-                rows.push({categoryA: item, categoryB: '', categoryC: '', income: newIncome, expense: newExpense})
-                if (extendA) rows = rows.concat(newRows)
+                rows.push({
+                    categoryA: item, categoryB: '', categoryC: '',
+                    rowStyle: extendA ? table_bilan_categoryA : '',
+                    income: newIncome, expense: newExpense
+                })
+                if (extendA) {
+                    rows = rows.concat(newRows)
+                }
                 expense += newExpense
                 income += newIncome
             }
@@ -69,7 +81,7 @@
 </button>
 
 <table class="striped" {id}>
-    <tr>
+    <tr style="border-bottom: 2px solid gray; font-size: 17px;">
         {#if extendA}
             {#each categories as category}
                 <th>{category}</th>
@@ -82,19 +94,19 @@
         <th>{text.total}</th>
     </tr>
     {#each generated.rows as item}
-        <tr>
+        <tr style="{item.rowStyle}">
             <td>{item.categoryA}</td>
             {#if extendA}
-                {#if categories.length >= 3}<td>{item.categoryB}</td>{/if}
-                <td>{item.categoryC}</td>
+                {#if categories.length >= 3}<td class="table-vline">{item.categoryB}</td>{/if}
+                <td  class="table-vline">{item.categoryC}</td>
             {/if}
-            <td>{@html formatMoney(item.income)}</td>
-            <td>{@html formatMoney(item.expense)}</td>
-            <td>{@html formatMoney(item.income+item.expense)}</td>
+            <td class="table-vline">{@html formatMoney(item.income)}</td>
+            <td class="table-vline">{@html formatMoney(item.expense)}</td>
+            <td class="table-vline">{@html formatMoney(item.income+item.expense)}</td>
         </tr>
     {/each}
-    <tr>
-        <th>
+    <tr style="border-top:2px solid gray;">
+        <th style="font-size: 17px;">
             {text.total_all}
         </th>
         {#if extendA}
