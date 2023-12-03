@@ -43,7 +43,7 @@
         </button>
         <button class="button icon-only button-end" style="background: none;" on:click={() => translation("en")}
                 title="{text.tooltips.lang_en}">
-            <Flag lang="en" title="{text.tooltips.lang_en}" size="{50}"/>
+            <Flag lang="gb" title="{text.tooltips.lang_en}" size="{50}"/>
         </button>
     </div>
 
@@ -55,7 +55,7 @@
                        style="display: none;" on:change={importFile}>
             </label>
             <button class="button icon-only primary outline button-end" on:click={exportFile} title="{text.tooltips.save_file}">
-                <Icon title="{text.tooltips.save_file}" color="#ff5b00" icon="download" size={20}/>
+                <Icon title="{text.tooltips.save_file}" color="orange" icon="download" size={20}/>
             </button>
         </div>
     </div>
