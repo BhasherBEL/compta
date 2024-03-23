@@ -1,131 +1,140 @@
 <!--suppress JSUnfilteredForInLoop -->
 <script lang="ts">
-    import {v4 as uuidv4} from 'uuid'
-    import { formatMoney } from "../utils"
-    import Icon from "./icon.svelte"
-    import {lang, Language } from "../lang/language";
-    import { onDestroy } from 'svelte';
-    export let data: Object = {}
-    export let categories: string[];
-    const id = uuidv4()
-    type Row = {
-        categoryA?: string
-        categoryB?: string
-        categoryC?: string
-        rowStyle?: string,
-        income?: number
-        expense?: number
+  import Icon from "./icon.svelte";
+
+  export let data: Object = {};
+
+  let tbody: HTMLTableSectionElement;
+
+  function generateHeadRows() {
+    const rows: Object[] = generateRows(data);
+
+    const totalIcome = rows.reduce(
+      (acc, row) => acc + (row["key"][0] == " " ? 0 : row["income"]),
+      0
+    );
+
+    const totalExpense = rows.reduce(
+      (acc, row) => acc + (row["key"][0] == " " ? 0 : row["expense"]),
+      0
+    );
+
+    const total = totalIcome + totalExpense;
+
+    rows.push({
+      key: "Total général",
+      expense: totalExpense,
+      income: totalIcome,
+      total: total,
+    });
+
+    return rows;
+  }
+
+  function generateRows(data: Object): Object[] {
+    const rows: Object[] = [];
+    for (let [key, value] of Object.entries(data)) {
+      if ("expense" in value && "income" in value) {
+        rows.push({
+          key: key,
+          expense: value.expense,
+          income: value.income,
+          total: value.expense + value.income,
+        });
+        continue;
+      }
+
+      const subRows = generateRows(value);
+      const totalIncome = subRows.reduce(
+        (acc, row) => acc + (row["key"][0] == " " ? 0 : row["income"]),
+        0
+      );
+      const totalExpense = subRows.reduce(
+        (acc, row) => acc + row["expense"],
+        0
+      );
+      const total = totalIncome + totalExpense;
+      rows.push({
+        key: key,
+        expense: totalExpense,
+        income: totalIncome,
+        total: total,
+      });
+
+      subRows.forEach((row) => {
+        rows.push({
+          key: "    " + row["key"],
+          expense: row["expense"],
+          income: row["income"],
+          total: row["total"],
+        });
+      });
     }
-    let extendA = true;
+    return rows;
+  }
 
-    const table_bilan_categoryA: string = "background-color: lightgray; border-bottom: 1px solid darkgray; font-weight: bold;"
-    const table_bilan_categoryB: string = "font-weight: 500;"
-    const table_bilan_categoryC: string = "font-weight: 300;"
+  $: copyClicked = false;
 
-    let text: Language; const unsubscribeLang = lang.subscribe(langData => {text = langData;}); onDestroy(unsubscribeLang);
-
-    function generateRows(data: Object): {rows: Row[], income: number, expense: number} {
-        let rows: Row[] = []
-        let [income, expense] = [0,0]
-        for (let item in data){
-            if (typeof data[item].expense == "number" && typeof data[item].income == "number") {
-                rows.push({categoryC: item, rowStyle: table_bilan_categoryC, income: data[item].income, expense: data[item].expense})
-                income += data[item].income
-                expense += data[item].expense
-            } else {
-                let {rows: newRows, income: newIncome, expense: newExpense} = generateRows(data[item])
-                for (let row in newRows) {
-                    newRows[row].categoryB = newRows[row].categoryA
-                    newRows[row].categoryA = ''
-                    if (newRows[row].categoryC === '') newRows[row].rowStyle = table_bilan_categoryB
-                }
-                rows.push({
-                    categoryA: item, categoryB: '', categoryC: '',
-                    rowStyle: extendA ? table_bilan_categoryA : '',
-                    income: newIncome, expense: newExpense
-                })
-                if (extendA) {
-                    rows = rows.concat(newRows)
-                }
-                expense += newExpense
-                income += newIncome
-            }
-        }
-        return {rows: rows, income: income, expense: expense}
-    }
-
-    $: generated = generateRows(data);
-
-    const regenerateData = (isExtended: boolean) => {
-        extendA = isExtended;
-        generated = generateRows(data);
-    }
-
-    function copyTable() {
-        const table = document.getElementById(id)
-        navigator.clipboard.writeText(table.innerText).catch(() => {
-            console.log("An error appended")
-        })
-    }
+  function copyTable() {
+    navigator.clipboard
+      .writeText(tbody.innerText.replaceAll("\n\n", "\n"))
+      .catch(() => {
+        console.log("An error appended");
+      })
+      .then(() => {
+        copyClicked = true;
+        setTimeout(() => {
+          copyClicked = false;
+        }, 1000);
+      });
+  }
 </script>
 
-<button class="button icon-only pull-right"
-        on:click={() => regenerateData(!extendA)}
-        title="{text.tooltips.scale_balance(extendA)}"
->
-    {#if extendA}
-        <Icon title="{text.tooltips.scale_balance(extendA)}" icon="minus"/>
-    {:else}
-        <Icon title="{text.tooltips.scale_balance(extendA)}" icon="plus"/>
-    {/if}
-</button>
-
-<table class="striped" {id}>
-    <tr style="border-bottom: 2px solid gray; font-size: 17px;">
-        {#if extendA}
-            {#each categories as category}
-                <th>{category}</th>
-            {/each}
-        {:else}
-            <th>{categories[0]}</th>
-        {/if}
-        <th>{text.income}</th>
-        <th>{text.expense}</th>
-        <th>{text.total}</th>
+<table>
+  <thead>
+    <tr>
+      <th>Etiquettes</th>
+      <th>Entrée</th>
+      <th>Sortie</th>
+      <th>Total général</th>
     </tr>
-    {#each generated.rows as item}
-        <tr style="{item.rowStyle}">
-            <td>{item.categoryA}</td>
-            {#if extendA}
-                {#if categories.length >= 3}<td class="table-vline">{item.categoryB}</td>{/if}
-                <td  class="table-vline">{item.categoryC}</td>
-            {/if}
-            <td class="table-vline">{@html formatMoney(item.income)}</td>
-            <td class="table-vline">{@html formatMoney(item.expense)}</td>
-            <td class="table-vline">{@html formatMoney(item.income+item.expense)}</td>
-        </tr>
+  </thead>
+  <tbody bind:this={tbody}>
+    {#each generateHeadRows() as row}
+      <tr class:head={row["key"][0] != " "}>
+        <td style="white-space: pre;">
+          {row["key"]}
+        </td>
+        <td>{row["income"].toFixed(2).replaceAll(".", ",")}</td>
+        <td>{row["expense"].toFixed(2).replaceAll(".", ",")}</td>
+        <td>{row["total"].toFixed(2).replaceAll(".", ",")}</td>
+      </tr>
     {/each}
-    <tr style="border-top:2px solid gray;">
-        <th style="font-size: 17px;">
-            {text.total_all}
-        </th>
-        {#if extendA}
-            {#if categories.length >= 3}<th></th>{/if}
-            <th></th>
-        {/if}
-        <th>{@html formatMoney(generated.income)}</th>
-        <th>{@html formatMoney(generated.expense)}</th>
-        <th>{@html formatMoney(generated.expense+generated.income)}</th>
-    </tr>
+  </tbody>
 </table>
 
-<button class="button icon-only pull-right" on:click={copyTable} title="{text.tooltips.clipboard}">
-    <Icon title="{text.tooltips.clipboard}" icon="clipboard"/>
+<button
+  on:click={() => copyTable()}
+  class="button icon-only outline pull-right"
+>
+  <Icon icon={copyClicked ? "check" : "clipboard"} size={25} />
 </button>
 
 <style>
-  button:active {
-    background-color: unset;
-    border-color: var(--color-lightGrey);
+  .head {
+    font-weight: bold;
+    border-top: 1px solid #ccc;
+  }
+
+  tr {
+    /* border-bottom: 1px solid #ccc; */
+    height: 150%;
+    line-height: 200%;
+  }
+
+  th,
+  tr:last-child td:first-child {
+    text-transform: uppercase;
+    font-size: 0.9em;
   }
 </style>
