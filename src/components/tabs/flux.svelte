@@ -25,6 +25,12 @@
       required: true,
       format: (val, _, __) => formatColor(val, formatMoney(val)),
     },
+    label: {
+      name: text.label,
+      type: "string",
+      required: true,
+      filterable: true,
+    },
     account: {
       name: text.account,
       type: "select",
@@ -34,13 +40,6 @@
       suggestions_keys: Object.keys($accounts),
       required: true,
       format: (id, _, __) => $accounts[id].name,
-      filterable: true,
-    },
-    event: {
-      name: text.event,
-      type: "string",
-      suggestions: [],
-      required: true,
       filterable: true,
     },
     nature: {
@@ -57,12 +56,18 @@
       required: true,
       filterable: true,
     },
-    ref: { name: text.ref, type: "string", required: true, filterable: true },
-    note: {
-      name: text.note,
+    event: {
+      name: text.event,
+      type: "string",
+      suggestions: [],
+      required: true,
+      filterable: true,
+    },
+    ref: { name: text.ref, type: "string", required: false, filterable: true },
+    comment: {
+      name: text.comment,
       type: "string",
       required: false,
-      format: (a) => a || "",
       filterable: true,
     },
     in_out: {

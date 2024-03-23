@@ -96,11 +96,34 @@
   function onFilterClick(e: Event, key: string) {
     filters[key] = (e.target as HTMLInputElement).value;
   }
+
+  let tbody: HTMLElement;
+  $: copyClicked = false;
+
+  function copyTable() {
+    navigator.clipboard
+      .writeText(tbody.innerText.replaceAll("\n\n", "\n"))
+      .catch(() => {
+        console.log("An error appended");
+      })
+      .then(() => {
+        copyClicked = true;
+        setTimeout(() => {
+          copyClicked = false;
+        }, 1000);
+      });
+  }
 </script>
 
 <div class="myGrouped is-vertical-align">
   <h2>{tableName}</h2>
   <div class="nav-right">
+    <button
+      on:click={() => copyTable()}
+      class="button icon-only outline pull-right"
+    >
+      <Icon icon={copyClicked ? "check" : "clipboard"} size={25} />
+    </button>
     <button
       on:click={() => {
         lockDelete = !lockDelete;
@@ -150,7 +173,7 @@
     </thead>
   {/if}
 
-  <tbody>
+  <thead>
     <tr>
       {#each Object.entries(columns) as [key, item]}
         <th>
@@ -177,6 +200,8 @@
         </th>
       {/each}
     </tr>
+  </thead>
+  <tbody bind:this={tbody}>
     {#each applyFilter(Object.entries($dataStore), filters) as [index, data]}
       <tr>
         {#each Object.entries(columns) as [key, column]}
@@ -229,6 +254,8 @@
         </td>
       </tr>
     {/each}
+  </tbody>
+  <tbody>
     <tr>
       <form id="new-data" on:submit|preventDefault={() => addNew()} />
       {#each Object.entries(columns) as [key, item]}
