@@ -52,7 +52,7 @@
     column: GenericColumn<T>,
     key: string,
     data: T,
-    index: string,
+    index: string
   ): string {
     let value = column.compute
       ? column.compute(data[key], data, index)
@@ -64,7 +64,7 @@
     column: GenericColumn<T>,
     key: string,
     data: T,
-    indexes: string[],
+    indexes: string[]
   ): string {
     let value = column.compute
       ? column.compute(data[key], data, indexes)
@@ -166,7 +166,7 @@
             column,
             key,
             Object.values($dataStore),
-            Object.keys($dataStore),
+            Object.keys($dataStore)
           )}
         </th>
       {/each}
@@ -228,7 +228,6 @@
           <button
             class="button outline icon-only"
             on:click={() => toggleEditable(index)}
-            disabled={!validateChange(data)}
             title={text.tooltips.edit_line}
             style="background-color: #feebd4"
           >
