@@ -50,7 +50,7 @@
         0
       );
       const totalExpense = subRows.reduce(
-        (acc, row) => acc + row["expense"],
+        (acc, row) => acc + (row["key"][0] == " " ? 0 : row["expense"]),
         0
       );
       const total = totalIncome + totalExpense;
